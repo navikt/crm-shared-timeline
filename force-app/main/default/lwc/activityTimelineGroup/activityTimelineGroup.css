@@ -1,0 +1,11 @@
+.viewBtnGroup {
+    width: 100%;
+}
+
+.viewBtn {
+    width: 50%;
+}
+
+.totalCounter {
+    transform: scale(0.9, 0.9);
+}

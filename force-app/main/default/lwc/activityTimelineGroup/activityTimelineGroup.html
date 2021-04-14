@@ -1,0 +1,54 @@
+<template>
+    <!-- ! EMPTY SPAN IS ONLY USED TO AVOID SLDS BUG WITH ACCORDION SECTION BORDER -->
+    <span></span>
+    <span class="slds-float_right slds-is-relative slds-m-right_x-small slds-m-top_x-small" if:true={isClosed}>
+        <lightning-badge label={total} icon-name="utility:choice" class="totalCounter"></lightning-badge>
+    </span>
+    <lightning-accordion-section name={group.id} label={group.name}>
+        <!-- ************************************************************************ -->
+        <!-- ********************************* DATA ********************************* -->
+        <!-- ************************************************************************ -->
+        <template if:false={isClosed}>
+            <template if:false={empty} for:each={group.models} for:item="row" for:index="i">
+                <c-activity-timeline-item
+                    key={row.record.recordId}
+                    row={row}
+                    labels={labels}
+                    index={i}
+                    amount={amount}
+                    period={group.id}
+                >
+                </c-activity-timeline-item>
+            </template>
+        </template>
+
+        <!-- ************************************************************************ -->
+        <!-- ********************** LOADING AND INFO/ERROR TEXT ********************* -->
+        <!-- ************************************************************************ -->
+        <div if:true={empty}>
+            <div class="slds-text-body_small slds-align_absolute-center slds-m-bottom_medium">{labels.emptyGroup}</div>
+        </div>
+
+        <!-- ************************************************************************ -->
+        <!-- ******************************* LOAD MORE ****************************** -->
+        <!-- ************************************************************************ -->
+        <div if:true={showViewMore} class="slds-align_absolute-center">
+            <lightning-button-group class="viewBtnGroup">
+                <button
+                    data-id={group.id}
+                    class="slds-button slds-button_neutral slds-button_stretch viewBtn"
+                    onclick={viewMore}
+                >
+                    {labels.viewMore}
+                </button>
+                <button
+                    data-id={group.id}
+                    class="slds-button slds-button_neutral slds-button_stretch viewBtn"
+                    onclick={viewAll}
+                >
+                    {labels.viewAll} ({total})
+                </button>
+            </lightning-button-group>
+        </div>
+    </lightning-accordion-section>
+</template>

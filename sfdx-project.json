@@ -2,11 +2,16 @@
     "packageDirectories": [
         {
             "path": "force-app",
+            "package": "crm-shared-activity-timeline",
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT",
             "default": true
         }
     ],
     "namespace": "",
     "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "47.0",
-    "packageAliases": {}
+    "sourceApiVersion": "51.0",
+    "packageAliases": {
+        "crm-shared-activity-timeline": "0Ho2o000000fxXBCAY"
+    }
 }

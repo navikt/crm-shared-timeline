@@ -2,8 +2,8 @@
     "orgName": "NAV VIRKSOMHETSLØSNINGER",
     "edition": "Enterprise",
     "release": "Current",
-    "adminEmail": "fakeemail@nav.no.scratchorg",
-    "features": ["ProcessBuilder", "API", "LiveAgent", "PersonAccounts", "ContactsToMultipleAccounts"],
+    "adminEmail": "fakeemail@nav.no.invalid",
+    "features": ["LiveAgent"],
     "country": "NO",
     "language": "en_US",
     "settings": {
@@ -12,12 +12,6 @@
         },
         "languageSettings": {
             "enableTranslationWorkbench": true
-        },
-        "accountSettings": {
-            "enableAccountTeams": true
-        },
-        "liveAgentSettings": {
-            "enableLiveAgent": true
         },
         "emailAdministrationSettings": {
             "enableEnhancedEmailEnabled": true

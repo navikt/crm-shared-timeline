@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <classAccesses>
+        <apexClass>ActivityTimeline_Controller</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <customMetadataTypeAccesses>
+        <enabled>true</enabled>
+        <name>ActivityTimelineChild__mdt</name>
+    </customMetadataTypeAccesses>
+    <customMetadataTypeAccesses>
+        <enabled>true</enabled>
+        <name>ActivityTimelineParent__mdt</name>
+    </customMetadataTypeAccesses>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Activity Timeline Access</label>
+</PermissionSet>
