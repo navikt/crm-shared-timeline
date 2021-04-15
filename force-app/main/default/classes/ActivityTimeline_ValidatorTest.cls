@@ -11,17 +11,17 @@ private without sharing class ActivityTimeline_ValidatorTest {
 
         Test.StartTest();
         System.runAs(u) {
-            result = ActivityTimeline_Validator.sObjectIsAccessible('NavTask__c');
+            result = ActivityTimeline_Validator.sObjectIsAccessible('PushTopic');
         }
         Test.StopTest();
 
-        System.assert(!result, 'Empty user user should NOT have access');
+        System.assert(!result, 'Empty user should NOT have access');
     }
 
     @isTest
     private static void testSObjectIsAccessible_emptyUserWithPermset() {
         Test.StartTest();
-        Boolean result = ActivityTimeline_Validator.sObjectIsAccessible('NavTask__c');
+        Boolean result = ActivityTimeline_Validator.sObjectIsAccessible('PushTopic');
         Test.StopTest();
 
         System.assert(result, 'Current user should have access (is admin)');
@@ -38,17 +38,17 @@ private without sharing class ActivityTimeline_ValidatorTest {
 
         Test.StartTest();
         System.runAs(u) {
-            result = ActivityTimeline_Validator.sObjectIsCreateable('NavTask__c');
+            result = ActivityTimeline_Validator.sObjectIsCreateable('PushTopic');
         }
         Test.StopTest();
 
-        System.assert(!result, 'Empty user user should NOT have access');
+        System.assert(!result, 'Empty user should NOT have access');
     }
 
     @isTest
     private static void testSObjectIsCreateable_emptyUserWithPermset() {
         Test.StartTest();
-        Boolean result = ActivityTimeline_Validator.sObjectIsCreateable('NavTask__c');
+        Boolean result = ActivityTimeline_Validator.sObjectIsCreateable('PushTopic');
         Test.StopTest();
 
         System.assert(result, 'Current user should have access (is admin)');
@@ -65,11 +65,11 @@ private without sharing class ActivityTimeline_ValidatorTest {
 
         Test.StartTest();
         System.runAs(u) {
-            result = ActivityTimeline_Validator.fieldIsAccessible('NavTask__c', 'CRM_Account__c');
+            result = ActivityTimeline_Validator.fieldIsAccessible('Account', 'Rating');
         }
         Test.StopTest();
 
-        System.assert(!result, 'Empty user user should NOT have access');
+        System.assert(!result, 'Empty user should NOT have access');
     }
 
     // #################################################
@@ -83,10 +83,10 @@ private without sharing class ActivityTimeline_ValidatorTest {
 
         Test.StartTest();
         System.runAs(u) {
-            result = ActivityTimeline_Validator.fieldIsCreateable('NavTask__c', 'CRM_Account__c');
+            result = ActivityTimeline_Validator.fieldIsCreateable('Account', 'Rating');
         }
         Test.StopTest();
 
-        System.assert(!result, 'Empty user user should NOT have access');
+        System.assert(!result, 'Empty user should NOT have access');
     }
 }
