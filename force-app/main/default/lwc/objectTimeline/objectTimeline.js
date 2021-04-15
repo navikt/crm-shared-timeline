@@ -3,7 +3,7 @@ import { loadScript } from 'lightning/platformResourceLoader';
 import { refreshApex } from '@salesforce/apex';
 import LANG from '@salesforce/i18n/lang';
 
-import MOMENT_JS from '@salesforce/resourceUrl/momentJs';
+import MOMENT_JS from '@salesforce/resourceUrl/moment';
 import getObjectTimelineData from '@salesforce/apex/ObjectTimeline_Controller.getObjectTimelineData';
 import getTotalRecords from '@salesforce/apex/ObjectTimeline_Controller.getTotalRecords';
 import labels from './labels';

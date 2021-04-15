@@ -10,7 +10,7 @@
     ],
     "namespace": "",
     "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "51.0",
+    "sourceApiVersion": "48.0",
     "packageAliases": {
         "crm-shared-object-timeline": "0Ho2o000000fxXBCAY"
     }
