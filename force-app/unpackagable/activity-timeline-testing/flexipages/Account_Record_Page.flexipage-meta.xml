@@ -155,7 +155,7 @@
                 <name>headerTitleNorwegian</name>
                 <value>Aktiviteter</value>
             </componentInstanceProperties>
-            <componentName>objectTimeline</componentName>
+            <componentName>timeline</componentName>
         </componentInstances>
         <mode>Replace</mode>
         <name>sidebar</name>

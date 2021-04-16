@@ -2,7 +2,7 @@
     "packageDirectories": [
         {
             "path": "force-app",
-            "package": "crm-shared-object-timeline",
+            "package": "crm-shared-timeline",
             "versionName": "ver 0.1",
             "versionNumber": "1.1.0.NEXT",
             "default": true
@@ -12,6 +12,6 @@
     "sfdcLoginUrl": "https://login.salesforce.com",
     "sourceApiVersion": "48.0",
     "packageAliases": {
-        "crm-shared-object-timeline": "0Ho2o000000fxXBCAY"
+        "crm-shared-timeline": "0Ho2o000000fxXBCAY"
     }
 }

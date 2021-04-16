@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>Timeline_LoadMore</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>[ActTime] Load More</shortDescription>
+        <value>Load More</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_AllDataLoaded</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>[ActTime] All Data Loaded</shortDescription>
+        <value>You've reached the end 😱</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_ViewMore</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>[ActTime] View More</shortDescription>
+        <value>View More</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_ViewAll</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>[ActTime] View All</shortDescription>
+        <value>View All</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_MomentJsLanguage</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>[ActTime] Moment.js Language</shortDescription>
+        <value>en</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_NotConfugred</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>[ActTime] Not Configured</shortDescription>
+        <value>An Administrator have either not configured this component or you don't have access to this data. Contact your Administrator.</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_New</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>[ActTime] New</shortDescription>
+        <value>New</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Older</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>[ActTime] Older</shortDescription>
+        <value>Older</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_PreviousMonth</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>[ActTime] Previous Month</shortDescription>
+        <value>Previous month</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_ThisMonth</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>[ActTime] This Month</shortDescription>
+        <value>This month</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Overdue</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>[ActTime] Overdue</shortDescription>
+        <value>Overdue</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Upcoming</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>[ActTime] Upcoming</shortDescription>
+        <value>Today and Upcoming</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_You</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>[ActTime] You</shortDescription>
+        <value>You</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Unknown</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>[ActTime] Unknown</shortDescription>
+        <value>Someone</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Collapse</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>[ActTime] Collapse</shortDescription>
+        <value>Collapse</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Expand</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>[ActTime] Expand</shortDescription>
+        <value>Expand</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Activities</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>[ActTime] Activities</shortDescription>
+        <value>Activities</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_EmptyTitle</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>[ActTime] Empty Title</shortDescription>
+        <value>Empty!</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_ErrorTitle</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>[ActTime] Error Title</shortDescription>
+        <value>Error!</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_EmptySubtitle</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>[ActTime] Empty Subtitle</shortDescription>
+        <value>This record doesn't seem to have any related records.</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_EmptyGroup</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>[ActTime] Empty Group</shortDescription>
+        <value>Nothing here.</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Today</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>[ActTime] Today</shortDescription>
+        <value>Today</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Tomorrow</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>[ActTime] Tomorrow</shortDescription>
+        <value>Tomorrow</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Yesterday</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>[ActTime] Yesterday</shortDescription>
+        <value>Yesterday</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Last</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>[ActTime] Last</shortDescription>
+        <value>Last</value>
+    </labels>
+</CustomLabels>

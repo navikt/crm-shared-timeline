@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Timeline_Child__c</fullName>
+    <description>The child record to be shown in the timeline</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>The child record to be shown in the timeline</inlineHelpText>
+    <label>Child Config</label>
+    <referenceTo>TimelineChild__mdt</referenceTo>
+    <relationshipLabel>Timelines</relationshipLabel>
+    <relationshipName>Timelines1</relationshipName>
+    <required>true</required>
+    <type>MetadataRelationship</type>
+    <unique>false</unique>
+</CustomField>
