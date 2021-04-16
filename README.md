@@ -1,35 +1,22 @@
-Template repository for CRM packages. Necessary steps after using template:
+# crm-shared-timeline
 
-1. Add secrets (see [description](https://github.com/navikt/crm-workflows-base))
-    - PROD_SFDX_URL `[REQUIRED]` (contact #crm-platform-team on Slack)
-    - PREPROD_SFDX_URL `[REQUIRED]` (contact #crm-platform-team on Slack)
-    - INTEGRATION_SANDBOX_SFDX_URL `[REQUIRED]` (contact #crm-platform-team on Slack)
-    - PACKAGE_KEY `[REQUIRED]`
-    - DEPLOYMENT_PAT `[REQUIRED]`
-    - UAT_SFDX_URL `[OPTIONAL]`
-    - DEV_SFDX_URL `[OPTIONAL]`
-    - DEPLOY_TO_DEV_AFTER_PACKAGE_CREATION `[OPTIONAL]`
-    - DEPLOY_TO_UAT_AFTER_PACKAGE_CREATION `[OPTIONAL]`
-2. Create file `.sfdx/sfdx-config.json` (to create package)
-    - Add `{"defaultdevhubusername": "[your_devhub_user]","defaultusername": "" }` to it and change the DevHub username
-3. Create a package in SFDX
-    - `sfdx force:package:create -n YourPackageName -t Unlocked -r force-app`
-    - If you receive an error, contact #crm-platform-team on Slack to create the package
-4. Create an init release in GitHub (not pre-release)
-5. Push changes made to `sfdx-project.json` (remember to fetch Package ID if #crm-platform-team creates the package)
+[![Build](https://github.com/navikt/crm-shared-timeline/workflows/%5BPUSH%5D%20Create%20Package/badge.svg)](https://github.com/navikt/crm-shared-timeline/actions?query=workflow%3Acreate)
+[![GitHub version](https://badgen.net/github/release/navikt/crm-shared-timeline/stable)](https://github.com/navikt/crm-shared-timeline)
+[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/navikt/crm-shared-timeline/blob/master/LICENSE)
 
-# crm-shared-template
+## Overview
 
-[![Build](https://github.com/navikt/XXXXXXXXXXXXX/workflows/%5BPUSH%5D%20Create%20Package/badge.svg)](https://github.com/navikt/XXXXXXXXXXXXX/actions?query=workflow%3Acreate)
-[![GitHub version](https://badgen.net/github/release/navikt/XXXXXXXXXXXXX/stable)](https://github.com/navikt/XXXXXXXXXXXXX)
-[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/navikt/XXXXXXXXXXXXX/blob/master/LICENSE)
+LWC component based on the default Salesforce Activity Timeline, but extended to work with any Salesforce object. 
 
-## Dependencies
+![Timeline](/.img/timeline.png)
 
-This package is dependant on the following packages
+## Configuration
 
--   [XXXXXXXXXXXXX](https://github.com/navikt/XXXXXXXXXXXXX)
--   [XXXXXXXXXXXXX](https://github.com/navikt/XXXXXXXXXXXXX)
+You can easily configure which objects to be visible in a timeline, and you can even specify which Salesforce app the configuration is intended for.
+
+|     Parent Config     |     Child Config     |
+|   :----------------:  |   :---------------:  |
+| ![](/.img/parent.png) | ![](/.img/child.png) |
 
 ## Installation
 
