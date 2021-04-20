@@ -36,6 +36,24 @@ You can easily configure which objects to be visible in a timeline, and you can 
     - macOS: `/Library/Java/JavaVirtualMachines/adoptopenjdk-[VERSION_NUMBER].jdk/Contents/Home`
     - Windows: `C:\\Program Files\\AdoptOpenJDK\\jdk-[VERSION_NUMBER]-hotspot`
 
+## Build
+
+To build locally without using SSDX, do the following:
+
+1. If you haven't authenticated a DX user to production / DevHub, run `sfdx auth:web:login -d -a production` and log in
+    - Ask #crm-platform-team on Slack if you don't have a user
+    - If you change from one repo to another, you can change the default DevHub username in `.sfdx/sfdx-config.json`, but you can also just run the command above
+1. Create a scratch org, install dependencies and push metadata:
+
+```bash
+sfdx force:org:create -f ./config/project-scratch-def.json --setalias scratch_org --durationdays 1 --setdefaultusername
+echo y | sfdx plugins:install sfpowerkit@2.0.1
+keys="" && for p in $(sfdx force:package:list --json | jq '.result | .[].Name' -r); do keys+=$p":navcrm "; done
+sfdx sfpowerkit:package:dependencies:install -u scratch_org -r -a -w 60 -k ${keys}
+sfdx force:source:push
+sfdx force:org:open
+```
+
 ## Other
 
 Questions? Ask on #crm-platform-team on Slack.
