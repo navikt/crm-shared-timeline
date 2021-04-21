@@ -1,6 +1,5 @@
 @IsTest
 public with sharing class Timeline_TestDataFactory {
-
     public static Account createAccount(String accountName) {
         Account accountRecord = new Account();
         accountRecord.put('Name', accountName);

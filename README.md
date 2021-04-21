@@ -6,7 +6,7 @@
 
 ## Overview
 
-LWC component based on the default Salesforce Activity Timeline, but extended to work with any Salesforce object. 
+LWC component based on the default Salesforce Activity Timeline, but extended to work with any Salesforce object.
 
 ![Timeline](/.img/timeline.png)
 
@@ -15,7 +15,7 @@ LWC component based on the default Salesforce Activity Timeline, but extended to
 You can easily configure which objects to be visible in a timeline, and you can even specify which Salesforce app the configuration is intended for.
 
 |     Parent Config     |     Child Config     |
-|   :----------------:  |   :---------------:  |
+| :-------------------: | :------------------: |
 | ![](/.img/parent.png) | ![](/.img/child.png) |
 
 ## Installation

@@ -22,10 +22,7 @@ public with sharing class Timeline_Queries {
         }
 
         // check if all fetched objects are accessible
-        List<TimelineParent__mdt> sObjectsToUse = Timeline_Helper.checkObjectAccess(
-            isCreateable,
-            sObjectsToQuery
-        );
+        List<TimelineParent__mdt> sObjectsToUse = Timeline_Helper.checkObjectAccess(isCreateable, sObjectsToQuery);
 
         return sObjectsToUse;
     }

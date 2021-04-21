@@ -26,11 +26,7 @@ private without sharing class Timeline_HelperTest {
     private static void testGetActivity() {
         Id recordId = [SELECT Id FROM Account WHERE NAME = 'test' LIMIT 1].Id;
         String parentSObjectType = Timeline_Helper.getSOjectTypeFromRecordId(recordId);
-        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(
-            parentSObjectType,
-            false,
-            null
-        );
+        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(parentSObjectType, false, null);
 
         Test.StartTest();
         List<Timeline_Model> actual = Timeline_Helper.getActivity(sObjectsToQuery, recordId, 3);
@@ -43,11 +39,7 @@ private without sharing class Timeline_HelperTest {
     private static void testGetUpcomingActivity() {
         Id recordId = [SELECT Id FROM Account WHERE NAME = 'test' LIMIT 1].Id;
         String parentSObjectType = Timeline_Helper.getSOjectTypeFromRecordId(recordId);
-        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(
-            parentSObjectType,
-            false,
-            null
-        );
+        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(parentSObjectType, false, null);
         List<Timeline_Model> models = Timeline_Helper.getActivity(sObjectsToQuery, recordId, 3);
 
         Test.StartTest();
@@ -62,18 +54,10 @@ private without sharing class Timeline_HelperTest {
         Id recordId = [SELECT Id FROM Account WHERE NAME = 'test' LIMIT 1].Id;
 
         String parentSObjectType = Timeline_Helper.getSOjectTypeFromRecordId(recordId);
-        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(
-            parentSObjectType,
-            false,
-            null
-        );
+        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(parentSObjectType, false, null);
 
         Test.StartTest();
-        Timeline_ModelList actual = Timeline_Helper.getOverdueActivity(
-            recordId,
-            'Account',
-            sObjectsToQuery
-        );
+        Timeline_ModelList actual = Timeline_Helper.getOverdueActivity(recordId, 'Account', sObjectsToQuery);
         Test.StopTest();
 
         System.assertEquals(1, actual.models.size(), 'only one overdue task associated with account');
@@ -87,11 +71,7 @@ private without sharing class Timeline_HelperTest {
     private static void testCreateTimelineData() {
         Id recordId = [SELECT Id FROM Account WHERE NAME = 'test' LIMIT 1].Id;
         String parentSObjectType = Timeline_Helper.getSOjectTypeFromRecordId(recordId);
-        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(
-            parentSObjectType,
-            false,
-            null
-        );
+        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(parentSObjectType, false, null);
         List<String> query = Timeline_Queries.createSoqlQueries(sObjectsToQuery, recordId, 3);
         List<SObject> sObjects = Timeline_Queries.getSObjectsFromQueries(query);
 
@@ -106,26 +86,14 @@ private without sharing class Timeline_HelperTest {
     private static void testReloadUntilDataFetched() {
         Id recordId = [SELECT Id FROM Account WHERE NAME = 'test' LIMIT 1].Id;
         String parentSObjectType = Timeline_Helper.getSOjectTypeFromRecordId(recordId);
-        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(
-            parentSObjectType,
-            false,
-            null
-        );
+        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(parentSObjectType, false, null);
         List<Timeline_Model> activity = Timeline_Helper.getActivity(sObjectsToQuery, recordId, 5);
         Integer totalRecords = Timeline_Queries.getTotalRecords(sObjectsToQuery, recordId);
 
         System.assertEquals(2, activity.size(), 'should only have found 2 records before test');
 
         Test.StartTest();
-        activity = Timeline_Helper.reloadUntilDataFetched(
-            sObjectsToQuery,
-            recordId,
-            5,
-            3,
-            2,
-            totalRecords,
-            activity
-        );
+        activity = Timeline_Helper.reloadUntilDataFetched(sObjectsToQuery, recordId, 5, 3, 2, totalRecords, activity);
         Test.StopTest();
 
         System.assertEquals(3, activity.size(), 'should have found all three records after test');
@@ -143,26 +111,14 @@ private without sharing class Timeline_HelperTest {
         );
 
         String parentSObjectType = Timeline_Helper.getSOjectTypeFromRecordId(recordId);
-        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(
-            parentSObjectType,
-            false,
-            null
-        );
+        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(parentSObjectType, false, null);
         List<Timeline_Model> activity = Timeline_Helper.getActivity(sObjectsToQuery, recordId, 5);
         Integer totalRecords = Timeline_Queries.getTotalRecords(sObjectsToQuery, recordId);
 
         System.assertEquals(2, activity.size(), 'should only have found 2 records before test');
 
         Test.StartTest();
-        activity = Timeline_Helper.reloadUntilDataFetched(
-            sObjectsToQuery,
-            recordId,
-            5,
-            3,
-            2,
-            totalRecords,
-            activity
-        );
+        activity = Timeline_Helper.reloadUntilDataFetched(sObjectsToQuery, recordId, 5, 3, 2, totalRecords, activity);
         Test.StopTest();
 
         System.assertEquals(
@@ -184,26 +140,14 @@ private without sharing class Timeline_HelperTest {
         );
 
         String parentSObjectType = Timeline_Helper.getSOjectTypeFromRecordId(recordId);
-        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(
-            parentSObjectType,
-            false,
-            null
-        );
+        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(parentSObjectType, false, null);
         List<Timeline_Model> activity = Timeline_Helper.getActivity(sObjectsToQuery, recordId, 5);
         Integer totalRecords = Timeline_Queries.getTotalRecords(sObjectsToQuery, recordId);
 
         System.assertEquals(2, activity.size(), 'should only have found 2 records before test');
 
         Test.StartTest();
-        activity = Timeline_Helper.reloadUntilDataFetched(
-            sObjectsToQuery,
-            recordId,
-            5,
-            3,
-            2,
-            totalRecords,
-            activity
-        );
+        activity = Timeline_Helper.reloadUntilDataFetched(sObjectsToQuery, recordId, 5, 3, 2, totalRecords, activity);
         Test.StopTest();
 
         System.assertEquals(
@@ -217,11 +161,7 @@ private without sharing class Timeline_HelperTest {
     private static void testCountRecords() {
         Id recordId = [SELECT Id FROM Account WHERE NAME = 'test' LIMIT 1].Id;
         String parentSObjectType = Timeline_Helper.getSOjectTypeFromRecordId(recordId);
-        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(
-            parentSObjectType,
-            false,
-            null
-        );
+        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(parentSObjectType, false, null);
 
         List<Timeline_Model> activity = Timeline_Helper.getActivity(sObjectsToQuery, recordId, 3);
         List<Timeline_ModelList> activityDivided = Timeline_Helper.getRecordsDividedIntoMonths(activity);
@@ -240,31 +180,19 @@ private without sharing class Timeline_HelperTest {
 
     @isTest
     private static void testGetAmountToLoad_100years() {
-        System.assertEquals(
-            1024,
-            Timeline_Helper.getAmountToLoad(32, 2),
-            '32^2 = 1 024 months, which is under capp'
-        );
+        System.assertEquals(1024, Timeline_Helper.getAmountToLoad(32, 2), '32^2 = 1 024 months, which is under capp');
     }
 
     @isTest
     private static void testGetAmountToLoad_cappedAt100years() {
-        System.assertEquals(
-            1212,
-            Timeline_Helper.getAmountToLoad(12, 3),
-            '12^3 = 1 728, but capped at 1212 months'
-        );
+        System.assertEquals(1212, Timeline_Helper.getAmountToLoad(12, 3), '12^3 = 1 728, but capped at 1212 months');
     }
 
     @isTest
     private static void testGetRecordsDividedIntoMonths() {
         Id recordId = [SELECT Id FROM Account WHERE NAME = 'test' LIMIT 1].Id;
         String parentSObjectType = Timeline_Helper.getSOjectTypeFromRecordId(recordId);
-        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(
-            parentSObjectType,
-            false,
-            null
-        );
+        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(parentSObjectType, false, null);
         List<String> query = Timeline_Queries.createSoqlQueries(sObjectsToQuery, recordId, 3);
         List<SObject> sObjects = Timeline_Queries.getSObjectsFromQueries(query);
         List<Timeline_Model> data = Timeline_Helper.createTimelineData(sObjectsToQuery, sObjects);
@@ -288,27 +216,15 @@ private without sharing class Timeline_HelperTest {
     private static void testAddAllActivities() {
         Id recordId = [SELECT Id FROM Account WHERE NAME = 'test' LIMIT 1].Id;
         String parentSObjectType = Timeline_Helper.getSOjectTypeFromRecordId(recordId);
-        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(
-            parentSObjectType,
-            false,
-            null
-        );
+        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(parentSObjectType, false, null);
 
         List<Timeline_Model> activity = Timeline_Helper.getActivity(sObjectsToQuery, recordId, 3);
         List<Timeline_ModelList> activityDivided = Timeline_Helper.getRecordsDividedIntoMonths(activity);
         Timeline_ModelList upcoming = Timeline_Helper.getUpcomingActivity(activity);
-        Timeline_ModelList overdue = Timeline_Helper.getOverdueActivity(
-            recordId,
-            parentSObjectType,
-            sObjectsToQuery
-        );
+        Timeline_ModelList overdue = Timeline_Helper.getOverdueActivity(recordId, parentSObjectType, sObjectsToQuery);
 
         Test.StartTest();
-        List<Timeline_ModelList> results = Timeline_Helper.addAllActivities(
-            upcoming,
-            overdue,
-            activityDivided
-        );
+        List<Timeline_ModelList> results = Timeline_Helper.addAllActivities(upcoming, overdue, activityDivided);
         Test.StopTest();
 
         System.assertEquals(3, results.size(), 'Should contain overdue, upcoming and month view');
@@ -318,30 +234,18 @@ private without sharing class Timeline_HelperTest {
     private static void testAddAllActivities_doesNotAddEmptyOverdueAndUpcoming() {
         Id recordId = [SELECT Id FROM Account WHERE NAME = 'test' LIMIT 1].Id;
         String parentSObjectType = Timeline_Helper.getSOjectTypeFromRecordId(recordId);
-        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(
-            parentSObjectType,
-            false,
-            null
-        );
+        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(parentSObjectType, false, null);
 
         List<Timeline_Model> activity = Timeline_Helper.getActivity(sObjectsToQuery, recordId, 3);
         List<Timeline_ModelList> activityDivided = Timeline_Helper.getRecordsDividedIntoMonths(activity);
         Timeline_ModelList upcoming = Timeline_Helper.getUpcomingActivity(activity);
-        Timeline_ModelList overdue = Timeline_Helper.getOverdueActivity(
-            recordId,
-            parentSObjectType,
-            sObjectsToQuery
-        );
+        Timeline_ModelList overdue = Timeline_Helper.getOverdueActivity(recordId, parentSObjectType, sObjectsToQuery);
 
         upcoming.models = new List<Timeline_Model>();
         overdue.models = new List<Timeline_Model>();
 
         Test.StartTest();
-        List<Timeline_ModelList> results = Timeline_Helper.addAllActivities(
-            upcoming,
-            overdue,
-            activityDivided
-        );
+        List<Timeline_ModelList> results = Timeline_Helper.addAllActivities(upcoming, overdue, activityDivided);
         Test.StopTest();
 
         System.assertEquals(1, results.size(), 'Should contain month view only');
@@ -351,30 +255,18 @@ private without sharing class Timeline_HelperTest {
     private static void testAddAllActivities_doesNotAddOverdueIfNull() {
         Id recordId = [SELECT Id FROM Account WHERE NAME = 'test' LIMIT 1].Id;
         String parentSObjectType = Timeline_Helper.getSOjectTypeFromRecordId(recordId);
-        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(
-            parentSObjectType,
-            false,
-            null
-        );
+        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(parentSObjectType, false, null);
 
         List<Timeline_Model> activity = Timeline_Helper.getActivity(sObjectsToQuery, recordId, 3);
         List<Timeline_ModelList> activityDivided = Timeline_Helper.getRecordsDividedIntoMonths(activity);
         Timeline_ModelList upcoming = Timeline_Helper.getUpcomingActivity(activity);
-        Timeline_ModelList overdue = Timeline_Helper.getOverdueActivity(
-            recordId,
-            parentSObjectType,
-            sObjectsToQuery
-        );
+        Timeline_ModelList overdue = Timeline_Helper.getOverdueActivity(recordId, parentSObjectType, sObjectsToQuery);
 
         upcoming.models = new List<Timeline_Model>();
         overdue.models = new List<Timeline_Model>();
 
         Test.StartTest();
-        List<Timeline_ModelList> results = Timeline_Helper.addAllActivities(
-            upcoming,
-            overdue,
-            activityDivided
-        );
+        List<Timeline_ModelList> results = Timeline_Helper.addAllActivities(upcoming, overdue, activityDivided);
         Test.StopTest();
 
         System.assertEquals(
@@ -401,11 +293,7 @@ private without sharing class Timeline_HelperTest {
 
     @isTest
     private static void testGetRecordTypes() {
-        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(
-            'Account',
-            false,
-            null
-        );
+        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery('Account', false, null);
 
         Test.StartTest();
         Map<String, Id> recordTypes = Timeline_Helper.getRecordTypes(sObjectsToQuery);
@@ -437,15 +325,9 @@ private without sharing class Timeline_HelperTest {
         insert ta;
 
         String parentSObjectType = Timeline_Helper.getSOjectTypeFromRecordId(acc.Id);
-        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(
-            parentSObjectType,
-            false,
-            null
-        );
+        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(parentSObjectType, false, null);
 
-        Map<String, TimelineParent__mdt> sObjectsToQueryMap = Timeline_Helper.getMapOfTimelineConfig(
-            sObjectsToQuery
-        );
+        Map<String, TimelineParent__mdt> sObjectsToQueryMap = Timeline_Helper.getMapOfTimelineConfig(sObjectsToQuery);
         sObjectsToQuery = new List<TimelineParent__mdt>{ sObjectsToQueryMap.get('Task') }; // get only tasks
 
         List<String> query = Timeline_Queries.createSoqlQueries(sObjectsToQuery, acc.Id, 5);
@@ -490,15 +372,9 @@ private without sharing class Timeline_HelperTest {
         insert ta;
 
         String parentSObjectType = Timeline_Helper.getSOjectTypeFromRecordId(acc.Id);
-        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(
-            parentSObjectType,
-            false,
-            null
-        );
+        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(parentSObjectType, false, null);
 
-        Map<String, TimelineParent__mdt> sObjectsToQueryMap = Timeline_Helper.getMapOfTimelineConfig(
-            sObjectsToQuery
-        );
+        Map<String, TimelineParent__mdt> sObjectsToQueryMap = Timeline_Helper.getMapOfTimelineConfig(sObjectsToQuery);
         sObjectsToQuery = new List<TimelineParent__mdt>{ sObjectsToQueryMap.get('Task') }; // get only tasks
 
         List<String> query = Timeline_Queries.createSoqlQueries(sObjectsToQuery, acc.Id, 5);
@@ -553,15 +429,9 @@ private without sharing class Timeline_HelperTest {
         insert ta;
 
         String parentSObjectType = Timeline_Helper.getSOjectTypeFromRecordId(acc.Id);
-        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(
-            parentSObjectType,
-            false,
-            null
-        );
+        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(parentSObjectType, false, null);
 
-        Map<String, TimelineParent__mdt> sObjectsToQueryMap = Timeline_Helper.getMapOfTimelineConfig(
-            sObjectsToQuery
-        );
+        Map<String, TimelineParent__mdt> sObjectsToQueryMap = Timeline_Helper.getMapOfTimelineConfig(sObjectsToQuery);
         sObjectsToQuery = new List<TimelineParent__mdt>{ sObjectsToQueryMap.get('Task') }; // get only tasks
 
         List<String> query = Timeline_Queries.createSoqlQueries(sObjectsToQuery, acc.Id, 5);
@@ -647,11 +517,7 @@ private without sharing class Timeline_HelperTest {
     private static void testRemoveConfig() {
         Id recordId = [SELECT Id FROM Account WHERE NAME = 'test' LIMIT 1].Id;
         String parentSObjectType = Timeline_Helper.getSOjectTypeFromRecordId(recordId);
-        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(
-            parentSObjectType,
-            false,
-            null
-        );
+        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(parentSObjectType, false, null);
 
         List<Timeline_Model> activity = Timeline_Helper.getActivity(sObjectsToQuery, recordId, 3);
         List<Timeline_ModelList> data = Timeline_Helper.getRecordsDividedIntoMonths(activity);
@@ -680,9 +546,7 @@ private without sharing class Timeline_HelperTest {
         );
 
         Test.StartTest();
-        Map<String, TimelineParent__mdt> actual = Timeline_Helper.getMapOfTimelineConfig(
-            sObjectsToQuery
-        );
+        Map<String, TimelineParent__mdt> actual = Timeline_Helper.getMapOfTimelineConfig(sObjectsToQuery);
         Test.StopTest();
 
         System.assert(actual.containsKey('Event'), 'Event should be a key for the map');
@@ -805,9 +669,7 @@ private without sharing class Timeline_HelperTest {
 
         System.runAs(u) {
             Test.StartTest();
-            List<TimelineParent__mdt> results = Timeline_Helper.translateTimelineObjects(
-                sObjectsToQuery
-            );
+            List<TimelineParent__mdt> results = Timeline_Helper.translateTimelineObjects(sObjectsToQuery);
             Test.StopTest();
 
             System.assertEquals(

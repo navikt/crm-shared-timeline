@@ -29,11 +29,7 @@ public with sharing class Timeline_Controller {
         );
         Integer totalRecords = Timeline_Queries.getTotalRecords(sObjectsToQuery, recordId);
 
-        List<Timeline_Model> activity = Timeline_Helper.getActivity(
-            sObjectsToQuery,
-            recordId,
-            amountOfMonths
-        );
+        List<Timeline_Model> activity = Timeline_Helper.getActivity(sObjectsToQuery, recordId, amountOfMonths);
         activity = Timeline_Helper.reloadUntilDataFetched(
             sObjectsToQuery,
             recordId,
@@ -48,17 +44,9 @@ public with sharing class Timeline_Controller {
 
         List<Timeline_ModelList> activityDivided = Timeline_Helper.getRecordsDividedIntoMonths(activity);
         Timeline_ModelList upcoming = Timeline_Helper.getUpcomingActivity(activity);
-        Timeline_ModelList overdue = Timeline_Helper.getOverdueActivity(
-            recordId,
-            parentSObjectType,
-            sObjectsToQuery
-        );
+        Timeline_ModelList overdue = Timeline_Helper.getOverdueActivity(recordId, parentSObjectType, sObjectsToQuery);
 
-        List<Timeline_ModelList> data = Timeline_Helper.addAllActivities(
-            upcoming,
-            overdue,
-            activityDivided
-        );
+        List<Timeline_ModelList> data = Timeline_Helper.addAllActivities(upcoming, overdue, activityDivided);
 
         return data;
     }

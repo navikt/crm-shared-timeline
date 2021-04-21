@@ -51,20 +51,13 @@ public with sharing class Timeline_Helper {
     public static Timeline_ModelList getUpcomingActivity(List<Timeline_Model> models) {
         List<Timeline_Model> data = new List<Timeline_Model>();
         for (Timeline_Model model : models) {
-            Datetime d = model.config.Timeline_Child__r.SObjectDateFieldIsDate__c
-                ? System.today()
-                : System.now();
+            Datetime d = model.config.Timeline_Child__r.SObjectDateFieldIsDate__c ? System.today() : System.now();
             if (model.record.dateValueDb >= d) {
                 data.add(model);
             }
         }
 
-        return new Timeline_ModelList(
-            Label.Timeline_Upcoming,
-            Label.Timeline_Upcoming,
-            data,
-            false
-        );
+        return new Timeline_ModelList(Label.Timeline_Upcoming, Label.Timeline_Upcoming, data, false);
     }
 
     public static Timeline_ModelList getOverdueActivity(
@@ -84,12 +77,7 @@ public with sharing class Timeline_Helper {
         data = getOwnerAndContactNames(data);
         data.sort();
 
-        return new Timeline_ModelList(
-            Label.Timeline_Overdue,
-            Label.Timeline_Overdue,
-            data,
-            true
-        );
+        return new Timeline_ModelList(Label.Timeline_Overdue, Label.Timeline_Overdue, data, true);
     }
 
     // --------------------------------------------------------------------------------- //
@@ -167,11 +155,7 @@ public with sharing class Timeline_Helper {
         if (moreRecordsToQuery && queryLimitsWillNotExceed) {
             Integer newAmount = getAmountToLoad(amountOfMonthsToLoad, iteration);
 
-            List<Timeline_Model> newActivities = Timeline_Helper.getActivity(
-                sObjectsToQuery,
-                recordId,
-                newAmount
-            );
+            List<Timeline_Model> newActivities = Timeline_Helper.getActivity(sObjectsToQuery, recordId, newAmount);
 
             return reloadUntilDataFetched(
                 sObjectsToQuery,
@@ -212,9 +196,7 @@ public with sharing class Timeline_Helper {
         Map<String, List<Timeline_Model>> modelsSeparatedByMonth = new Map<String, List<Timeline_Model>>();
 
         for (Timeline_Model model : data) {
-            Datetime d = model.config.Timeline_Child__r.SObjectDateFieldIsDate__c
-                ? System.today()
-                : System.now();
+            Datetime d = model.config.Timeline_Child__r.SObjectDateFieldIsDate__c ? System.today() : System.now();
 
             if (model.record.dateValueDb < d) {
                 String key = model.record.dateValueDb.month() + '-' + model.record.dateValueDb.year();
@@ -308,13 +290,9 @@ public with sharing class Timeline_Helper {
                     if (model.record.relatedUser != null) {
                         model.record.subtitle += IS_NORWEGIAN
                             ? ' ' +
-                              returnValueIfNotNull(
-                                  model.config.Timeline_Child__r.SubtitleRelatedUserPrepositionNor__c
-                              )
+                              returnValueIfNotNull(model.config.Timeline_Child__r.SubtitleRelatedUserPrepositionNor__c)
                             : ' ' +
-                              returnValueIfNotNull(
-                                  model.config.Timeline_Child__r.SubtitleRelatedUserPrepositionEng__c
-                              );
+                              returnValueIfNotNull(model.config.Timeline_Child__r.SubtitleRelatedUserPrepositionEng__c);
                     }
                 }
             } else if (model.record.sObjectKind == 'Task' && model.record.type == 'Call') {
@@ -367,9 +345,7 @@ public with sharing class Timeline_Helper {
         return data;
     }
 
-    public static Map<String, TimelineParent__mdt> getMapOfTimelineConfig(
-        List<TimelineParent__mdt> sObjectsToQuery
-    ) {
+    public static Map<String, TimelineParent__mdt> getMapOfTimelineConfig(List<TimelineParent__mdt> sObjectsToQuery) {
         Map<String, TimelineParent__mdt> sObjectsToQueryMap = new Map<String, TimelineParent__mdt>();
 
         for (TimelineParent__mdt mdt : sObjectsToQuery) {
@@ -405,15 +381,9 @@ public with sharing class Timeline_Helper {
         List<TimelineParent__mdt> sObjectsToUse = new List<TimelineParent__mdt>();
 
         for (TimelineParent__mdt mdt : sObjectsToQuery) {
-            if (
-                isCreateable &&
-                Timeline_Validator.sObjectIsCreateable(mdt.Timeline_Child__r.SObjectName__c)
-            ) {
+            if (isCreateable && Timeline_Validator.sObjectIsCreateable(mdt.Timeline_Child__r.SObjectName__c)) {
                 sObjectsToUse.add(mdt);
-            } else if (
-                !isCreateable &&
-                Timeline_Validator.sObjectIsAccessible(mdt.Timeline_Child__r.SObjectName__c)
-            ) {
+            } else if (!isCreateable && Timeline_Validator.sObjectIsAccessible(mdt.Timeline_Child__r.SObjectName__c)) {
                 sObjectsToUse.add(mdt);
             }
         }
@@ -430,8 +400,7 @@ public with sharing class Timeline_Helper {
 
         for (TimelineParent__mdt mdt : data) {
             mdt.Timeline_Child__r.CreateableObject_RecordType__c = recordTypes.get(
-                mdt.Timeline_Child__r.SObjectName__c +
-                mdt.Timeline_Child__r.CreateableObject_RecordType__c
+                mdt.Timeline_Child__r.SObjectName__c + mdt.Timeline_Child__r.CreateableObject_RecordType__c
             );
             if (IS_NORWEGIAN) {
                 mdt.Timeline_Child__r.CreateableObject_TextEnglish__c = mdt.Timeline_Child__r.CreateableObject_TextNorwegian__c;

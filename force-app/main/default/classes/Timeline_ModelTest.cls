@@ -16,19 +16,14 @@ private class Timeline_ModelTest {
         Task ta2 = new Task(WhatId = acc.Id, ActivityDate = t, Subject = 'test');
         insert ta2;
 
-        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(
-            'Account',
-            true,
-            null
-        );
+        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery('Account', true, null);
         List<String> query = Timeline_Queries.createSoqlQueries(sObjectsToQuery, acc.Id, 8);
         List<SObject> sObjects = Timeline_Queries.getSObjectsFromQueries(query);
         List<Timeline_Model> data = Timeline_Helper.createTimelineData(sObjectsToQuery, sObjects);
 
         System.assertEquals(3, data.size(), 'Three records added to account');
 
-        data = new Timeline_ModelList(Label.Timeline_Older, Label.Timeline_Older, data, true)
-            .models;
+        data = new Timeline_ModelList(Label.Timeline_Older, Label.Timeline_Older, data, true).models;
 
         System.assertEquals(ta.Id, data[0].record.recordId, 'The ID for the task should be in 1st in the list');
         System.assertEquals(ev.Id, data[1].record.recordId, 'The ID for the event should be in 2nd in the list');
@@ -51,24 +46,14 @@ private class Timeline_ModelTest {
         Task ta2 = new Task(WhatId = acc.Id, ActivityDate = t, Subject = 'test');
         insert ta2;
 
-        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(
-            'Account',
-            true,
-            null
-        );
+        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery('Account', true, null);
         List<String> query = Timeline_Queries.createSoqlQueries(sObjectsToQuery, acc.Id, 5);
         List<SObject> sObjects = Timeline_Queries.getSObjectsFromQueries(query);
         List<Timeline_Model> data = Timeline_Helper.createTimelineData(sObjectsToQuery, sObjects);
 
         System.assertEquals(3, data.size(), 'Three records added to account');
 
-        data = new Timeline_ModelList(
-                Label.Timeline_Upcoming,
-                Label.Timeline_Upcoming,
-                data,
-                false
-            )
-            .models;
+        data = new Timeline_ModelList(Label.Timeline_Upcoming, Label.Timeline_Upcoming, data, false).models;
 
         System.assertEquals(ta.Id, data[0].record.recordId, 'The ID for the task should be in 1st in the list');
         System.assertEquals(ev.Id, data[1].record.recordId, 'The ID for the event should be in 2nd in the list');
