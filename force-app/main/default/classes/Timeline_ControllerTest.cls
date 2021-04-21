@@ -15,12 +15,7 @@ private without sharing class Timeline_ControllerTest {
         insert ta;
 
         Test.StartTest();
-        List<Timeline_ModelList> wrapper = Timeline_Controller.getTimelineData(
-            acc.Id,
-            5,
-            3,
-            null
-        );
+        List<Timeline_ModelList> wrapper = Timeline_Controller.getTimelineData(acc.Id, 5, 3, null);
         Test.StopTest();
 
         System.assertEquals(1, wrapper.size(), 'one for upcoming');
@@ -40,12 +35,7 @@ private without sharing class Timeline_ControllerTest {
         insert ta;
 
         Test.StartTest();
-        List<Timeline_ModelList> wrapper = Timeline_Controller.getTimelineData(
-            acc.Id,
-            3,
-            3,
-            null
-        );
+        List<Timeline_ModelList> wrapper = Timeline_Controller.getTimelineData(acc.Id, 3, 3, null);
         Test.StopTest();
 
         System.assertEquals(1, wrapper.size(), 'one task');
@@ -72,12 +62,7 @@ private without sharing class Timeline_ControllerTest {
         insert ev;
 
         Test.StartTest();
-        List<Timeline_ModelList> wrapper = Timeline_Controller.getTimelineData(
-            acc.Id,
-            5,
-            3,
-            null
-        );
+        List<Timeline_ModelList> wrapper = Timeline_Controller.getTimelineData(acc.Id, 5, 3, null);
         Test.StopTest();
 
         System.assertEquals(1, wrapper.size(), 'One for upcoming');
@@ -97,12 +82,7 @@ private without sharing class Timeline_ControllerTest {
         insert ta;
 
         Test.StartTest();
-        List<Timeline_ModelList> wrapper = Timeline_Controller.getTimelineData(
-            acc.Id,
-            5,
-            3,
-            null
-        );
+        List<Timeline_ModelList> wrapper = Timeline_Controller.getTimelineData(acc.Id, 5, 3, null);
         Test.StopTest();
         System.assertEquals(2, wrapper.size(), 'One for this month and one for overdue, same activity');
 
@@ -129,12 +109,7 @@ private without sharing class Timeline_ControllerTest {
         insert ta2;
 
         Test.StartTest();
-        List<Timeline_ModelList> wrapper = Timeline_Controller.getTimelineData(
-            acc.Id,
-            5,
-            3,
-            null
-        );
+        List<Timeline_ModelList> wrapper = Timeline_Controller.getTimelineData(acc.Id, 5, 3, null);
         Test.StopTest();
         System.assertEquals(2, wrapper.size(), 'One for this month and one for overdue, same activity');
 
@@ -250,11 +225,7 @@ private without sharing class Timeline_ControllerTest {
         List<TimelineParent__mdt> sObjectType = Timeline_Controller.getTimelineObjects(acc.Id, null);
         Test.StopTest();
 
-        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(
-            'Account',
-            true,
-            null
-        );
+        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery('Account', true, null);
 
         System.assertEquals(sObjectsToQuery.size(), sObjectType.size(), 'Should be the same size of MDT objects');
     }
@@ -301,11 +272,7 @@ private without sharing class Timeline_ControllerTest {
 
         Id recordId = [SELECT Id FROM Account WHERE NAME = 'test' LIMIT 1].Id;
         String parentSObjectType = Timeline_Helper.getSOjectTypeFromRecordId(recordId);
-        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(
-            parentSObjectType,
-            false,
-            null
-        );
+        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(parentSObjectType, false, null);
 
         Test.StartTest();
         Integer results = Timeline_Controller.getTotalRecords(recordId, null);

@@ -7,11 +7,7 @@ private without sharing class Timeline_QueriesTest {
     @isTest
     private static void testGetSObjectsToQuery() {
         Test.StartTest();
-        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(
-            'Account',
-            false,
-            null
-        );
+        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery('Account', false, null);
         Test.StopTest();
 
         System.assert(sObjectsToQuery.size() >= 0, 'Should already be some mdt\'s for account as parent');
@@ -80,11 +76,7 @@ private without sharing class Timeline_QueriesTest {
         insert ta;
 
         String parentSObjectType = Timeline_Helper.getSOjectTypeFromRecordId(acc.Id);
-        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(
-            parentSObjectType,
-            false,
-            null
-        );
+        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(parentSObjectType, false, null);
         List<String> queries = Timeline_Queries.createSoqlQueries(sObjectsToQuery, acc.Id, 3);
 
         Test.StartTest();
@@ -100,9 +92,7 @@ private without sharing class Timeline_QueriesTest {
 
     @isTest
     private static void testGetOverdueQuery() {
-        List<TimelineParent__mdt> sObjectsToQuery = Timeline_QueriesHelperTest.queryMdt(
-            new List<String>{ 'Task' }
-        );
+        List<TimelineParent__mdt> sObjectsToQuery = Timeline_QueriesHelperTest.queryMdt(new List<String>{ 'Task' });
         Id recordId = Timeline_TestDataFactory.createAccount('test').Id;
 
         Test.StartTest();
@@ -139,11 +129,7 @@ private without sharing class Timeline_QueriesTest {
 
         Id recordId = [SELECT Id FROM Account WHERE NAME = 'test' LIMIT 1].Id;
         String parentSObjectType = Timeline_Helper.getSOjectTypeFromRecordId(recordId);
-        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(
-            parentSObjectType,
-            false,
-            null
-        );
+        List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(parentSObjectType, false, null);
 
         Test.StartTest();
         Integer totalRecords = Timeline_Queries.getTotalRecords(sObjectsToQuery, recordId);

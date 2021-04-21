@@ -73,15 +73,10 @@ public with sharing class Timeline_QueriesHelper {
     // ------------------ getQueryFields ----------------- //
     // --------------------------------------------------- //
 
-    public static String getQueryFields(
-        List<TimelineParent__mdt> sObjectsToQuery,
-        TimelineParent__mdt currentObject
-    ) {
+    public static String getQueryFields(List<TimelineParent__mdt> sObjectsToQuery, TimelineParent__mdt currentObject) {
         Set<String> fieldsToQuery = new Set<String>{ 'Id' };
         for (TimelineParent__mdt mdt : sObjectsToQuery) {
-            if (
-                mdt.Timeline_Child__r.SObjectName__c == currentObject.Timeline_Child__r.SObjectName__c
-            ) {
+            if (mdt.Timeline_Child__r.SObjectName__c == currentObject.Timeline_Child__r.SObjectName__c) {
                 for (String mdtField : CHILD_FIELDS_TO_QUERY) {
                     String field = '';
                     if (mdtField.contains('__r')) {
