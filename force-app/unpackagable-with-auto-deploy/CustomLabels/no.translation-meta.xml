@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Translations xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customLabels>
+        <label>nb-no</label>
+        <name>Timeline_MomentJsLanguage</name>
+    </customLabels>
+    <customLabels>
+        <label>Ny</label>
+        <name>Timeline_New</name>
+    </customLabels>
+    <customLabels>
+        <label>I dag og kommende</label>
+        <name>Timeline_Upcoming</name>
+    </customLabels>
+    <customLabels>
+        <label>Forfalt</label>
+        <name>Timeline_Overdue</name>
+    </customLabels>
+    <customLabels>
+        <label>Eldre</label>
+        <name>Timeline_Older</name>
+    </customLabels>
+    <customLabels>
+        <label>Last flere</label>
+        <name>Timeline_LoadMore</name>
+    </customLabels>
+    <customLabels>
+        <label>Du har nådd bunnen 😱</label>
+        <name>Timeline_AllDataLoaded</name>
+    </customLabels>
+    <customLabels>
+        <label>Se flere</label>
+        <name>Timeline_ViewMore</name>
+    </customLabels>
+    <customLabels>
+        <label>Se alle</label>
+        <name>Timeline_ViewAll</name>
+    </customLabels>
+    <customLabels>
+        <label>Du</label>
+        <name>Timeline_You</name>
+    </customLabels>
+    <customLabels>
+        <label>Noen</label>
+        <name>Timeline_Unknown</name>
+    </customLabels>
+    <customLabels>
+        <label>En Administrator har enten ikke konfigurert denne komponent eller så har du ikke tilgang til denne type data. Kontakt din Administrator.</label>
+        <name>Timeline_NotConfugred</name>
+    </customLabels>
+    <customLabels>
+        <label>Skjul</label>
+        <name>Timeline_Collapse</name>
+    </customLabels>
+    <customLabels>
+        <label>Utvid</label>
+        <name>Timeline_Expand</name>
+    </customLabels>
+    <customLabels>
+        <label>Aktiviteter</label>
+        <name>Timeline_Activities</name>
+    </customLabels>
+    <customLabels>
+        <label>Tomt!</label>
+        <name>Timeline_EmptyTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>Det ser ikke ut til å være noen relaterte objekter her.</label>
+        <name>Timeline_EmptySubtitle</name>
+    </customLabels>
+    <customLabels>
+        <label>Feil!</label>
+        <name>Timeline_ErrorTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>Her er det ingenting!</label>
+        <name>Timeline_EmptyGroup</name>
+    </customLabels>
+    <customLabels>
+        <label>i dag</label>
+        <name>Timeline_Today</name>
+    </customLabels>
+    <customLabels>
+        <label>i morgen</label>
+        <name>Timeline_Tomorrow</name>
+    </customLabels>
+    <customLabels>
+        <label>i går</label>
+        <name>Timeline_Yesterday</name>
+    </customLabels>
+    <customLabels>
+        <label>forrige</label>
+        <name>Timeline_Last</name>
+    </customLabels>
+</Translations>
