@@ -48,15 +48,9 @@ export default class Timeline extends LightningElement {
     collapseIcon = 'utility:justify_text';
     collapseText = labels.collapse;
 
+    isRendered = false;
+
     connectedCallback() {
-        if (!this.recordId) {
-            this.recordId = '0013N00000A2TC6QAN'; // ! dev env
-        }
-
-        Promise.all([loadScript(this, MOMENT_JS)]).then(() => {
-            moment.locale(this.labels.MomentJsLanguage);
-        });
-
         this.getTotalRecords();
 
         if (LANG === 'no' && this.headerTitleNorwegian !== undefined) {
@@ -65,6 +59,16 @@ export default class Timeline extends LightningElement {
             this.header = this.headerTitleEnglish;
         } else {
             this.header = this.labels.activities;
+        }
+    }
+
+    renderedCallback() {
+        if (!this.isRendered) {
+            this.isRendered = true;
+
+            loadScript(this, MOMENT_JS).then(() => {
+                moment.locale(this.labels.MomentJsLanguage);
+            });
         }
     }
 
