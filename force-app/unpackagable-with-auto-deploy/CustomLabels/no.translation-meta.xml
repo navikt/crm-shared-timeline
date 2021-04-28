@@ -65,7 +65,7 @@
         <name>Timeline_EmptyTitle</name>
     </customLabels>
     <customLabels>
-        <label>Det ser ikke ut til å være noen relaterte objekter her.</label>
+        <label>Ingen registrerte aktiviteter. Klikk “Ny” for å opprette en aktivitet.</label>
         <name>Timeline_EmptySubtitle</name>
     </customLabels>
     <customLabels>
