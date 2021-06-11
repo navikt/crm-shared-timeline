@@ -25,6 +25,8 @@ global with sharing class Timeline_Model implements Comparable {
         public String type;
         @AuraEnabled
         public String title;
+        @AuraEnabled
+        public List<String> expandedFields;
 
         @AuraEnabled
         public Datetime dateValueDb;
@@ -77,6 +79,9 @@ global with sharing class Timeline_Model implements Comparable {
         record.recordId = sObj.Id;
 
         record.sObjectKind = config.Timeline_Child__r.SObjectName__c;
+        record.expandedFields = String.isNotBlank(config.Timeline_Child__r.ExpandedFieldsToDisplay__c)
+            ? config.Timeline_Child__r.ExpandedFieldsToDisplay__c.deleteWhiteSpace().split(',')
+            : new List<String>();
         record.type = config.Timeline_Child__r.SObjectTypeValue__c;
         record.isDate = getIsDate(config, sObj, record);
         record.dateValueDb = getDateValue(config, sObj, record);

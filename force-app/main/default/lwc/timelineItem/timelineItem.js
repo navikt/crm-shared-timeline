@@ -18,6 +18,17 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
         }
     }
 
+    get expandedFieldsToDisplay() {
+        let fieldArray = [];
+        let fieldCounter = 0;
+        if (this.row && this.row.record.expandedFields && !this.row.record.expandedFields.length !== 0) {
+            this.row.record.expandedFields.forEach((field) => {
+                fieldArray.push({ id: fieldCounter, apiName: field });
+            });
+        }
+        return fieldArray;
+    }
+
     get getDateFormat() {
         // TODO mouseover to get relative fromNow()
 
@@ -51,6 +62,10 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
         return this.row.record.sObjectKind === 'Task';
     }
 
+    get isExpandable() {
+        return this.expandedFieldsToDisplay.length > 0 ? true : false;
+    }
+
     openRecord() {
         this[NavigationMixin.Navigate]({
             type: 'standard__recordPage',
@@ -60,6 +75,10 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
                 actionName: 'view'
             }
         });
+    }
+
+    toggleExpand() {
+        this.expanded = !this.expanded;
     }
 
     toggleDetailSection() {
