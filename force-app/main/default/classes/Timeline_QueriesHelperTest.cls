@@ -7,45 +7,37 @@ public without sharing class Timeline_QueriesHelperTest {
     @isTest
     private static void testGetMetadataQuery_creatableWithAppName() {
         Test.StartTest();
-        String actual = Timeline_QueriesHelper.getMetadataQuery(true, 'test');
+        String mdtQuery = Timeline_QueriesHelper.getMetadataQuery(true, 'test');
         Test.StopTest();
 
-        String expected = 'SELECT Id, SObjectAssigneeId__c, SObjectParent__c, SObjectRelationshipField__c, CreateableObject_NoOverride__c, Timeline_Child__r.SLDS_Timeline_Color__c, Timeline_Child__r.SLDS_Icon__c, Timeline_Child__r.SLDS_Dropdown_Icon__c,  Timeline_Child__r.CreateableObject_TextEnglish__c, Timeline_Child__r.CreateableObject_TextNorwegian__c, Timeline_Child__r.CreateableObject_RecordType__c,  Timeline_Child__r.SObjectDateField__c, Timeline_Child__r.SObjectDateFieldIsDate__c,  Timeline_Child__r.SObjectTypeField__c, Timeline_Child__r.SObjectTypeValue__c,  Timeline_Child__r.SObjectTitle__c, Timeline_Child__r.SObjectName__c,  Timeline_Child__r.SObjectRelatedUserId__c, IsMacro__c, Timeline_Child__r.CreateableObject_Field1__c, Timeline_Child__r.CreateableObject_Value1__c,  Timeline_Child__r.CreateableObject_Field2__c, Timeline_Child__r.CreateableObject_Value2__c,  Timeline_Child__r.CreateableObject_Field3__c, Timeline_Child__r.CreateableObject_Value3__c,  Timeline_Child__r.SubtitlePastEnglish__c, Timeline_Child__r.SubtitlePastNorwegian__c,  Timeline_Child__r.SubtitleFutureEnglish__c, Timeline_Child__r.SubtitleFutureNorwegian__c,  Timeline_Child__r.SubtitleRelatedUserPrepositionEng__c, Timeline_Child__r.SubtitleRelatedUserPrepositionNor__c FROM TimelineParent__mdt WHERE SObjectParent__c = : parentSObjectType AND CreateableObject_Checkbox__c = true AND ConfigId__c = : appName ORDER BY IsMacro__c, Timeline_Child__c';
-
-        System.assertEquals(expected, actual);
+        System.assert(mdtQuery.contains('ConfigId__c = : appName'));
     }
 
     @isTest
     private static void testGetMetadataQuery_creatableWithoutAppName() {
         Test.StartTest();
-        String actual = Timeline_QueriesHelper.getMetadataQuery(true, null);
+        String mdtQuery = Timeline_QueriesHelper.getMetadataQuery(true, null);
         Test.StopTest();
 
-        String expected = 'SELECT Id, SObjectAssigneeId__c, SObjectParent__c, SObjectRelationshipField__c, CreateableObject_NoOverride__c, Timeline_Child__r.SLDS_Timeline_Color__c, Timeline_Child__r.SLDS_Icon__c, Timeline_Child__r.SLDS_Dropdown_Icon__c,  Timeline_Child__r.CreateableObject_TextEnglish__c, Timeline_Child__r.CreateableObject_TextNorwegian__c, Timeline_Child__r.CreateableObject_RecordType__c,  Timeline_Child__r.SObjectDateField__c, Timeline_Child__r.SObjectDateFieldIsDate__c,  Timeline_Child__r.SObjectTypeField__c, Timeline_Child__r.SObjectTypeValue__c,  Timeline_Child__r.SObjectTitle__c, Timeline_Child__r.SObjectName__c,  Timeline_Child__r.SObjectRelatedUserId__c, IsMacro__c, Timeline_Child__r.CreateableObject_Field1__c, Timeline_Child__r.CreateableObject_Value1__c,  Timeline_Child__r.CreateableObject_Field2__c, Timeline_Child__r.CreateableObject_Value2__c,  Timeline_Child__r.CreateableObject_Field3__c, Timeline_Child__r.CreateableObject_Value3__c,  Timeline_Child__r.SubtitlePastEnglish__c, Timeline_Child__r.SubtitlePastNorwegian__c,  Timeline_Child__r.SubtitleFutureEnglish__c, Timeline_Child__r.SubtitleFutureNorwegian__c,  Timeline_Child__r.SubtitleRelatedUserPrepositionEng__c, Timeline_Child__r.SubtitleRelatedUserPrepositionNor__c FROM TimelineParent__mdt WHERE SObjectParent__c = : parentSObjectType AND CreateableObject_Checkbox__c = true AND ConfigId__c = null ORDER BY IsMacro__c, Timeline_Child__c';
-
-        System.assertEquals(expected, actual);
+        System.assert(mdtQuery.contains('ConfigId__c = null'));
     }
 
     @isTest
     private static void testGetMetadataQuery_nonCreatableWithAppName() {
         Test.StartTest();
-        String actual = Timeline_QueriesHelper.getMetadataQuery(false, 'test');
+        String mdtQuery = Timeline_QueriesHelper.getMetadataQuery(false, 'test');
         Test.StopTest();
 
-        String expected = 'SELECT Id, SObjectAssigneeId__c, SObjectParent__c, SObjectRelationshipField__c, CreateableObject_NoOverride__c, Timeline_Child__r.SLDS_Timeline_Color__c, Timeline_Child__r.SLDS_Icon__c, Timeline_Child__r.SLDS_Dropdown_Icon__c,  Timeline_Child__r.CreateableObject_TextEnglish__c, Timeline_Child__r.CreateableObject_TextNorwegian__c, Timeline_Child__r.CreateableObject_RecordType__c,  Timeline_Child__r.SObjectDateField__c, Timeline_Child__r.SObjectDateFieldIsDate__c,  Timeline_Child__r.SObjectTypeField__c, Timeline_Child__r.SObjectTypeValue__c,  Timeline_Child__r.SObjectTitle__c, Timeline_Child__r.SObjectName__c,  Timeline_Child__r.SObjectRelatedUserId__c, IsMacro__c, Timeline_Child__r.CreateableObject_Field1__c, Timeline_Child__r.CreateableObject_Value1__c,  Timeline_Child__r.CreateableObject_Field2__c, Timeline_Child__r.CreateableObject_Value2__c,  Timeline_Child__r.CreateableObject_Field3__c, Timeline_Child__r.CreateableObject_Value3__c,  Timeline_Child__r.SubtitlePastEnglish__c, Timeline_Child__r.SubtitlePastNorwegian__c,  Timeline_Child__r.SubtitleFutureEnglish__c, Timeline_Child__r.SubtitleFutureNorwegian__c,  Timeline_Child__r.SubtitleRelatedUserPrepositionEng__c, Timeline_Child__r.SubtitleRelatedUserPrepositionNor__c FROM TimelineParent__mdt WHERE SObjectParent__c = : parentSObjectType AND IsActive__c = true AND ConfigId__c = : appName ORDER BY IsMacro__c, Timeline_Child__c';
-
-        System.assertEquals(expected, actual);
+        System.assert(mdtQuery.contains('ConfigId__c = : appName'));
     }
 
     @isTest
     private static void testGetMetadataQuery_nonCreatableWithoutAppName() {
         Test.StartTest();
-        String actual = Timeline_QueriesHelper.getMetadataQuery(false, null);
+        String mdtQuery = Timeline_QueriesHelper.getMetadataQuery(false, null);
         Test.StopTest();
 
-        String expected = 'SELECT Id, SObjectAssigneeId__c, SObjectParent__c, SObjectRelationshipField__c, CreateableObject_NoOverride__c, Timeline_Child__r.SLDS_Timeline_Color__c, Timeline_Child__r.SLDS_Icon__c, Timeline_Child__r.SLDS_Dropdown_Icon__c,  Timeline_Child__r.CreateableObject_TextEnglish__c, Timeline_Child__r.CreateableObject_TextNorwegian__c, Timeline_Child__r.CreateableObject_RecordType__c,  Timeline_Child__r.SObjectDateField__c, Timeline_Child__r.SObjectDateFieldIsDate__c,  Timeline_Child__r.SObjectTypeField__c, Timeline_Child__r.SObjectTypeValue__c,  Timeline_Child__r.SObjectTitle__c, Timeline_Child__r.SObjectName__c,  Timeline_Child__r.SObjectRelatedUserId__c, IsMacro__c, Timeline_Child__r.CreateableObject_Field1__c, Timeline_Child__r.CreateableObject_Value1__c,  Timeline_Child__r.CreateableObject_Field2__c, Timeline_Child__r.CreateableObject_Value2__c,  Timeline_Child__r.CreateableObject_Field3__c, Timeline_Child__r.CreateableObject_Value3__c,  Timeline_Child__r.SubtitlePastEnglish__c, Timeline_Child__r.SubtitlePastNorwegian__c,  Timeline_Child__r.SubtitleFutureEnglish__c, Timeline_Child__r.SubtitleFutureNorwegian__c,  Timeline_Child__r.SubtitleRelatedUserPrepositionEng__c, Timeline_Child__r.SubtitleRelatedUserPrepositionNor__c FROM TimelineParent__mdt WHERE SObjectParent__c = : parentSObjectType AND IsActive__c = true AND ConfigId__c = null ORDER BY IsMacro__c, Timeline_Child__c';
-
-        System.assertEquals(expected, actual);
+        System.assert(mdtQuery.contains('ConfigId__c = null'));
     }
 
     // --------------------------------------------------- //
