@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>ExpandedFieldsToDisplay__c</fullName>
-    <description>Comma separated list og field API names to display from the record.</description>
+    <description>Comma separated list of field API names to display from the record.</description>
     <externalId>false</externalId>
     <fieldManageability>DeveloperControlled</fieldManageability>
-    <inlineHelpText>Comma separated list og field API names to display from the record.</inlineHelpText>
+    <inlineHelpText>Comma separated list of field API names to display from the record.</inlineHelpText>
     <label>Expanded Fields To Display</label>
     <length>255</length>
     <required>false</required>
