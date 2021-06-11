@@ -10,6 +10,7 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__RecordPage">
+            <property name="timelineParentField" type="String" label="Parent record ID for the timeline" default="Id" description="API name of the field to use as parent record id" />
             <property name="headerTitleNorwegian" type="String" label="Title (Norwegian)" default="Aktiviteter" />
             <property name="headerTitleEnglish" type="String" label="Title (English)" default="Activities" />
             <property name="configId" type="String" label="Custom metadata ID" description="Use same as ConfigId__c from TimelineParent__mdt to get correct config" />
