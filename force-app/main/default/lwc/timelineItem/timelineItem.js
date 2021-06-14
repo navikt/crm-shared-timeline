@@ -10,6 +10,7 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
     @api period;
 
     expanded = false;
+    loadingDetails = false;
     timelineColor = 'slds-timeline__item_expandable';
 
     connectedCallback() {
@@ -24,6 +25,7 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
         if (this.row && this.row.record.expandedFields && !this.row.record.expandedFields.length !== 0) {
             this.row.record.expandedFields.forEach((field) => {
                 fieldArray.push({ id: fieldCounter, apiName: field });
+                fieldCounter++;
             });
         }
         return fieldArray;
@@ -66,7 +68,8 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
         return this.expandedFieldsToDisplay.length > 0 ? true : false;
     }
 
-    openRecord() {
+    openRecord(event) {
+        event.stopPropagation(); //Prevent this click from propagating into
         this[NavigationMixin.Navigate]({
             type: 'standard__recordPage',
             attributes: {
@@ -79,6 +82,11 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
 
     toggleExpand() {
         this.expanded = !this.expanded;
+        this.loadingDetails = this.expanded;
+    }
+
+    detailsLoaded() {
+        this.loadingDetails = false;
     }
 
     toggleDetailSection() {
@@ -94,6 +102,10 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
                 actionName: 'view'
             }
         });
+    }
+
+    get expandIcon() {
+        return this.expanded === true ? 'utility:chevrondown' : 'utility:chevronright';
     }
 
     get isAssigneeAUser() {
