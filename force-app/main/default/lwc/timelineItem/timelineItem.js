@@ -10,12 +10,25 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
     @api period;
 
     expanded = false;
+    loadingDetails = false;
     timelineColor = 'slds-timeline__item_expandable';
 
     connectedCallback() {
         if (this.row.theme.sldsTimelineItemColor != null) {
             this.timelineColor = '	background-color: #' + this.row.theme.sldsTimelineItemColor + ';';
         }
+    }
+
+    get expandedFieldsToDisplay() {
+        let fieldArray = [];
+        let fieldCounter = 0;
+        if (this.row && this.row.record.expandedFields && !this.row.record.expandedFields.length !== 0) {
+            this.row.record.expandedFields.forEach((field) => {
+                fieldArray.push({ id: fieldCounter, apiName: field });
+                fieldCounter++;
+            });
+        }
+        return fieldArray;
     }
 
     get getDateFormat() {
@@ -51,7 +64,12 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
         return this.row.record.sObjectKind === 'Task';
     }
 
-    openRecord() {
+    get isExpandable() {
+        return this.expandedFieldsToDisplay.length > 0 ? true : false;
+    }
+
+    openRecord(event) {
+        event.stopPropagation(); //Prevent this click from propagating into
         this[NavigationMixin.Navigate]({
             type: 'standard__recordPage',
             attributes: {
@@ -60,6 +78,15 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
                 actionName: 'view'
             }
         });
+    }
+
+    toggleExpand() {
+        this.expanded = !this.expanded;
+        this.loadingDetails = this.expanded;
+    }
+
+    detailsLoaded() {
+        this.loadingDetails = false;
     }
 
     toggleDetailSection() {
@@ -75,6 +102,10 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
                 actionName: 'view'
             }
         });
+    }
+
+    get expandIcon() {
+        return this.expanded === true ? 'utility:chevrondown' : 'utility:chevronright';
     }
 
     get isAssigneeAUser() {

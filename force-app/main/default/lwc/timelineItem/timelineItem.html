@@ -1,7 +1,5 @@
 <template>
     <div if:true={showRow}>
-        <!-- ! RE-ENABLE IF ONLY IT SHOULD BE USED TO ACTUALLY QUERY -->
-        <!-- <lightning-record-view-form record-id={recordId} object-api-name={row.record.sObjectKind}> -->
         <li class="row">
             <span class="slds-assistive-text">{row.record.sObjectKind}</span>
             <div class="slds-media">
@@ -9,11 +7,22 @@
                     <div class="cell cell-left">
                         <!-- ICON & CHEVRON -->
                         <div class="container">
-                            <lightning-icon class="cell-icon" size="small" icon-name={row.theme.icon}> </lightning-icon>
+                            <lightning-layout data-expandable={isExpandable}>
+                                <lightning-icon
+                                    if:true={isExpandable}
+                                    onclick={toggleExpand}
+                                    class="cell-icon slds-text-link_reset"
+                                    size="x-small"
+                                    icon-name={expandIcon}
+                                >
+                                </lightning-icon>
+                                <lightning-icon class="cell-icon" size="small" icon-name={row.theme.icon}>
+                                </lightning-icon>
+                            </lightning-layout>
                             <div class="stripe" style={timelineColor}></div>
                         </div>
                     </div>
-                    <div class="cell cell-right">
+                    <div onclick={toggleExpand} class="cell cell-right">
                         <div class="slds-media__body">
                             <div class="slds-grid slds-grid_align-spread slds-timeline__trigger">
                                 <div
@@ -80,20 +89,33 @@
 
                             <div
                                 if:true={expanded}
-                                class="slds-box slds-theme_shade slds-m-top_x-small slds-m-horizontal_xx-small slds-p-around_medium"
+                                class="slds-box slds-theme_shade slds-is-relative slds-m-top_x-small slds-m-horizontal_xx-small slds-p-around_medium"
                             >
-                                <!-- <template for:each={expandedFieldsToDisplay} for:item="fieldToDisplay">
-								<lightning-output-field key={fieldToDisplay.id} field-name={fieldToDisplay.apiName}>
-								</lightning-output-field>
-							</template> -->
-                                <p>test</p>
+                                <lightning-spinner
+                                    if:true={loadingDetails}
+                                    size="small"
+                                    variant="brand"
+                                    alternative-text="Loading details"
+                                ></lightning-spinner>
+                                <!-- ! Displays expand information useing lightning record view form. Does not support event and task object -->
+                                <lightning-record-view-form
+                                    record-id={row.record.recordId}
+                                    object-api-name={row.record.sObjectKind}
+                                    onload={detailsLoaded}
+                                >
+                                    <template for:each={expandedFieldsToDisplay} for:item="fieldToDisplay">
+                                        <lightning-output-field
+                                            key={fieldToDisplay.id}
+                                            field-name={fieldToDisplay.apiName}
+                                        >
+                                        </lightning-output-field>
+                                    </template>
+                                </lightning-record-view-form>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </li>
-        <!-- ! RE-ENABLE IF ONLY IT SHOULD BE USED TO ACTUALLY QUERY -->
-        <!-- </lightning-record-view-form> -->
     </div>
 </template>

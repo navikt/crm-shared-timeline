@@ -2,6 +2,7 @@ import { LightningElement, track, api, wire } from 'lwc';
 import { loadScript } from 'lightning/platformResourceLoader';
 import { refreshApex } from '@salesforce/apex';
 import LANG from '@salesforce/i18n/lang';
+import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 
 import MOMENT_JS from '@salesforce/resourceUrl/moment';
 import getTimelineData from '@salesforce/apex/Timeline_Controller.getTimelineData';
@@ -13,7 +14,11 @@ export default class Timeline extends LightningElement {
     @api headerIcon = 'custom:custom18';
     @api headerTitleNorwegian;
     @api headerTitleEnglish;
+    @api objectApiName;
     @api recordId;
+    @api recordWireFields;
+    @api parentRecordId;
+    @api timelineParentField = 'Id'; //Determine which field to use ase the timeline parent record id
 
     @api amountOfMonths = 3;
     @api amountOfMonthsToLoad = 3;
@@ -51,6 +56,8 @@ export default class Timeline extends LightningElement {
     isRendered = false;
 
     connectedCallback() {
+        //getRecord requires field in array
+        this.recordWireFields = [this.objectApiName + '.' + this.timelineParentField];
         this.getTotalRecords();
 
         if (LANG === 'no' && this.headerTitleNorwegian !== undefined) {
@@ -72,8 +79,20 @@ export default class Timeline extends LightningElement {
         }
     }
 
-    @wire(getTimelineData, {
+    @wire(getRecord, {
         recordId: '$recordId',
+        fields: '$recordWireFields'
+    })
+    deWireRecord({ data, error }) {
+        if (data) {
+            this.parentRecordId = getFieldValue(data, this.recordWireFields[0]);
+        } else if (error) {
+            //Something went terribly wrong
+        }
+    }
+
+    @wire(getTimelineData, {
+        recordId: '$parentRecordId',
         amountOfMonths: '$amountOfMonths',
         amountOfMonthsToLoad: '$amountOfMonthsToLoad',
         configId: '$configId'
