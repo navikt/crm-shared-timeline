@@ -226,7 +226,7 @@ public with sharing class Timeline_Helper {
     ) {
         List<Timeline_ModelList> data = new List<Timeline_ModelList>();
 
-        if (overdue.models != null) {
+        if (overdue != null && overdue.models != null) {
             if (overdue.models.size() > 0) {
                 data.add(overdue);
             }
