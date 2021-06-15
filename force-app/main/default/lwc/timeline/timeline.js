@@ -58,7 +58,6 @@ export default class Timeline extends LightningElement {
     connectedCallback() {
         //getRecord requires field in array
         this.recordWireFields = [this.objectApiName + '.' + this.timelineParentField];
-        this.getTotalRecords();
 
         if (LANG === 'no' && this.headerTitleNorwegian !== undefined) {
             this.header = this.headerTitleNorwegian;
@@ -99,8 +98,14 @@ export default class Timeline extends LightningElement {
     })
     deWire(result) {
         this.deWireResult = result;
+        if (this.isRendered === true) {
+            //Handling data refresh if wire is triggered by for example an update action that can result in new records in the timeline
+            this.refreshData();
+        }
 
         if (result.data) {
+            //Moved get total records here as it is now dependent on the parentRecordId which is not set until above wire runs
+            this.getTotalRecords();
             this.setData(result.data);
             this.setParams(this.data);
             this.setAccordions(this.data);
@@ -189,7 +194,7 @@ export default class Timeline extends LightningElement {
 
     getTotalRecords() {
         getTotalRecords({
-            recordId: this.recordId,
+            recordId: this.parentRecordId,
             configId: this.configId
         }).then((result) => {
             this.maxRecords = result;
