@@ -267,9 +267,8 @@ export default class Timeline extends LightningElement {
     // ----------------------------------- //
 
     get hasMoreDataToLoad() {
-        // maxRecords = 0 => apex call failed, then always show the button
         // recordsLoaded is less than maxRecords, means there's more records to load
-        return this.maxRecords == 0 || this.recordsLoaded < this.maxRecords;
+        return this.recordsLoaded < this.maxRecords;
     }
 
     get showCreateRecords() {
