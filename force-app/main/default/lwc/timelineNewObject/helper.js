@@ -1,7 +1,6 @@
 export { getFieldValues };
 
 const getFieldValues = (row, recordId) => {
-    console.log('row: ' + JSON.stringify(row));
     let fields = new Array();
 
     let relationship = getKeyAndValueIfValid(row.SObjectRelationshipField__c, recordId);

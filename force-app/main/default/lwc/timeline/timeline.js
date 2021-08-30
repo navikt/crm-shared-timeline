@@ -3,10 +3,14 @@ import { loadScript } from 'lightning/platformResourceLoader';
 import { refreshApex } from '@salesforce/apex';
 import LANG from '@salesforce/i18n/lang';
 import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
+import userId from '@salesforce/user/Id';
+import { subscribe } from 'lightning/empApi';
 
 import MOMENT_JS from '@salesforce/resourceUrl/moment';
 import getTimelineData from '@salesforce/apex/Timeline_Controller.getTimelineData';
 import getTotalRecords from '@salesforce/apex/Timeline_Controller.getTotalRecords';
+import getTimelineObjects from '@salesforce/apex/Timeline_Controller.getTimelineObjects';
+
 import labels from './labels';
 
 export default class Timeline extends LightningElement {
@@ -223,6 +227,27 @@ export default class Timeline extends LightningElement {
         } else {
             this.errorMsg = JSON.stringify(error);
         }
+    }
+
+    // used to listen to new records, to automatically update timeline with new records
+    // --------------------------------------------------------------------------------
+
+    @wire(getTimelineObjects, { recordId: '$parentRecordId', configId: '$configId' })
+    deWireObjects(result) {
+        if (result.data) {
+            result.data.forEach((obj) => {
+                if (obj.Timeline_Child__r.AutomaticRefresh__c) {
+                    this.initSubscription(obj.Timeline_Child__r.AutomaticRefresh_PushTopicName__c);
+                }
+            });
+        }
+    }
+
+    initSubscription(topicName) {
+        const messageCallback = function (response) {
+            this.refreshData();
+        };
+        subscribe('/topic/' + topicName + '?CreatedBy=' + userId, -1, messageCallback.bind(this));
     }
 
     // ----------------------------------- //
