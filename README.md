@@ -18,6 +18,16 @@ You can easily configure which objects to be visible in a timeline, and you can 
 | :-------------------: | :------------------: |
 | ![](/.img/parent.png) | ![](/.img/child.png) |
 
+### Automatic Refresh on Record Create
+
+You'll need to create a push topic for every SObject. Specify the push topic name in the Child Config. Create a push topic by running the following code (must also be done in production):
+
+```java
+String sobjectName = 'SOBJECT';
+
+insert new PushTopic(Name = 'ACITVITY_TIMELINE_' + sobjectName, Query = 'SELECT Id FROM ' + sobjectName, NotifyForOperationCreate = true, NotifyForFields = 'All', ApiVersion = 52.0);
+```
+
 ## Installation
 
 1. Install [npm](https://nodejs.org/en/download/)
