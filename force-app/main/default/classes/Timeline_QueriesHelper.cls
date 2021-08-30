@@ -28,7 +28,8 @@ public with sharing class Timeline_QueriesHelper {
             'Timeline_Child__r.CreateableObject_Field3__c, Timeline_Child__r.CreateableObject_Value3__c,  ' +
             'Timeline_Child__r.SubtitlePastEnglish__c, Timeline_Child__r.SubtitlePastNorwegian__c,  ' +
             'Timeline_Child__r.SubtitleFutureEnglish__c, Timeline_Child__r.SubtitleFutureNorwegian__c,  ' +
-            'Timeline_Child__r.SubtitleRelatedUserPrepositionEng__c, Timeline_Child__r.SubtitleRelatedUserPrepositionNor__c ' +
+            'Timeline_Child__r.SubtitleRelatedUserPrepositionEng__c, Timeline_Child__r.SubtitleRelatedUserPrepositionNor__c, ' +
+            'Timeline_Child__r.AutomaticRefresh__c, Timeline_Child__r.AutomaticRefresh_PushTopicName__c ' +
             'FROM TimelineParent__mdt ' +
             'WHERE SObjectParent__c = : parentSObjectType';
 
