@@ -6,7 +6,7 @@
     <fieldManageability>DeveloperControlled</fieldManageability>
     <inlineHelpText>Add the push topic name given, so that the Timeline component subscribes to that push topic for all new records the user created (to refresh).</inlineHelpText>
     <label>Automatic Refresh - Push Topic Name</label>
-    <length>255</length>
+    <length>25</length>
     <required>false</required>
     <type>Text</type>
     <unique>false</unique>
