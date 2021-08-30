@@ -25,6 +25,17 @@ private without sharing class Timeline_ControllerTest {
     }
 
     @isTest
+    private static void testGetTimelineData_NoRelatedRecords() {
+        Account acc = Timeline_TestDataFactory.createAccount('test');
+
+        Test.StartTest();
+        List<Timeline_ModelList> wrapper = Timeline_Controller.getTimelineData(acc.Id, 5, 3, null);
+        Test.StopTest();
+
+        System.assertEquals(0, wrapper.size(), 'zero for upcoming');
+    }
+
+    @isTest
     private static void testGetTimelineData_retryUntilDataFound() {
         Account acc = Timeline_TestDataFactory.createAccount('test');
         Contact con = new Contact(LastName = 'Test');
