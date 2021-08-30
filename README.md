@@ -25,7 +25,7 @@ You'll need to create a push topic for every SObject. Specify the push topic nam
 ```java
 String sobjectName = 'SOBJECT';
 
-insert new PushTopic(Name = 'ACITVITY_TIMELINE_' + sobjectName, Query = 'SELECT Id FROM ' + sobjectName, NotifyForOperationCreate = true, NotifyForFields = 'All', ApiVersion = 52.0);
+insert new PushTopic(Name = 'TIMELINE_' + sobjectName, Query = 'SELECT Id FROM ' + sobjectName, NotifyForOperationCreate = true, NotifyForFields = 'All', ApiVersion = 52.0);
 ```
 
 ## Installation

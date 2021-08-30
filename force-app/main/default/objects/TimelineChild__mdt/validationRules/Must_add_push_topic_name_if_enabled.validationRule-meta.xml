@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Must_add_push_topic_name_if_enabled</fullName>
+    <active>true</active>
+    <errorConditionFormula>AutomaticRefresh__c &amp;&amp; ISBLANK( AutomaticRefresh_PushTopicName__c )</errorConditionFormula>
+    <errorDisplayField>AutomaticRefresh_PushTopicName__c</errorDisplayField>
+    <errorMessage>Must add a push topic name if automatic refresh is enabled.</errorMessage>
+</ValidationRule>
