@@ -45,10 +45,19 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
                           lastWeek: '[' + this.labels.last + '] dddd',
                           sameElse: 'DD/MM/YYYY'
                       }
-                    : null;
+                    : {
+                          sameDay: '[' + this.labels.today + ' ' + this.labels.timePrefix + '] HH:mm',
+                          nextDay: '[' + this.labels.tomorrow + ' ' + this.labels.timePrefix + '] HH:mm',
+                          nextWeek: 'DD/MM/YYYY [' + this.labels.timePrefix + '] HH:mm',
+                          lastDay: '[' + this.labels.yesterday + ' ' + this.labels.timePrefix + '] HH:mm',
+                          lastWeek: 'DD/MM/YYYY [' + this.labels.timePrefix + '] HH:mm',
+                          sameElse: 'DD/MM/YYYY [' + this.labels.timePrefix + '] HH:mm'
+                      };
                 return moment(this.row.record.dateValueDb).calendar(null, settings);
             } else {
-                return moment(this.row.record.dateValueDb).format('L');
+                return moment(this.row.record.dateValueDb).format(
+                    this.row.record.isDate ? 'L' : 'L [' + this.labels.timePrefix + '] HH:mm'
+                );
             }
         } catch (error) {
             console.log('error: ' + error);

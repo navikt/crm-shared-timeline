@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Translations xmlns="http://soap.sforce.com/2006/04/metadata">
     <customLabels>
+        <label>kl.</label>
+        <name>Timeline_TimePrefix</name>
+    </customLabels>
+    <customLabels>
         <label>nb-no</label>
         <name>Timeline_MomentJsLanguage</name>
     </customLabels>
