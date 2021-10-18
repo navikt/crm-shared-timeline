@@ -15,13 +15,6 @@
         <value>Load More</value>
     </labels>
     <labels>
-        <fullName>Timeline_AllDataLoaded</fullName>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>[ActTime] All Data Loaded</shortDescription>
-        <value>You've reached the end 😱</value>
-    </labels>
-    <labels>
         <fullName>Timeline_ViewMore</fullName>
         <language>en_US</language>
         <protected>false</protected>

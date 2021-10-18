@@ -29,10 +29,6 @@
         <name>Timeline_LoadMore</name>
     </customLabels>
     <customLabels>
-        <label>Du har nådd bunnen 😱</label>
-        <name>Timeline_AllDataLoaded</name>
-    </customLabels>
-    <customLabels>
         <label>Se flere</label>
         <name>Timeline_ViewMore</name>
     </customLabels>
