@@ -6,6 +6,8 @@ export default class TimelineGroup extends LightningElement {
     @api amountOfRecords;
     @api amountOfRecordsToLoad;
     @api openAccordionSections;
+    @api expandCheck;
+    @api groupIndex;
 
     amount;
     empty = false;
@@ -29,6 +31,10 @@ export default class TimelineGroup extends LightningElement {
     viewAll() {
         this.amount = this.group.models.length;
     }
+
+    groupLevelExpandCheck = (itemIndex) => {
+        return this.expandCheck(this.groupIndex, itemIndex);
+    };
 
     get total() {
         return this.group.models.length;

@@ -28,6 +28,7 @@ export default class Timeline extends LightningElement {
     @api amountOfMonthsToLoad = 3;
     @api amountOfRecords = 3;
     @api amountOfRecordsToLoad = 3;
+    @api amountOfRecordsToOpen;
     @api configId = '';
 
     @api timestamp = ''; // ! deprecated but cannot be removed
@@ -216,6 +217,17 @@ export default class Timeline extends LightningElement {
 
         return parseInt(months) + this.amountOfMonthsToLoad;
     }
+
+    expandCheck = (groupIndex, itemIndex) => {
+        let totalIndices = 0;
+        for (let i = 0; i < groupIndex; i++) {
+            totalIndices += this.data[i].models.length;
+            if (totalIndices > this.amountOfRecordsToLoad) {
+                return false;
+            }
+        }
+        return totalIndices + itemIndex < this.amountOfRecordsToOpen;
+    };
 
     setError(error) {
         if (error.body && error.body.exceptionType && error.body.message) {

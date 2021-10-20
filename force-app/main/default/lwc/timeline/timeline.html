@@ -38,7 +38,7 @@
                 onsectiontoggle={handleSectionToggle}
                 if:true={finishedLoading}
             >
-                <template for:each={data} for:item="group">
+                <template for:each={data} for:item="group" for:index="groupIndex">
                     <c-timeline-group
                         key={group.id}
                         group={group}
@@ -46,6 +46,8 @@
                         amount-of-records={amountOfRecords}
                         amount-of-records-to-load={amountOfRecordsToLoad}
                         open-accordion-sections={openAccordionSections}
+                        group-index={groupIndex}
+                        expand-check={expandCheck}
                     >
                     </c-timeline-group>
                 </template>
