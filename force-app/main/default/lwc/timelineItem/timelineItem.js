@@ -8,12 +8,14 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
     @api amount;
     @api index;
     @api period;
+    @api groupLevelExpandCheck;
 
     expanded = false;
     loadingDetails = false;
     timelineColor = 'slds-timeline__item_expandable';
 
     connectedCallback() {
+        this.itemLevelExpandCheck();
         if (this.row.theme.sldsTimelineItemColor != null) {
             this.timelineColor = '	background-color: #' + this.row.theme.sldsTimelineItemColor + ';';
         }
@@ -75,6 +77,12 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
 
     get isExpandable() {
         return this.expandedFieldsToDisplay.length > 0 ? true : false;
+    }
+
+    itemLevelExpandCheck() {
+        if (this.isExpandable && this.groupLevelExpandCheck(this.index)) {
+            this.toggleExpand();
+        }
     }
 
     openRecord(event) {
