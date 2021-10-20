@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
     <labels>
+        <fullName>Timeline_TimePrefix</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>[ActTime] Time prefix</shortDescription>
+        <value>at</value>
+    </labels>
+    <labels>
         <fullName>Timeline_LoadMore</fullName>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>[ActTime] Load More</shortDescription>
         <value>Load More</value>
-    </labels>
-    <labels>
-        <fullName>Timeline_AllDataLoaded</fullName>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>[ActTime] All Data Loaded</shortDescription>
-        <value>You've reached the end 😱</value>
     </labels>
     <labels>
         <fullName>Timeline_ViewMore</fullName>

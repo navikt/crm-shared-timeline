@@ -19,7 +19,7 @@ import today from '@salesforce/label/c.Timeline_Today';
 import tomorrow from '@salesforce/label/c.Timeline_Tomorrow';
 import yesterday from '@salesforce/label/c.Timeline_Yesterday';
 import last from '@salesforce/label/c.Timeline_Last';
-import allDataLoaded from '@salesforce/label/c.Timeline_AllDataLoaded';
+import timePrefix from '@salesforce/label/c.Timeline_TimePrefix';
 
 export default {
     MomentJsLanguage,
@@ -43,5 +43,5 @@ export default {
     tomorrow,
     yesterday,
     last,
-    allDataLoaded
+    timePrefix
 };
