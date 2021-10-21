@@ -80,7 +80,7 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
     }
 
     itemLevelExpandCheck() {
-        if (this.isExpandable && this.groupLevelExpandCheck(this.index)) {
+        if (this.isExpandable && this.row.record.allowAutoOpen && this.groupLevelExpandCheck(this.index)) {
             this.toggleExpand();
         }
     }

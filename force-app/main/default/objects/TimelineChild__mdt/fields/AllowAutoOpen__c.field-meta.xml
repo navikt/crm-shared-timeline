@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AllowAutoOpen__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Should the child be allowed to be opened by the &quot;Amount of items to open&quot; setting in the timeline LWC?</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>Should the child be allowed to be opened by the &quot;Amount of items to open&quot; setting in the timeline LWC?</inlineHelpText>
+    <label>Allow Auto Open</label>
+    <type>Checkbox</type>
+</CustomField>
