@@ -52,6 +52,9 @@ global with sharing class Timeline_Model implements Comparable {
         public Boolean overdue;
         @AuraEnabled
         public Boolean lastElement;
+
+        @AuraEnabled
+        public Boolean allowAutoOpen;
     }
 
     // sorting algorithm
@@ -88,6 +91,7 @@ global with sharing class Timeline_Model implements Comparable {
         record.overdue = getIsOverdue(config, sObj, record);
         record.title = (String) get(sObj, config.Timeline_Child__r.SObjectTitle__c);
         record.durationInMinute = (Integer) get(sObj, 'DurationInMinutes');
+        record.allowAutoOpen = config.Timeline_Child__r.AllowAutoOpen__c;
 
         theme.icon = config.Timeline_Child__r.SLDS_Icon__c;
         theme.sldsTimelineItemColor = config.Timeline_Child__r.SLDS_Timeline_Color__c;
