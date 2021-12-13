@@ -31,6 +31,8 @@ export default class Timeline extends LightningElement {
     @api amountOfRecordsToOpen;
     @api configId = '';
 
+    @api buttonIsHidden = false;
+
     @api timestamp = ''; // ! deprecated but cannot be removed
 
     @track data;
@@ -310,6 +312,6 @@ export default class Timeline extends LightningElement {
 
     get showCreateRecords() {
         // return formFactorPropertyName !== 'Small';
-        return true; // temp fix
+        return !this.buttonIsHidden; // temp fix
     }
 }
