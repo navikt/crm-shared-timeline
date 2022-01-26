@@ -11,6 +11,7 @@
             "EventSubtype": "Event",
             "IsAllDayEvent": true,
             "ShowAs": "Busy",
+            "Type": "Meeting",
             "Subject": "Arbeidstrening",
             "WhatId": "@AccountRef1"
         },
@@ -25,6 +26,7 @@
             "EventSubtype": "Event",
             "IsAllDayEvent": true,
             "ShowAs": "Busy",
+            "Type": "Meeting",
             "Subject": "Jobbmesse",
             "WhatId": "@AccountRef1"
         },
@@ -39,6 +41,7 @@
             "EventSubtype": "Event",
             "IsAllDayEvent": false,
             "ShowAs": "Busy",
+            "Type": "Meeting",
             "Subject": "Rekrutteringsbistand",
             "WhatId": "@AccountRef1"
         },
@@ -53,6 +56,7 @@
             "EventSubtype": "Event",
             "IsAllDayEvent": false,
             "ShowAs": "Busy",
+            "Type": "Meeting",
             "Subject": "Hvordan håndtere vanskelige ansatte",
             "WhatId": "@AccountRef1"
         },
@@ -67,6 +71,7 @@
             "EventSubtype": "Event",
             "IsAllDayEvent": false,
             "ShowAs": "Busy",
+            "Type": "Meeting",
             "Subject": "Tiltak for å redusere sykefravær",
             "WhatId": "@AccountRef1"
         }

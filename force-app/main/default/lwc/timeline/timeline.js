@@ -62,6 +62,13 @@ export default class Timeline extends LightningElement {
 
     isRendered = false;
 
+    /******** Filter ********/
+    @api filterIsActive = false;
+    @api picklistFilter1Label;
+    @api picklistFilter2Label;
+    @track filterProperties;
+    masterData;
+
     connectedCallback() {
         //getRecord requires field in array
         this.recordWireFields = [this.objectApiName + '.' + this.timelineParentField];
@@ -117,6 +124,7 @@ export default class Timeline extends LightningElement {
             this.setParams(this.data);
             this.setAccordions(this.data);
             this.countRecordsLoaded(this.data);
+            this.setFilterProperties(this.data);
         } else if (result.error) {
             this.error = true;
             this.loading = false;
@@ -130,6 +138,7 @@ export default class Timeline extends LightningElement {
 
     setData(newData) {
         let newDataCopy = JSON.parse(JSON.stringify(newData));
+        this.masterData = newDataCopy;
 
         // try to process, fallbacks to original data which is always OK
         try {
@@ -166,6 +175,15 @@ export default class Timeline extends LightningElement {
         this.empty = data.length === 0;
     }
 
+    setFilterProperties(data) {
+        const filter = data
+            .map(({ models }) => models)
+            .flat(Infinity)
+            .map(({ filter }) => filter);
+
+        this.filterProperties = filter;
+    }
+
     setAccordions(data) {
         if (this.accordionsAreSet) {
             return;
@@ -182,6 +200,15 @@ export default class Timeline extends LightningElement {
         }
 
         this.accordionsAreSet = true;
+    }
+
+    resetAccordians(data) {
+        // Delay to allow all accordian sections to render before assigning open sections.
+        setTimeout(() => {
+            this.openAccordionSections = [labels.overdue, labels.upcoming];
+            this.accordionsAreSet = false;
+            this.setAccordions(data);
+        });
     }
 
     countRecordsLoaded(data) {
@@ -301,6 +328,18 @@ export default class Timeline extends LightningElement {
         }
     }
 
+    handleFilter(e) {
+        const filteredData = this.template.querySelector('c-timeline-filter').filterRecords(this.masterData);
+        const records = filteredData
+            .map(({ models }) => models)
+            .flat(Infinity)
+            .map(({ record }) => record);
+
+        this.maxRecords = records.length;
+        this.data = filteredData;
+        this.resetAccordians(this.data);
+    }
+
     // ----------------------------------- //
     // ------------- GETTERS ------------- //
     // ----------------------------------- //
@@ -313,5 +352,10 @@ export default class Timeline extends LightningElement {
     get showCreateRecords() {
         // return formFactorPropertyName !== 'Small';
         return !this.buttonIsHidden; // temp fix
+    }
+
+    get isGrouped() {
+        if (this.buttonIsHidden === false && this.filterIsActive === true) return true;
+        return false;
     }
 }

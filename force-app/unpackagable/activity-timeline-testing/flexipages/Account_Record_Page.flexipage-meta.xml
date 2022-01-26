@@ -144,6 +144,17 @@
                 <value>3</value>
             </componentInstanceProperties>
             <componentInstanceProperties>
+                <name>buttonIsHidden</name>
+                <value>false</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>configId</name>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>filterIsActive</name>
+                <value>true</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
                 <name>headerIcon</name>
                 <value>custom:custom18</value>
             </componentInstanceProperties>
@@ -154,6 +165,15 @@
             <componentInstanceProperties>
                 <name>headerTitleNorwegian</name>
                 <value>Aktiviteter</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>picklistFilter1Label</name>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>picklistFilter2Label</name>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>timelineParentField</name>
             </componentInstanceProperties>
             <componentName>timeline</componentName>
         </componentInstances>

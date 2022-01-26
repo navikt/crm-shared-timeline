@@ -278,9 +278,6 @@ public with sharing class Timeline_Helper {
             if (model.record.assigneeId != null) {
                 if (ownerNames.containsKey(model.record.assigneeId)) {
                     model.record.assignee = ownerNames.get(model.record.assigneeId);
-                    if (model.record.assigneeId == UserInfo.getUserId()) {
-                        model.record.assigneeId = null;
-                    }
                 }
             }
 
