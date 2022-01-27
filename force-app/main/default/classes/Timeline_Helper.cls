@@ -427,13 +427,13 @@ public with sharing class Timeline_Helper {
         }
 
         List<RecordType> recordTypes = [
-            SELECT Id, Name, SobjectType
+            SELECT Id, Name, DeveloperName, SobjectType
             FROM RecordType
             WHERE DeveloperName IN :recordTypeNames
         ];
         Map<String, Id> recordTypeMap = new Map<String, Id>();
         for (RecordType rt : recordTypes) {
-            recordTypeMap.put(rt.SobjectType + rt.Name, rt.Id);
+            recordTypeMap.put(rt.SobjectType + rt.DeveloperName, rt.Id);
         }
 
         return recordTypeMap;
