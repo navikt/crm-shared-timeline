@@ -1,0 +1,83 @@
+<template>
+    <div>
+        <lightning-button
+            icon-name="utility:filterList"
+            label="Filter"
+            title="Filter"
+            onclick={toggle}
+            class={buttonStyle}
+        ></lightning-button>
+
+        <template if:true={isActive}>
+            <div class={containerStyle}>
+                <div class="slds-panel__body inner-container">
+                    <div>
+                        <lightning-combobox
+                            if:true={picklistFilter1}
+                            name={picklist1Label}
+                            label={picklist1Label}
+                            class="slds-m-bottom_small"
+                            data-id="picklistFilter1"
+                            value={selectedPicklistFilter1}
+                            options={picklistFilter1}
+                            onchange={handleChange}
+                        ></lightning-combobox>
+
+                        <lightning-combobox
+                            if:true={picklistFilter2}
+                            name={picklist2Label}
+                            label={picklist2Label}
+                            data-id="picklistFilter2"
+                            value={selectedPicklistFilter2}
+                            options={picklistFilter2}
+                            onchange={handleChange}
+                        ></lightning-combobox>
+                    </div>
+                    <div if:true={checkBoxFilter}>
+                        <lightning-checkbox-group
+                            name="Type"
+                            label="Type"
+                            data-id="checkBoxFilter"
+                            options={checkBoxFilter}
+                            value={selectedCheckboxes}
+                            onchange={handleChange}
+                        >
+                        </lightning-checkbox-group>
+                    </div>
+                    <div>
+                        <lightning-input
+                            type="checkbox"
+                            label={myActivitiesLabel}
+                            name={myActivitiesLabel}
+                            checked={myActivitiesFilter}
+                            data-id="this_user"
+                            onchange={handleCheckboxChange}
+                        ></lightning-input>
+                    </div>
+                </div>
+                <div class="slds-modal__footer">
+                    <lightning-button
+                        variant="base"
+                        label={resetLabel}
+                        title={resetLabel}
+                        onclick={handleReset}
+                        class="slds-m-left_x-small"
+                    ></lightning-button>
+                    <lightning-button
+                        label={cancelLabel}
+                        title={cancelLabel}
+                        onclick={handleCancel}
+                        class="slds-m-left_x-small"
+                    ></lightning-button>
+                    <lightning-button
+                        variant="brand"
+                        label={saveLabel}
+                        title={saveLabel}
+                        onclick={handleSave}
+                        class="slds-m-left_x-small"
+                    ></lightning-button>
+                </div>
+            </div>
+        </template>
+    </div>
+</template>

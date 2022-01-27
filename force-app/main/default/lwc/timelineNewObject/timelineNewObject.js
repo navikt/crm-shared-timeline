@@ -8,6 +8,7 @@ import newObj from '@salesforce/label/c.Timeline_New';
 export default class TimelineNewObject extends NavigationMixin(LightningElement) {
     @api recordId;
     @api configId;
+    @api isGrouped;
 
     @track sObjects;
     error = false;
@@ -52,5 +53,9 @@ export default class TimelineNewObject extends NavigationMixin(LightningElement)
                 }
             });
         }
+    }
+
+    get buttonMenuStyle() {
+        return this.isGrouped ? 'bttn-grouped' : 'slds-p-left_small';
     }
 }

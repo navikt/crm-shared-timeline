@@ -37,3 +37,7 @@
     -moz-box-sizing: border-box;
     margin: 0 0.7em 0 1.7em;
 }
+
+.bttn-group {
+    display: inline-flex;
+}

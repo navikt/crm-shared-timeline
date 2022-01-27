@@ -175,4 +175,25 @@
         <shortDescription>[ActTime] Last</shortDescription>
         <value>Last</value>
     </labels>
+    <labels>
+        <fullName>Timeline_Cancel</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>[ActTime] Cancel</shortDescription>
+        <value>Cancel</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Save</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>[ActTime] Save</shortDescription>
+        <value>Save</value>
+    </labels>
+    <labels>
+        <fullName>Timeline_Reset</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>[ActTime] Reset</shortDescription>
+        <value>Reset</value>
+    </labels>
 </CustomLabels>

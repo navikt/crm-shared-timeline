@@ -18,14 +18,23 @@
                 <lightning-button-icon icon-name="action:refresh" alternative-text="Refresh data" onclick={refreshData}>
                 </lightning-button-icon>
             </lightning-button-group>
-
-            <c-timeline-new-object
-                class="slds-p-left_small"
-                if:true={showCreateRecords}
-                record-id={recordId}
-                config-id={configId}
-            >
-            </c-timeline-new-object>
+            <div class="bttn-group">
+                <c-timeline-filter
+                    if:true={filterIsActive}
+                    filter-properties={filterProperties}
+                    is-grouped={isGrouped}
+                    picklist-filter-1-label={picklistFilter1Label}
+                    picklist-filter-2-label={picklistFilter2Label}
+                    onfilterchange={handleFilter}
+                ></c-timeline-filter>
+                <c-timeline-new-object
+                    if:true={showCreateRecords}
+                    record-id={recordId}
+                    config-id={configId}
+                    is-grouped={isGrouped}
+                >
+                </c-timeline-new-object>
+            </div>
         </div>
 
         <!-- ************************************************************************ -->

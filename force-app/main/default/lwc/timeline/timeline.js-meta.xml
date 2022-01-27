@@ -20,7 +20,10 @@
             <property name="amountOfRecords" type="Integer" label="Initial Record Amount" description="Number of records to initialy show" min="1" />
             <property name="amountOfRecordsToLoad" type="Integer" label="No. of Records to Load" description="Amount of record to load when clicking 'See More'" min="1" />
             <property name="amountOfRecordsToOpen" type="Integer" label="No. of Records to Open" description="Amout of records to open on first load" />
-            <property name="buttonIsHidden" type="Boolean" label="Hide New Button" description="Show/Hide New Button" default="false"/>
+            <property name="buttonIsHidden" type="Boolean" label="Hide New Button" description="Show/Hide New Button" default="false" />
+            <property name="filterIsActive" type="Boolean" label="Show filter button" description="Show/hide filter button" default="false" />
+            <property name="picklistFilter1Label" type="String" label="Label for picklist filter #1" />
+            <property name="picklistFilter2Label" type="String" label="Label for picklist filter #2" />
             <supportedFormFactors>
                 <supportedFormFactor type="Small" />
                 <supportedFormFactor type="Large" />

@@ -339,11 +339,6 @@ private without sharing class Timeline_HelperTest {
 
         System.assertEquals(null, data[0].record.relatedUser, 'should be null before running function');
         System.assertEquals(null, data[0].record.subtitle, 'should be null before running function');
-        System.assertEquals(
-            UserInfo.getUserId(),
-            data[0].record.assigneeId,
-            'should be current user before running function'
-        );
 
         Test.StartTest();
         List<Timeline_Model> actual = Timeline_Helper.getOwnerAndContactNames(data);
@@ -356,7 +351,6 @@ private without sharing class Timeline_HelperTest {
 
         System.assertEquals('Test2', data[0].record.relatedUser, 'should have set name of contact');
         System.assertEquals(expected, data[0].record.subtitle, 'should have set subtitle');
-        System.assertEquals(null, data[0].record.assigneeId, 'should be current user before running function');
     }
 
     @isTest
@@ -386,11 +380,6 @@ private without sharing class Timeline_HelperTest {
 
         System.assertEquals(null, data[0].record.relatedUser, 'should be null before running function');
         System.assertEquals(null, data[0].record.subtitle, 'should be null before running function');
-        System.assertEquals(
-            UserInfo.getUserId(),
-            data[0].record.assigneeId,
-            'should be current user before running function'
-        );
 
         Test.StartTest();
         List<Timeline_Model> actual = Timeline_Helper.getOwnerAndContactNames(data);
@@ -407,7 +396,6 @@ private without sharing class Timeline_HelperTest {
             data[0].record.subtitle,
             'should have set subtitle'
         );
-        System.assertEquals(null, data[0].record.assigneeId, 'should be current user before running function');
     }
 
     @isTest
@@ -445,11 +433,6 @@ private without sharing class Timeline_HelperTest {
 
         System.assertEquals(null, data[0].record.relatedUser, 'should be null before running function');
         System.assertEquals(null, data[0].record.subtitle, 'should be null before running function');
-        System.assertEquals(
-            UserInfo.getUserId(),
-            data[0].record.assigneeId,
-            'should be current user before running function'
-        );
 
         Test.StartTest();
         List<Timeline_Model> actual = Timeline_Helper.getOwnerAndContactNames(data);
@@ -466,7 +449,6 @@ private without sharing class Timeline_HelperTest {
             data[0].record.subtitle,
             'should have set subtitle'
         );
-        System.assertEquals(null, data[0].record.assigneeId, 'should be current user before running function');
     }
 
     @isTest
