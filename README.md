@@ -28,6 +28,10 @@ String sobjectName = 'SOBJECT';
 insert new PushTopic(Name = 'TIMELINE_' + sobjectName, Query = 'SELECT Id FROM ' + sobjectName, NotifyForOperationCreate = true, NotifyForFields = 'All', ApiVersion = 52.0);
 ```
 
+### Limitations
+
+-   The Expanded Fields To Display feature does not support all objects. See the User Interface API documentation for a list of supported objects. https://developer.salesforce.com/docs/atlas.en-us.uiapi.meta/uiapi/ui_api_list_view_supported_objects.htm
+
 ## Installation
 
 1. Install [npm](https://nodejs.org/en/download/)
