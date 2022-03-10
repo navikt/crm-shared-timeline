@@ -97,7 +97,7 @@ global with sharing class Timeline_Model implements Comparable {
             : null;
         record.assigneeId = config.SObjectAssigneeId__c != null ? (Id) get(sObj, config.SObjectAssigneeId__c) : null;
         record.title = (String) get(sObj, config.Timeline_Child__r.SObjectTitle__c);
-        // record.durationInMinute = (Integer) get(sObj, 'DurationInMinutes');
+        record.durationInMinute = (Integer) get(sObj, 'DurationInMinutes');
         record.allowAutoOpen = config.Timeline_Child__r.AllowAutoOpen__c;
         record.sObjectKind = config.Timeline_Child__r.SObjectName__c;
         record.type = config.Timeline_Child__r.SObjectTypeValue__c;
@@ -160,7 +160,11 @@ global with sharing class Timeline_Model implements Comparable {
     }
 
     public static Object get(SObject sObj, String field) {
-        return sObj.get(field);
+        try {
+            return sObj.get(field);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     private Filter getFilter(SObject sObj) {
