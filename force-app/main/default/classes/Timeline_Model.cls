@@ -97,7 +97,7 @@ global with sharing class Timeline_Model implements Comparable {
             : null;
         record.assigneeId = config.SObjectAssigneeId__c != null ? (Id) get(sObj, config.SObjectAssigneeId__c) : null;
         record.title = (String) get(sObj, config.Timeline_Child__r.SObjectTitle__c);
-        record.durationInMinute = (Integer) get(sObj, 'DurationInMinutes');
+        // record.durationInMinute = (Integer) get(sObj, 'DurationInMinutes');
         record.allowAutoOpen = config.Timeline_Child__r.AllowAutoOpen__c;
         record.sObjectKind = config.Timeline_Child__r.SObjectName__c;
         record.type = config.Timeline_Child__r.SObjectTypeValue__c;
@@ -107,7 +107,7 @@ global with sharing class Timeline_Model implements Comparable {
         record.dateValueDb = getDateValue(config, sObj, record);
 
         theme.sldsTimelineItemColor = config.Timeline_Child__r.SLDS_Timeline_Color__c;
-        theme.icon = config.Timeline_Child__r.SLDS_Icon__c;
+        theme.icon = getIconValue(config, sObj);
 
         this.filter = getFilter(sObj);
         this.record = record;
@@ -152,12 +152,15 @@ global with sharing class Timeline_Model implements Comparable {
         return isOverdue;
     }
 
-    public static Object get(SObject sObj, String field) {
-        try {
-            return sObj.get(field);
-        } catch (Exception e) {
-            return null;
+    public static String getIconValue(TimelineParent__mdt config, SObject sObj) {
+        if (config.Timeline_Child__r.SLDS_Icon__c.contains(':')) {
+            return config.Timeline_Child__r.SLDS_Icon__c;
         }
+        return (String) get(sObj, config.Timeline_Child__r.SLDS_Icon__c);
+    }
+
+    public static Object get(SObject sObj, String field) {
+        return sObj.get(field);
     }
 
     private Filter getFilter(SObject sObj) {
