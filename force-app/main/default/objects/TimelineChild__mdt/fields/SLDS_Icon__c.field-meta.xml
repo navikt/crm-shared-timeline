@@ -4,7 +4,7 @@
 	<description>See lightningdesignsystem.com/icons. Format is &quot;category:icon&quot;.</description>
 	<externalId>false</externalId>
 	<fieldManageability>DeveloperControlled</fieldManageability>
-	<inlineHelpText>See lightningdesignsystem.com/icons. Format is &quot;category:icon&quot;.</inlineHelpText>
+	<inlineHelpText>See lightningdesignsystem.com/icons. Format is &quot;category:icon&quot;. or any text field</inlineHelpText>
 	<label>Icon (SLDS)</label>
 	<length>255</length>
 	<required>true</required>

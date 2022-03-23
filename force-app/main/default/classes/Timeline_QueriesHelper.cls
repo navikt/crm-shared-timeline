@@ -95,6 +95,9 @@ public with sharing class Timeline_QueriesHelper {
                         fieldsToQuery.add(field);
                     }
                 }
+                if (!mdt.Timeline_Child__r.SLDS_Icon__c.contains(':')) {
+                    fieldsToQuery.add(mdt.Timeline_Child__r.SLDS_Icon__c);
+                }
             }
         }
 
