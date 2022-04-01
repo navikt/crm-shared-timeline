@@ -132,4 +132,19 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
     get isRelatedUserAUser() {
         return 'relatedUserId' in this.row.record;
     }
+
+    get objectContent() {
+        const date = this.getDateFormat;
+        console.log(this.getDateFormat);
+        return this.row.record.title + ', ' + date.toString();
+        // <p if:false={row.record.overdue} class="slds-timeline__date">{getDateFormat}</p>
+        //                             <p if:true={row.record.overdue} class="slds-timeline__date slds-text-color_error">
+        //                                 {getDateFormat}
+
+        // if (){
+        //     this.getDateFormat + ", overdue";
+        // }else{
+        //     this.getDateFormat;
+        // }
+    }
 }

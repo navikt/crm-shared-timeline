@@ -1,3 +1,4 @@
+<!-- sldsValidatorIgnore -->
 <template>
     <div if:true={showRow}>
         <li class="row">
@@ -7,15 +8,24 @@
                     <div class="cell cell-left">
                         <!-- ICON & CHEVRON -->
                         <div class="container">
+                            <!-- if:true={isExpandable}
+                                onclick={toggleExpand} -->
                             <lightning-layout data-expandable={isExpandable}>
-                                <lightning-icon
-                                    if:true={isExpandable}
+                                <button
+                                    style="background: none; border: none"
+                                    class="slds-assistive"
                                     onclick={toggleExpand}
-                                    class="cell-icon slds-text-link_reset"
-                                    size="x-small"
-                                    icon-name={expandIcon}
+                                    if:true={isExpandable}
+                                    aria-label={objectContent}
+                                    aria-expanded={expanded}
                                 >
-                                </lightning-icon>
+                                    <lightning-icon
+                                        class="cell-icon slds-text-link_reset"
+                                        size="x-small"
+                                        icon-name={expandIcon}
+                                    >
+                                    </lightning-icon>
+                                </button>
                                 <lightning-icon class="cell-icon" size="small" icon-name={row.theme.icon}>
                                 </lightning-icon>
                             </lightning-layout>
