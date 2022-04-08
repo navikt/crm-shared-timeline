@@ -8,12 +8,10 @@
                     <div class="cell cell-left">
                         <!-- ICON & CHEVRON -->
                         <div class="container">
-                            <!-- if:true={isExpandable}
-                                onclick={toggleExpand} -->
                             <lightning-layout data-expandable={isExpandable}>
                                 <button
                                     style="background: none; border: none"
-                                    class="slds-assistive"
+                                    class="slds-assistive slds-p-horizontal_none"
                                     onclick={toggleExpand}
                                     if:true={isExpandable}
                                     aria-label={objectContent}
