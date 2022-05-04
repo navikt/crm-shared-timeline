@@ -57,6 +57,9 @@ global with sharing class Timeline_Model implements Comparable {
 
         @AuraEnabled
         public Boolean allowAutoOpen;
+
+        @AuraEnabled
+        public String subtitleOverride;
     }
 
     public class Filter {
@@ -105,6 +108,7 @@ global with sharing class Timeline_Model implements Comparable {
         record.isDate = getIsDate(config, sObj, record);
         record.overdue = getIsOverdue(config, sObj, record);
         record.dateValueDb = getDateValue(config, sObj, record);
+        record.subtitleOverride = (String) get(sObj, config.Timeline_Child__r.SObjectSubtitle__c); // To add subtitle for samtale
 
         theme.sldsTimelineItemColor = config.Timeline_Child__r.SLDS_Timeline_Color__c;
         theme.icon = getIconValue(config, sObj);
