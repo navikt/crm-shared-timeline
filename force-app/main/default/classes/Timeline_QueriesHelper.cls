@@ -3,6 +3,7 @@ public with sharing class Timeline_QueriesHelper {
         'Timeline_Child__r.SObjectDateField__c',
         'Timeline_Child__r.SObjectTitle__c',
         'SObjectAssigneeId__c',
+        'Timeline_Child__r.SObjectSubtitle__c',
         'Timeline_Child__r.SObjectRelatedUserId__c',
         'Timeline_Child__r.SObjectTypeField__c',
         'Timeline_Child__r.FilterablePicklist1__c',
@@ -25,6 +26,7 @@ public with sharing class Timeline_QueriesHelper {
             'Timeline_Child__r.SObjectTypeField__c, Timeline_Child__r.SObjectTypeValue__c,  ' +
             'Timeline_Child__r.SObjectTitle__c, Timeline_Child__r.SObjectName__c,  ' +
             'Timeline_Child__r.ExpandedFieldsToDisplay__c, ' +
+            'Timeline_Child__r.SObjectSubtitle__c, ' +
             'Timeline_Child__r.SObjectRelatedUserId__c, IsMacro__c, ' +
             'Timeline_Child__r.CreateableObject_Field1__c, Timeline_Child__r.CreateableObject_Value1__c,  ' +
             'Timeline_Child__r.CreateableObject_Field2__c, Timeline_Child__r.CreateableObject_Value2__c,  ' +
