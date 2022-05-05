@@ -14,6 +14,10 @@
                 <behavior>Edit</behavior>
                 <field>AllowAutoOpen__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>SObjectSubtitle__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

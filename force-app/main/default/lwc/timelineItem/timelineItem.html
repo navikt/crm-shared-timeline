@@ -88,11 +88,16 @@
                                     >{row.record.assignee}</a
                                 >
                                 <span if:false={isAssigneeAUser}>{row.record.assignee}</span>
-                                <span> {row.record.subtitle} </span>
+                                <span if:false={isOverride}> {row.record.subtitle} </span>
                                 <a if:true={isRelatedUserAUser} data-id={row.record.relatedUserId} onclick={openUser}
                                     >{row.record.relatedUser}</a
                                 >
                                 <span if:false={isRelatedUserAUser}>{row.record.relatedUser}</span>
+                                <lightning-formatted-rich-text
+                                    class="slds-line-clamp_small"
+                                    value={row.record.subtitleOverride}
+                                    if:true={isOverride}
+                                ></lightning-formatted-rich-text>
                             </p>
 
                             <div
