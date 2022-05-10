@@ -281,6 +281,7 @@ public without sharing class Timeline_QueriesHelperTest {
                 Timeline_Child__r.SObjectTypeValue__c,
                 Timeline_Child__r.SObjectTitle__c,
                 Timeline_Child__r.SObjectName__c,
+                Timeline_Child__r.SObjectSubtitle__c,
                 Timeline_Child__r.SObjectRelatedUserId__c,
                 Timeline_Child__r.CreateableObject_Field1__c,
                 Timeline_Child__r.CreateableObject_Value1__c,

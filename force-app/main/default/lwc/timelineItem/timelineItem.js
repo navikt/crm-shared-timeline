@@ -132,4 +132,8 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
     get isRelatedUserAUser() {
         return 'relatedUserId' in this.row.record;
     }
+
+    get isOverride() {
+        return this.row.record.subtitleOverride != null ? (this.expanded === true ? false : true) : false;
+    }
 }
