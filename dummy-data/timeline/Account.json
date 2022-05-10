@@ -6,6 +6,13 @@
                 "referenceId": "AccountRef1"
             },
             "Name": "Min bedrift"
+        },
+        {
+            "attributes": {
+                "type": "Account",
+                "referenceId": "AccountRef1"
+            },
+            "Name": "Din bedrift"
         }
     ]
 }
