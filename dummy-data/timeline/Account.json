@@ -10,7 +10,7 @@
         {
             "attributes": {
                 "type": "Account",
-                "referenceId": "AccountRef1"
+                "referenceId": "AccountRef2"
             },
             "Name": "Din bedrift"
         }
