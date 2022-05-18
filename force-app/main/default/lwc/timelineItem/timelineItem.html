@@ -39,7 +39,13 @@
                                     <!-- TITLE -->
                                     <h3 class="slds-truncate" title={row.record.title}>
                                         <a onclick={openRecord}>
-                                            <strong>{row.record.title}</strong>
+                                            <strong
+                                                ><lightning-formatted-rich-text
+                                                    class="img-reset"
+                                                    value={row.record.title}
+                                                >
+                                                </lightning-formatted-rich-text>
+                                            </strong>
                                         </a>
                                     </h3>
                                     <!-- RECORRUING TASK -->

@@ -40,3 +40,8 @@
 lightning-layout[data-expandable='true'] {
     margin-left: -1.5em;
 }
+
+/* This class is used to remove the margin from images in the timeline title */
+.img-reset {
+    --lwc-spacingSmall: 0px;
+}
