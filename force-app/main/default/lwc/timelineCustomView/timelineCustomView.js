@@ -6,7 +6,7 @@ export default class TimelineCustomView extends LightningElement {
     @api recordtype;
 
     get isThread(){
-        return recordType ==='Thread__c';
+        return recordtype ==='Thread__c';
     }
     
 }
