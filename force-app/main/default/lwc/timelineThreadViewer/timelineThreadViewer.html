@@ -1,0 +1,7 @@
+<template>
+    <section role="log" id="scroller" class="slds-box scroller slds-scrollable_y">
+        <template for:each={messages} for:item="message">
+            <c-timeline-messaging-Message-Container message={message} key={message.Id}></c-timeline-messaging-Message-Container>
+        </template>
+    </section>
+</template>
