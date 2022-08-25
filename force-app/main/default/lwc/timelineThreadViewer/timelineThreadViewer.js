@@ -15,7 +15,6 @@ export default class TimelineThreadViewer extends LightningElement {
         } else if (result.data) {
             this.messages = result.data;
             this.hasMessages = true;
-            console.log(result.data);
         }
     }
 }
