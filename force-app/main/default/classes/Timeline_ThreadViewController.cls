@@ -2,7 +2,7 @@ public with sharing class Timeline_ThreadViewController {
     @AuraEnabled(cacheable=true)
     public static List<SObject> getMessagesFromThread(Id threadId) {
         try {
-            return //mapSObjectsToMessage(
+            return mapMessageText(
             Database.query(
                 Timeline_QueriesHelper.buildSoqlQuery(
                     //fields
@@ -23,11 +23,22 @@ public with sharing class Timeline_ThreadViewController {
                     //Order
                     'CRM_Sent_date__c ASC'
                 )
-            //)
+            )
         );
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }
+    }
+    public static List<SObject> mapMessageText(List<SObject> msgs){
+        for(SObject msg : msgs){
+            msg.put(
+                'CRM_Message_Text__c',
+                String.isBlank((String) msg.getSObject('CRM_Message_Content__r').get('CRM_Message_Text__c'))
+                    ? Label.Timeline_Message_No_Access
+                    : (String) msg.getSObject('CRM_Message_Content__r').get('CRM_Message_Text__c')
+            );
+        }
+        return msgs;
     }
 /*
     public static List<Message> mapSObjectsToMessage(List<SObject> sObjs){

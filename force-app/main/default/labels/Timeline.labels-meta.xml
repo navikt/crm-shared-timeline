@@ -196,4 +196,12 @@
         <shortDescription>[ActTime] Reset</shortDescription>
         <value>Reset</value>
     </labels>
+    <labels>
+        <fullName>Timeline_Message_No_Access</fullName>
+        <categories>Dialog, Message, Thread</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Message No Access</shortDescription>
+        <value>Du har ikke tilgang til å se innholdet i denne meldingen.</value>
+    </labels>
 </CustomLabels>

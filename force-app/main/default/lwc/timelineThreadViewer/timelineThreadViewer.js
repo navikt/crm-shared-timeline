@@ -11,10 +11,10 @@ export default class TimelineThreadViewer extends LightningElement {
     wiremessages(result) {
         if (result.error) {
             this.error = result.error;
-            console.log('Error: ' + JSON.stringify(error, null, 2));
+            console.log('Error: ' + JSON.stringify(result.error, null, 2));
         } else if (result.data) {
             this.messages = result.data;
-            hasMessages = true;
+            this.hasMessages = true;
             console.log(result.data);
         }
     }
