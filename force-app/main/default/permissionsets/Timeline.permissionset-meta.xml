@@ -4,6 +4,10 @@
         <apexClass>Timeline_Controller</apexClass>
         <enabled>true</enabled>
     </classAccesses>
+    <classAccesses>
+        <apexClass>Timeline_ThreadViewController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
     <customMetadataTypeAccesses>
         <enabled>true</enabled>
         <name>TimelineChild__mdt</name>

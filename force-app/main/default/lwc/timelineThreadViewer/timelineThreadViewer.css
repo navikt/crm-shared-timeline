@@ -1,3 +1,4 @@
 .scroller {
-    height: 35vh;
+    max-height: 35vh;
+    min-height: min-content;
 }

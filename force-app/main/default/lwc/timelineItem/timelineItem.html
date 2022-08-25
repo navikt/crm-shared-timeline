@@ -117,9 +117,9 @@
                                     alternative-text="Loading details"
                                 ></lightning-spinner>
                                 <!-- ! Displays expand information useing lightning record view form. Does not support event and task object -->
-                                <div if:true={isCustom}>
+                                <template if:true={isCustom}>
                                     <c-timeline-custom-view recordid={row.record.recordId} recordtype={row.record.sObjectKind}></c-timeline-custom-view>
-                                </div>
+                                </template>
                                 <lightning-record-view-form
                                     record-id={row.record.recordId}
                                     object-api-name={row.record.sObjectKind}

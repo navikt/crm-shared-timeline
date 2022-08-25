@@ -9,7 +9,7 @@ export default class navFormattedDate extends LightningElement {
     }
 }
 export function formatDate(input){
-    if (input) return '';
+    if (!input) return '';
         let rawDate = new Date(input);
         if (rawDate == 'Invalid Date' || isNaN(rawDate)) {
             console.log('navFormattedDate: Bad date format.');
