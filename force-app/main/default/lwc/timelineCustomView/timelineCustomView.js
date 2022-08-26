@@ -6,10 +6,10 @@ export default class TimelineCustomView extends LightningElement {
     @api recordType;
 
     get isThread(){
-        return this.recordtype ==='Thread__c';
+        return this.recordType ==='Thread__c';
     }
     get isConversationNote(){
-        return this.recordtype ==='Conversation_Note__c';
+        return this.recordType ==='Conversation_Note__c';
     }
     
 }
