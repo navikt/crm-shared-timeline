@@ -2,12 +2,12 @@ import { LightningElement, api, track, wire } from 'lwc';
 import getmessages from '@salesforce/apex/Timeline_ThreadViewController.getMessagesFromThread';
 
 export default class TimelineThreadViewer extends LightningElement {
-    @api threadid;
+    @api recordId;
     @track messages;
     hasMessages = false;
     error;
 
-    @wire(getmessages, { threadId: '$threadid' }) //Calls apex and extracts messages related to this record
+    @wire(getmessages, { threadId: '$recordId' }) //Calls apex and extracts messages related to this record
     wiremessages(result) {
         if (result.error) {
             this.error = result.error;

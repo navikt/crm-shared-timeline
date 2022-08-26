@@ -1,0 +1,57 @@
+<template>
+    <div class="slds-card slds-is-relative">
+        <lightning-spinner if:true={isLoading} size="medium" variant="brand" alternative-text="Laster samtalereferat">
+        </lightning-spinner>
+        <div if:false={isLoading} class="conv-note-details slds-p-bottom_small">
+                <h2 class="slds-text-heading_large slds-text-title_bold slds-border_bottom slds-p-around_small">
+                    Samtalereferat
+                </h2>
+                <lightning-layout class="slds-p-top_small" multiple-rows="true">
+                    <lightning-layout-item size="12" padding="horizontal-small">
+                        <strong>{conversationNote.DIA_Theme_Name__c}</strong>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" padding="horizontal-small">
+                        <p class="weak-text">
+                            {conversationNote.CRM_Created_By_Ident__c} (NAV-enhet
+                            {conversationNote.CRM_Created_By_NAV_Unit__c}) &nbsp;
+                            <lightning-formatted-date-time
+                                month="long"
+                                day="2-digit"
+                                hour="2-digit"
+                                minute="2-digit"
+                                year="numeric"
+                                value={conversationNote.CRM_Date_Time_Registered__c}
+                            ></lightning-formatted-date-time>
+                        </p>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item
+                        class="slds-p-bottom_small slds-p-top_small"
+                        size="12"
+                        padding="horizontal-small"
+                    >
+                        <lightning-formatted-text
+                            value={conversationNote.CRM_Conversation_Note__c}
+                        ></lightning-formatted-text>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="12" padding="horizontal-small">
+                        <strong>
+                            <div if:true={conversationNote.CRM_Read_Date__c}>
+                                Lest: &nbsp;
+                                <lightning-formatted-date-time
+                                    month="long"
+                                    day="2-digit"
+                                    hour="2-digit"
+                                    minute="2-digit"
+                                    year="numeric"
+                                    value={conversationNote.CRM_Read_Date__c}
+                                ></lightning-formatted-date-time>
+                            </div>
+                            <div if:false={conversationNote.CRM_Read_Date__c}>Ikke lest</div>
+                        </strong>
+                    </lightning-layout-item>
+                </lightning-layout>
+        </div>
+    </div>
+</template>
