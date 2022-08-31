@@ -6,7 +6,7 @@ public with sharing class Timeline_CNoteViewController {
                 Timeline_QueriesHelper.buildSoqlQuery(
                     //fields
                     'Id,' +
-                    'CRM_Message_Text__c,' +
+                    'CRM_Conversation_Note__c,' +
                     'CRM_Date_Time_Registered__c,' +
                     'CRM_Created_By_Ident__c,' +
                     'CRM_Created_By_NAV_Unit__c,' +
