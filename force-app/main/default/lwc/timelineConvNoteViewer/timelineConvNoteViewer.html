@@ -59,14 +59,9 @@
                 <lightning-layout vertical-align="center">
                     <lightning-layout-item> <strong>Journalføringsstatus: </strong></lightning-layout-item>
                     <lightning-layout-item class="slds-p-left_small">
-                        <lightning-formatted-date-time
-                            month="long"
-                            day="2-digit"
-                            hour="2-digit"
-                            minute="2-digit"
-                            year="numeric"
-                            value={conversationNote.CRM_Read_Date__c}
-                        ></lightning-formatted-date-time>
+                        <lightning-formatted-rich-text
+                            value={conversationNote.CRM_Journal_Status_Formula__c}
+                        ></lightning-formatted-rich-text>
                     </lightning-layout-item>
                 </lightning-layout>
             </lightning-layout-item>
