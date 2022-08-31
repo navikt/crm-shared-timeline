@@ -37,7 +37,7 @@
                 </lightning-layout>
         </div>
     </div>
-    <div <div if:false={isLoading} class="slds-p-top_small">
+    <div if:false={isLoading} class="slds-p-top_small">
         <div class="slds-form-element slds-form-element_horizontal">
             <strong>
                 <div if:true={conversationNote.CRM_Read_Date__c}>
@@ -59,7 +59,7 @@
             </strong>
         </div>
     </div>
-    <div class="slds-p-top_small slds-p-bottom_small">
+    <div if:false={isLoading} class="slds-p-top_small slds-p-bottom_small">
         <div class="slds-form-element slds-form-element_horizontal">
             <strong>
                 <span class="slds-form-element__label">
