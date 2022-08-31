@@ -12,7 +12,7 @@ export default class TimelineThreadViewer extends LightningElement {
 
     connectedCallback() {
         //getRecord requires field in array
-        this.recordWireFields = [ 'Thread__r.CRM_Journal_Status_Formula__c' ];
+        this.recordWireFields = [ 'Thread__c.CRM_Journal_Status_Formula__c' ];
     }
 
     @wire(getmessages, { threadId: '$recordId' }) //Calls apex and extracts messages related to this record

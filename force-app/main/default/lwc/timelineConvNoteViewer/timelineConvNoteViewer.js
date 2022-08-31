@@ -1,5 +1,5 @@
 import { LightningElement, api, wire } from 'lwc';
-import formatDate from 'c/formattedDate'
+import { formatDate } from 'c/formattedDate'
 import getconvnote from '@salesforce/apex/Timeline_CNoteViewController.getConvNote';
 
 export default class TimelineConvNoteViewer extends LightningElement {
@@ -23,8 +23,8 @@ export default class TimelineConvNoteViewer extends LightningElement {
     }
 
     get lest(){
-        return conversationNote.CRM_Read_Date__c ?
-         '<img border="0" style="height:24px; width:24px;" alt="Lest" src="/logos/Custom/Circle_Green/logo.png">' + ' Lest: ' + formatDate(conversationNote.CRM_Read_Date__c) :
-         '<img border="0" style="height:24px; width:24px;" alt="Ulest" src="/logos/Custom/Circle_Green/logo.png">' + ' Ulest'
+        return this.conversationNote.CRM_Read_Date__c ?
+         '<img border="0" style="height:24px; width:24px;" alt="Lest" src="/logos/Custom/Circle_Green/logo.png">' + ' Lest: ' + formatDate(this.conversationNote.CRM_Read_Date__c) :
+         '<img border="0" style="height:24px; width:24px;" alt="Ulest" src="/logos/Custom/Circle_Red/logo.png">' + ' Ulest'
     }
 }
