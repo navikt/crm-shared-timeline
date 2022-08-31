@@ -23,7 +23,7 @@ export default class TimelineThreadViewer extends LightningElement {
     }
     @wire(getRecord, {
         recordId: '$recordId',
-        fields: '$FIELDS'
+        fields: FIELDS
     })
     deWireRecord({ data, error }) {
         if (data) {
