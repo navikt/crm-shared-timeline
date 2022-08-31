@@ -37,14 +37,12 @@
                 </lightning-layout>
         </div>
     </div>
-    <div if:false={isLoading} class="slds-p-top_small">
-        <div class="slds-form-element slds-form-element_horizontal">
-            <strong>
-                <div if:true={conversationNote.CRM_Read_Date__c}>
-                    <span class="slds-form-element__label">
+    <div if:false={isLoading}>
+        <lightning-layout class="slds-p-top_small" multiple-rows="true">
+            <lightning-layout-item size="12" padding="horizontal-small">
+                <strong>
+                    <div if:true={conversationNote.CRM_Read_Date__c}>
                         Lest: &nbsp;
-                    </span>
-                    <div class="slds-form-element__control">
                         <lightning-formatted-date-time
                             month="long"
                             day="2-digit"
@@ -54,23 +52,24 @@
                             value={conversationNote.CRM_Read_Date__c}
                         ></lightning-formatted-date-time>
                     </div>
-                </div>
-                <div if:false={conversationNote.CRM_Read_Date__c}>Ikke lest</div>
-            </strong>
-        </div>
-    </div>
-    <div if:false={isLoading} class="slds-p-top_small slds-p-bottom_small">
-        <div class="slds-form-element slds-form-element_horizontal">
-            <strong>
-                <span class="slds-form-element__label">
-                    Journalføringsstatus: &nbsp;
-                </span>
-                <div class="slds-form-element__control">
-                    <lightning-formatted-rich-text
-                        value={conversationNote.CRM_Journal_Status_Formula__c}
-                    ></lightning-formatted-rich-text>
-                </div>
-            </strong>
-        </div>
+                    <div if:false={conversationNote.CRM_Read_Date__c}>Ikke lest</div>
+                </strong>
+            </lightning-layout-item>
+            <lightning-layout-item class="slds-top_small" size="12" padding="horizontal-small">
+                <lightning-layout vertical-align="center">
+                    <lightning-layout-item> <strong>Journalføringsstatus: </strong></lightning-layout-item>
+                    <lightning-layout-item class="slds-p-left_small">
+                        <lightning-formatted-date-time
+                            month="long"
+                            day="2-digit"
+                            hour="2-digit"
+                            minute="2-digit"
+                            year="numeric"
+                            value={conversationNote.CRM_Read_Date__c}
+                        ></lightning-formatted-date-time>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </lightning-layout-item>
+        </lightning-layout>
     </div>
 </template>
