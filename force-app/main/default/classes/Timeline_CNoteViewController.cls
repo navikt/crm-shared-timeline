@@ -7,13 +7,10 @@ public with sharing class Timeline_CNoteViewController {
                     //fields
                     'Id,' +
                     'CRM_Conversation_Note__c,' +
-                    'CRM_Date_Time_Registered__c,' +
                     'CRM_Created_By_Ident__c,' +
                     'CRM_Created_By_NAV_Unit__c,' +
-                    'DIA_Theme_Name__c,' +
                     'CRM_Journal_Status_Formula__c,' +
-                    'CRM_Read_Date__c,' +
-                    'CreatedById',
+                    'CRM_Read_Date__c',
                     //SObject
                     'Conversation_Note__c',
                     //Params

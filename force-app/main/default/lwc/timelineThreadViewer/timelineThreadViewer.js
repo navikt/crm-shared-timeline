@@ -31,9 +31,18 @@ export default class TimelineThreadViewer extends LightningElement {
     })
     deWireRecord(result) {
         if (result.data) {
-            this.journalforing = getFieldValue(result.data, this.recordWireFields[0]);
+            this.setJournalForing(getFieldValue(result.data, this.recordWireFields[0]));
         } else if (result.error) {
             //Something went terribly wrong
         }
+    }
+    setJournalForing(text){
+        let parser = new DOMParser();
+        const doc = parser.parseFromString(text, 'text/html');
+        let imgs = doc.getElementsByTagName('img');
+        [...imgs].forEach((img) => {
+            img.setAttribute('aria-hidden', 'true');
+        });
+        this.journalforing = doc.body.innerHTML;
     }
 }
