@@ -3,7 +3,7 @@
         <lightning-spinner if:true={isLoading} size="medium" variant="brand" alternative-text="Laster samtalereferat">
         </lightning-spinner>
         <div if:false={isLoading} class="conv-note-details slds-p-bottom_small">
-                <p class="slds-text-heading_large slds-text-title_bold slds-border_bottom slds-p-around_small">
+                <p class="slds-text-heading_large slds-text-title_bold slds-border_bottom slds-p-top_medium slds-p-bottom_x-small slds-m-horizontal_small">
                     Samtalereferat
                 </p>
                 <lightning-layout class="slds-p-top_small" multiple-rows="true">
@@ -17,7 +17,7 @@
                         ></lightning-formatted-text>
                     </lightning-layout-item>
                     <lightning-layout-item size="12" padding="horizontal-small">
-                        <p class="weak-text">
+                        <p class="slds-p-top_small weak-text">
                             {conversationNote.CRM_Created_By_Ident__c} (NAV-enhet
                             {conversationNote.CRM_Created_By_NAV_Unit__c}) &nbsp;
                         </p>
