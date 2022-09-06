@@ -5,13 +5,20 @@
             "package": "crm-shared-timeline",
             "versionName": "ver 0.1",
             "versionNumber": "1.16.0.NEXT",
-            "default": true
+            "default": true,
+            "dependencies": [
+                {
+                    "package": "crm-thread-view",
+                    "versionNumber": "0.1.0.LATEST"
+                }
+            ]
         }
     ],
     "namespace": "",
     "sfdcLoginUrl": "https://login.salesforce.com",
     "sourceApiVersion": "48.0",
     "packageAliases": {
-        "crm-shared-timeline": "0Ho2o000000fxXBCAY"
+        "crm-shared-timeline": "0Ho2o000000fxXBCAY",
+        "crm-thread-view": "0Ho7U000000000zSAA"
     }
 }
