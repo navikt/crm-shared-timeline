@@ -137,6 +137,6 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
         return this.row.record.subtitleOverride != null ? (this.expanded === true ? false : true) : false;
     }
     get isCustom() {
-        return this.row.record.sObjectKind === 'Thread__c' || this.row.record.sObjectKind === 'Conversation_Note__c';
+        return this.row.record.useCustomView;
     }
 }
