@@ -1,5 +1,5 @@
 import { LightningElement, api, wire } from 'lwc';
-import { formatDate } from 'c/formattedDate'
+import { formatDate } from 'c/crmThreadViewFormattedDate'
 import getconvnote from '@salesforce/apex/Timeline_CNoteViewController.getConvNote';
 
 export default class TimelineConvNoteViewer extends LightningElement {

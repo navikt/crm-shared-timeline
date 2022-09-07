@@ -2,7 +2,7 @@
     <section role="log" id="scroller" class="slds-box slds-theme_default scroller slds-scrollable_y">
         <template if:true={hasMessages}>
             <template for:each={messages} for:item="message">
-                <c-timeline-messaging-Message-Container message={message} key={message.Id}></c-timeline-messaging-Message-Container>
+                <c-crm-thread-view-message-container message={message} key={message.Id}></c-crm-thread-view-message-container>
             </template>
         </template>
     </section>
