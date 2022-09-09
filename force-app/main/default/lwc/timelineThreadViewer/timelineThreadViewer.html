@@ -1,5 +1,5 @@
 <template>
-    <section role="log" id="scroller" class="slds-box slds-theme_default scroller slds-scrollable_y">
+    <section role="log" class="slds-box slds-theme_default">
         <template if:true={hasMessages}>
             <template for:each={messages} for:item="message">
                 <c-crm-thread-view-message-container message={message} key={message.Id}></c-crm-thread-view-message-container>
