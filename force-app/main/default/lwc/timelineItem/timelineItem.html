@@ -2,7 +2,7 @@
 <template>
     <div if:true={showRow}>
         <li class="row">
-            <span class="slds-assistive-text">{row.record.sObjectKind}</span>
+            <span class="slds-assistive-text">{row.record.sObjectLabel}</span>
             <div class="slds-media">
                 <div class="table" style="width: 100%">
                     <div class="cell cell-left">
@@ -117,6 +117,9 @@
                                     alternative-text="Loading details"
                                 ></lightning-spinner>
                                 <!-- ! Displays expand information useing lightning record view form. Does not support event and task object -->
+                                <template if:true={isCustom}>
+                                    <c-timeline-custom-view record-id={row.record.recordId} record-type={row.record.sObjectKind}></c-timeline-custom-view>
+                                </template>
                                 <lightning-record-view-form
                                     record-id={row.record.recordId}
                                     object-api-name={row.record.sObjectKind}
