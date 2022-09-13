@@ -33,6 +33,8 @@ export default class Timeline extends LightningElement {
 
     @api buttonIsHidden = false;
 
+    @api customEmptySubtitle = '';
+
     @api timestamp = ''; // ! deprecated but cannot be removed
 
     @track data;
@@ -357,5 +359,12 @@ export default class Timeline extends LightningElement {
     get isGrouped() {
         if (this.buttonIsHidden === false && this.filterIsActive === true) return true;
         return false;
+    }
+
+    get emptySubtitle() {
+        return (this.customEmptySubtitle != null && this.customEmptySubtitle.length > 0)
+            ? this.customEmptySubtitle
+            : this.labels.emptySubtitle;
+
     }
 }
