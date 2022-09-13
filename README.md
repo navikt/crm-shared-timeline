@@ -10,6 +10,10 @@ LWC component based on the default Salesforce Activity Timeline, but extended to
 
 ![Timeline](/.img/timeline.png)
 
+## Dependencies
+
+-   [crm-thread-view](https://github.com/navikt/crm-thread-view)
+
 ## Configuration
 
 You can easily configure which objects to be visible in a timeline, and you can even specify which Salesforce app the configuration is intended for.
