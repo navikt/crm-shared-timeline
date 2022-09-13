@@ -34,7 +34,14 @@ insert new PushTopic(Name = 'TIMELINE_' + sobjectName, Query = 'SELECT Id FROM '
 
 ### Limitations
 
--   The Expanded Fields To Display feature does not support all objects. See the User Interface API documentation for a list of supported objects. https://developer.salesforce.com/docs/atlas.en-us.uiapi.meta/uiapi/ui_api_list_view_supported_objects.htm
+-   The Expanded Fields To Display feature does not support all objects. See the User Interface API documentation for a list of supported objects. https://developer.salesforce.com/docs/atlas.en-us.uiapi.meta/uiapi/ui_api_list_view_supported_objects.
+
+## Custom Views
+
+To add a custom view for a child object:
+1. Create a Controller class and Custom component
+1. Update timelineCustomView component to show your custom component conditionaly
+2. Mark 'Custom View' checkbox in your Timeline Child Config.
 
 ## Installation
 

@@ -1,0 +1,8 @@
+<template>
+    <template if:true={isThread}>
+        <c-timeline-thread-viewer record-id={recordId}></c-timeline-thread-viewer>
+    </template>
+    <template if:true={isConversationNote}>
+        <c-timeline-conv-note-viewer record-id={recordId}></c-timeline-conv-note-viewer>
+    </template>
+</template>

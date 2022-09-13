@@ -76,7 +76,7 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
     }
 
     get isExpandable() {
-        return this.expandedFieldsToDisplay.length > 0 ? true : false;
+        return this.expandedFieldsToDisplay.length > 0 || this.isCustom ? true : false;
     }
 
     itemLevelExpandCheck() {
@@ -135,5 +135,8 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
 
     get isOverride() {
         return this.row.record.subtitleOverride != null ? (this.expanded === true ? false : true) : false;
+    }
+    get isCustom() {
+        return this.row.record.useCustomView;
     }
 }
