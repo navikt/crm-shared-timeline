@@ -47,7 +47,7 @@ export default class TimelineNewObject extends NavigationMixin(LightningElement)
                 state: {
                     nooverride: override,
                     recordTypeId: row.Timeline_Child__r.CreateableObject_RecordType__c,
-                    navigationLocation: 'LOOKUP',
+                    navigationLocation: 'RELATED_LIST',
                     useRecordTypeCheck: 1,
                     defaultFieldValues: helper.getFieldValues(row, this.recordId)
                 }
