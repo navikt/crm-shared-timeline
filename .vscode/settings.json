@@ -28,5 +28,9 @@
         "**/.sfdx": true,
         "**/.vscode": true,
         "**/.idea": true
-    }
+    },
+    "unpackagable.location": "",
+    "scratch.default.permissionsets": [
+        "TimelineDummyData"
+    ]
 }
