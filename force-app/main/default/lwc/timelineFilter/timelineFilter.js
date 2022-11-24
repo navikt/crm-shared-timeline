@@ -103,12 +103,15 @@ export default class TimelineFilter extends LightningElement {
         if (this.filterProperties === undefined) return false;
 
         const values = [];
-        this.filterProperties.forEach(value => {
+        this.filterProperties.forEach((value) => {
             if (value[property] === undefined) return;
-            if (values.map(item => item.value).includes(value[property]) === true) return;
+            if (values.map((item) => item.value).includes(value[property]) === true) return;
             values.push({ label: value[property], value: value[property] });
         });
         if (values.length < 1) return false;
+        values.sort((val1, val2) => {
+            return val1.label.toLowerCase() > val2.label.toLowerCase() ? 1 : -1; //val1 and val2 should never be equal as they are uniquely mapped;
+        });
         return values;
     }
 
