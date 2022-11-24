@@ -73,6 +73,8 @@ install.cmd
 **/deployment_tmp*
 **/dummy-data/*.out/*
 
+#DX-mate
+/dxmate_config
 
 # SFDX
 # ----------------------------------------------------------------------------------------
