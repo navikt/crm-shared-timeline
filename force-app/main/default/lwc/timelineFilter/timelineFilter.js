@@ -10,6 +10,7 @@ export default class TimelineFilter extends LightningElement {
     @api isGrouped;
     @api picklistFilter1Label;
     @api picklistFilter2Label;
+    @api hideMyActivitiesFilter;
     currentUser = userId;
     isActive = false;
     draftFilter = {};
@@ -102,9 +103,9 @@ export default class TimelineFilter extends LightningElement {
         if (this.filterProperties === undefined) return false;
 
         const values = [];
-        this.filterProperties.forEach((value) => {
+        this.filterProperties.forEach(value => {
             if (value[property] === undefined) return;
-            if (values.map((item) => item.value).includes(value[property]) === true) return;
+            if (values.map(item => item.value).includes(value[property]) === true) return;
             values.push({ label: value[property], value: value[property] });
         });
         if (values.length < 1) return false;

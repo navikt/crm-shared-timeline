@@ -68,6 +68,7 @@ export default class Timeline extends LightningElement {
     @api filterIsActive = false;
     @api picklistFilter1Label;
     @api picklistFilter2Label;
+    @api hideMyActivitiesFilter = false;
     @track filterProperties;
     masterData;
 
@@ -232,7 +233,7 @@ export default class Timeline extends LightningElement {
         getTotalRecords({
             recordId: this.parentRecordId,
             configId: this.configId
-        }).then((result) => {
+        }).then(result => {
             this.maxRecords = result;
         });
     }
@@ -278,7 +279,7 @@ export default class Timeline extends LightningElement {
     @wire(getTimelineObjects, { recordId: '$parentRecordId', configId: '$configId' })
     deWireObjects(result) {
         if (result.data) {
-            result.data.forEach((obj) => {
+            result.data.forEach(obj => {
                 if (obj.Timeline_Child__r.AutomaticRefresh__c) {
                     this.initSubscription(obj.Timeline_Child__r.AutomaticRefresh_PushTopicName__c);
                 }
@@ -287,7 +288,7 @@ export default class Timeline extends LightningElement {
     }
 
     initSubscription(topicName) {
-        const messageCallback = function (response) {
+        const messageCallback = function(response) {
             this.refreshData();
         };
         subscribe('/topic/' + topicName + '?CreatedBy=' + userId, -1, messageCallback.bind(this));
@@ -362,9 +363,8 @@ export default class Timeline extends LightningElement {
     }
 
     get emptySubtitle() {
-        return (this.customEmptySubtitle != null && this.customEmptySubtitle.length > 0)
+        return this.customEmptySubtitle != null && this.customEmptySubtitle.length > 0
             ? this.customEmptySubtitle
             : this.labels.emptySubtitle;
-
     }
 }
