@@ -10,6 +10,7 @@ export default class TimelineFilter extends LightningElement {
     @api isGrouped;
     @api picklistFilter1Label;
     @api picklistFilter2Label;
+    @api hideMyActivitiesFilter;
     currentUser = userId;
     isActive = false;
     draftFilter = {};
@@ -108,6 +109,9 @@ export default class TimelineFilter extends LightningElement {
             values.push({ label: value[property], value: value[property] });
         });
         if (values.length < 1) return false;
+        values.sort((val1, val2) => {
+            return val1.label.toLowerCase() > val2.label.toLowerCase() ? 1 : -1; //val1 and val2 should never be equal as they are uniquely mapped;
+        });
         return values;
     }
 

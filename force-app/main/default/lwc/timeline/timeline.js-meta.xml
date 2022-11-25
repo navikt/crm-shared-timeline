@@ -25,6 +25,7 @@
             <property name="filterIsActive" type="Boolean" label="Show filter button" description="Show/hide filter button" default="false" />
             <property name="picklistFilter1Label" type="String" label="Label for picklist filter #1" />
             <property name="picklistFilter2Label" type="String" label="Label for picklist filter #2" />
+            <property name="hideMyActivitiesFilter" type="Boolean" label="Hide my activities filter" default="false" />
             <supportedFormFactors>
                 <supportedFormFactor type="Small" />
                 <supportedFormFactor type="Large" />
