@@ -79,6 +79,14 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
         return this.expandedFieldsToDisplay.length > 0 || this.isCustom ? true : false;
     }
 
+    get assistiveSubtitle(){
+        const ASSISTIVE_TEXT_LENGTH = 75;
+        let tmp = new DOMParser().parseFromString(this.row.record.subtitleOverride, 'text/html');
+        let textContent = tmp.body.textContent || "";
+        
+        return textContent.length > ASSISTIVE_TEXT_LENGTH ? textContent.slice(0, ASSISTIVE_TEXT_LENGTH-2) + '&hellip;': textContent;
+    }
+
     itemLevelExpandCheck() {
         if (this.isExpandable && this.row.record.allowAutoOpen && this.groupLevelExpandCheck(this.index)) {
             this.toggleExpand();

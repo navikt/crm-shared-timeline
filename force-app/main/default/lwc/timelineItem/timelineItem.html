@@ -99,7 +99,9 @@
                                     >{row.record.relatedUser}</a
                                 >
                                 <span if:false={isRelatedUserAUser}>{row.record.relatedUser}</span>
+                                <span if:true={isOverride} class="slds-assistive-text">{assistiveSubtitle}</span>
                                 <lightning-formatted-rich-text
+                                    aria-hidden="true"
                                     class="slds-line-clamp_small"
                                     value={row.record.subtitleOverride}
                                     if:true={isOverride}
