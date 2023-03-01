@@ -1,3 +1,10 @@
+/**
+ * @description       :
+ * @author            : mamikals
+ * @group             :
+ * @last modified on  : 01-03-2023
+ * @last modified by  : mamikals
+ **/
 public with sharing class Timeline_Helper {
     private static final Boolean IS_NORWEGIAN = UserInfo.getLanguage() == 'no';
     private static final List<String> MONTH_NAME = new List<String>{
@@ -125,11 +132,12 @@ public with sharing class Timeline_Helper {
         Integer amountOfMonthsToLoad,
         Integer iteration,
         Integer totalRecords,
-        List<Timeline_Model> activity
+        List<Timeline_Model> activity,
+        Boolean includeSize
     ) {
         activity.sort();
 
-        List<Timeline_ModelList> activityDivided = Timeline_Helper.getRecordsDividedIntoMonths(activity);
+        List<Timeline_ModelList> activityDivided = Timeline_Helper.getRecordsDividedIntoMonths(activity, includeSize);
         Integer currentAmount = countRecords(activityDivided);
         Integer amountOfSObjectsToQuery = sObjectsToQuery.size();
         Integer queriesScheduled = amountOfSObjectsToQuery + 4; // getting the overdue records later + fetching owners (1 query) and contacts (1 query) for all records, twice (4 queries)
@@ -164,7 +172,8 @@ public with sharing class Timeline_Helper {
                 amountOfMonthsToLoad,
                 iteration + 1,
                 totalRecords,
-                newActivities
+                newActivities,
+                includeSize
             );
         }
 
@@ -192,7 +201,7 @@ public with sharing class Timeline_Helper {
         return newAmount;
     }
 
-    public static List<Timeline_ModelList> getRecordsDividedIntoMonths(List<Timeline_Model> data) {
+    public static List<Timeline_ModelList> getRecordsDividedIntoMonths(List<Timeline_Model> data, Boolean includeSize) {
         Map<String, List<Timeline_Model>> modelsSeparatedByMonth = new Map<String, List<Timeline_Model>>();
 
         for (Timeline_Model model : data) {
@@ -213,6 +222,8 @@ public with sharing class Timeline_Helper {
         for (String key : modelsSeparatedByMonth.keySet()) {
             Datetime d = modelsSeparatedByMonth.get(key)[0].record.dateValueDb;
             String name = getMonth(d.month()) + ' ' + d.year();
+            if (includeSize == true)
+                name += ' (' + modelsSeparatedByMonth.get(key).size() + ')';
             results.add(new Timeline_ModelList(key, name, modelsSeparatedByMonth.get(key), true));
         }
 

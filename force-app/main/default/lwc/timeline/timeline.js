@@ -26,6 +26,7 @@ export default class Timeline extends LightningElement {
 
     @api amountOfMonths = 3;
     @api amountOfMonthsToLoad = 3;
+    @api amountOfMonthsToOpen = 2;
     @api amountOfRecords = 3;
     @api amountOfRecordsToLoad = 3;
     @api amountOfRecordsToOpen;
@@ -69,6 +70,7 @@ export default class Timeline extends LightningElement {
     @api picklistFilter1Label;
     @api picklistFilter2Label;
     @api hideMyActivitiesFilter = false;
+    @api includeAmountInTitle = false;
     @track filterProperties;
     masterData;
 
@@ -111,7 +113,8 @@ export default class Timeline extends LightningElement {
         recordId: '$parentRecordId',
         amountOfMonths: '$amountOfMonths',
         amountOfMonthsToLoad: '$amountOfMonthsToLoad',
-        configId: '$configId'
+        configId: '$configId',
+        includeSize: '$includeAmountInTitle'
     })
     deWire(result) {
         this.deWireResult = result;
@@ -192,8 +195,8 @@ export default class Timeline extends LightningElement {
             return;
         }
 
-        for (let index = 0; index < 4; index++) {
-            if (data[index] && this.openAccordionSections.length < 4) {
+        for (let index = 0; index < this.amountOfMonthsToOpen + 2; index++) {
+            if (data[index] && this.openAccordionSections.length < this.amountOfMonthsToOpen + 2) {
                 const element = data[index];
 
                 if (element.id != this.labels.overdue && element.id != this.labels.upcoming) {
@@ -233,7 +236,7 @@ export default class Timeline extends LightningElement {
         getTotalRecords({
             recordId: this.parentRecordId,
             configId: this.configId
-        }).then(result => {
+        }).then((result) => {
             this.maxRecords = result;
         });
     }
@@ -279,7 +282,7 @@ export default class Timeline extends LightningElement {
     @wire(getTimelineObjects, { recordId: '$parentRecordId', configId: '$configId' })
     deWireObjects(result) {
         if (result.data) {
-            result.data.forEach(obj => {
+            result.data.forEach((obj) => {
                 if (obj.Timeline_Child__r.AutomaticRefresh__c) {
                     this.initSubscription(obj.Timeline_Child__r.AutomaticRefresh_PushTopicName__c);
                 }
@@ -288,7 +291,7 @@ export default class Timeline extends LightningElement {
     }
 
     initSubscription(topicName) {
-        const messageCallback = function(response) {
+        const messageCallback = function (response) {
             this.refreshData();
         };
         subscribe('/topic/' + topicName + '?CreatedBy=' + userId, -1, messageCallback.bind(this));
