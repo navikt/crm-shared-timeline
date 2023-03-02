@@ -1,3 +1,10 @@
+/**
+ * @description       :
+ * @author            : mamikals
+ * @group             :
+ * @last modified on  : 01-03-2023
+ * @last modified by  : mamikals
+ **/
 @isTest
 private without sharing class Timeline_HelperTest {
     @TestSetup
@@ -93,7 +100,16 @@ private without sharing class Timeline_HelperTest {
         System.assertEquals(2, activity.size(), 'should only have found 2 records before test');
 
         Test.StartTest();
-        activity = Timeline_Helper.reloadUntilDataFetched(sObjectsToQuery, recordId, 5, 3, 2, totalRecords, activity);
+        activity = Timeline_Helper.reloadUntilDataFetched(
+            sObjectsToQuery,
+            recordId,
+            5,
+            3,
+            2,
+            totalRecords,
+            activity,
+            true
+        );
         Test.StopTest();
 
         System.assertEquals(3, activity.size(), 'should have found all three records after test');
@@ -118,7 +134,16 @@ private without sharing class Timeline_HelperTest {
         System.assertEquals(2, activity.size(), 'should only have found 2 records before test');
 
         Test.StartTest();
-        activity = Timeline_Helper.reloadUntilDataFetched(sObjectsToQuery, recordId, 5, 3, 2, totalRecords, activity);
+        activity = Timeline_Helper.reloadUntilDataFetched(
+            sObjectsToQuery,
+            recordId,
+            5,
+            3,
+            2,
+            totalRecords,
+            activity,
+            true
+        );
         Test.StopTest();
 
         System.assertEquals(
@@ -147,7 +172,16 @@ private without sharing class Timeline_HelperTest {
         System.assertEquals(2, activity.size(), 'should only have found 2 records before test');
 
         Test.StartTest();
-        activity = Timeline_Helper.reloadUntilDataFetched(sObjectsToQuery, recordId, 5, 3, 2, totalRecords, activity);
+        activity = Timeline_Helper.reloadUntilDataFetched(
+            sObjectsToQuery,
+            recordId,
+            5,
+            3,
+            2,
+            totalRecords,
+            activity,
+            true
+        );
         Test.StopTest();
 
         System.assertEquals(
@@ -164,7 +198,7 @@ private without sharing class Timeline_HelperTest {
         List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(parentSObjectType, false, null);
 
         List<Timeline_Model> activity = Timeline_Helper.getActivity(sObjectsToQuery, recordId, 3);
-        List<Timeline_ModelList> activityDivided = Timeline_Helper.getRecordsDividedIntoMonths(activity);
+        List<Timeline_ModelList> activityDivided = Timeline_Helper.getRecordsDividedIntoMonths(activity, true);
 
         Test.StartTest();
         Integer results = Timeline_Helper.countRecords(activityDivided);
@@ -202,7 +236,7 @@ private without sharing class Timeline_HelperTest {
         System.assertEquals(2, data.size(), 'should be two tasks');
 
         Test.StartTest();
-        List<Timeline_ModelList> actual = Timeline_Helper.getRecordsDividedIntoMonths(data);
+        List<Timeline_ModelList> actual = Timeline_Helper.getRecordsDividedIntoMonths(data, true);
         Test.StopTest();
 
         System.assertEquals(
@@ -219,7 +253,7 @@ private without sharing class Timeline_HelperTest {
         List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(parentSObjectType, false, null);
 
         List<Timeline_Model> activity = Timeline_Helper.getActivity(sObjectsToQuery, recordId, 3);
-        List<Timeline_ModelList> activityDivided = Timeline_Helper.getRecordsDividedIntoMonths(activity);
+        List<Timeline_ModelList> activityDivided = Timeline_Helper.getRecordsDividedIntoMonths(activity, true);
         Timeline_ModelList upcoming = Timeline_Helper.getUpcomingActivity(activity);
         Timeline_ModelList overdue = Timeline_Helper.getOverdueActivity(recordId, parentSObjectType, sObjectsToQuery);
 
@@ -237,7 +271,7 @@ private without sharing class Timeline_HelperTest {
         List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(parentSObjectType, false, null);
 
         List<Timeline_Model> activity = Timeline_Helper.getActivity(sObjectsToQuery, recordId, 3);
-        List<Timeline_ModelList> activityDivided = Timeline_Helper.getRecordsDividedIntoMonths(activity);
+        List<Timeline_ModelList> activityDivided = Timeline_Helper.getRecordsDividedIntoMonths(activity, true);
         Timeline_ModelList upcoming = Timeline_Helper.getUpcomingActivity(activity);
         Timeline_ModelList overdue = Timeline_Helper.getOverdueActivity(recordId, parentSObjectType, sObjectsToQuery);
 
@@ -258,7 +292,7 @@ private without sharing class Timeline_HelperTest {
         List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(parentSObjectType, false, null);
 
         List<Timeline_Model> activity = Timeline_Helper.getActivity(sObjectsToQuery, recordId, 3);
-        List<Timeline_ModelList> activityDivided = Timeline_Helper.getRecordsDividedIntoMonths(activity);
+        List<Timeline_ModelList> activityDivided = Timeline_Helper.getRecordsDividedIntoMonths(activity, true);
         Timeline_ModelList upcoming = Timeline_Helper.getUpcomingActivity(activity);
         Timeline_ModelList overdue = Timeline_Helper.getOverdueActivity(recordId, parentSObjectType, sObjectsToQuery);
 
@@ -502,7 +536,7 @@ private without sharing class Timeline_HelperTest {
         List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(parentSObjectType, false, null);
 
         List<Timeline_Model> activity = Timeline_Helper.getActivity(sObjectsToQuery, recordId, 3);
-        List<Timeline_ModelList> data = Timeline_Helper.getRecordsDividedIntoMonths(activity);
+        List<Timeline_ModelList> data = Timeline_Helper.getRecordsDividedIntoMonths(activity, true);
 
         for (Timeline_ModelList modelList : data) {
             for (Timeline_Model model : modelList.models) {

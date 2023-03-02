@@ -1,3 +1,10 @@
+/**
+ * @description       :
+ * @author            : mamikals
+ * @group             :
+ * @last modified on  : 01-03-2023
+ * @last modified by  : mamikals
+ **/
 public with sharing class Timeline_Controller {
     // ------------------------------------------------------------- //
     // ---------------------- getTotalRecords ---------------------- //
@@ -8,7 +15,8 @@ public with sharing class Timeline_Controller {
         String recordId,
         Integer amountOfMonths,
         Integer amountOfMonthsToLoad,
-        String configId
+        String configId,
+        Boolean includeSize
     ) {
         System.debug(
             '\n' +
@@ -37,12 +45,13 @@ public with sharing class Timeline_Controller {
             amountOfMonthsToLoad,
             2,
             totalRecords,
-            activity
+            activity,
+            includeSize
         );
         activity = Timeline_Helper.getOwnerAndContactNames(activity);
         activity.sort();
 
-        List<Timeline_ModelList> activityDivided = Timeline_Helper.getRecordsDividedIntoMonths(activity);
+        List<Timeline_ModelList> activityDivided = Timeline_Helper.getRecordsDividedIntoMonths(activity, includeSize);
         Timeline_ModelList upcoming = Timeline_Helper.getUpcomingActivity(activity);
         Timeline_ModelList overdue = Timeline_Helper.getOverdueActivity(recordId, parentSObjectType, sObjectsToQuery);
 
