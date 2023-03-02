@@ -80,11 +80,11 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
     }
 
     get assistiveSubtitle(){
-        const ASSISTIVE_TEXT_LENGTH = 75;
+        const ASSISTIVE_TEXT_LENGTH = 150;
         let tmp = new DOMParser().parseFromString(this.row.record.subtitleOverride, 'text/html');
         let textContent = tmp.body.textContent || "";
         
-        return textContent.length > ASSISTIVE_TEXT_LENGTH ? textContent.slice(0, ASSISTIVE_TEXT_LENGTH-2) + '&hellip;': textContent;
+        return textContent.length > ASSISTIVE_TEXT_LENGTH ? textContent.slice(0, ASSISTIVE_TEXT_LENGTH) + '...': textContent;
     }
 
     itemLevelExpandCheck() {
