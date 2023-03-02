@@ -137,7 +137,7 @@ public with sharing class Timeline_Helper {
     ) {
         activity.sort();
 
-        List<Timeline_ModelList> activityDivided = Timeline_Helper.getRecordsDividedIntoMonths(activity, includeSize);
+        List<Timeline_ModelList> activityDivided = getRecordsDividedIntoMonths(activity, includeSize);
         Integer currentAmount = countRecords(activityDivided);
         Integer amountOfSObjectsToQuery = sObjectsToQuery.size();
         Integer queriesScheduled = amountOfSObjectsToQuery + 4; // getting the overdue records later + fetching owners (1 query) and contacts (1 query) for all records, twice (4 queries)
