@@ -104,14 +104,12 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
             }
         });
         trackAmplitudeEvent('Timeline Event', {type: 'Navigate to record'});
-       console.log('Navigate to record');
     }
 
     toggleExpand() {
         this.expanded = !this.expanded;
         this.loadingDetails = this.expanded;
         trackAmplitudeEvent('Timeline Event', {type: 'Toggle expand section details'});
-        console.log('Toggle expand section details');
     }
 
     detailsLoaded() {

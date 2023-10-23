@@ -21,7 +21,6 @@ export default class TimelineFilter extends LightningElement {
         this.isActive ? (this.isActive = false) : (this.isActive = true);
         if (this.isActive){
             trackAmplitudeEvent('Timeline Event', {type: 'Click on filter button'});
-            console.log('Click on filter button');
         }
     }
 
@@ -29,14 +28,12 @@ export default class TimelineFilter extends LightningElement {
         this.updateFilter();
         this.toggle();
         trackAmplitudeEvent('Timeline Event', {type: 'Save filter changes'});
-        console.log('Save filter changes');
     }
 
     handleCancel() {
         this.draftFilter = {};
         this.toggle();
         trackAmplitudeEvent('Timeline Event', {type: 'Cancel filtering'});
-        console.log('Cancel filtering');
     }
 
     handleReset() {
@@ -44,13 +41,11 @@ export default class TimelineFilter extends LightningElement {
         this.filter = {};
         this.updateFilter();
         trackAmplitudeEvent('Timeline Event', {type: 'Reset filtering'});
-        console.log('Reset filtering');
     }
 
     handleChange(e) {
         this.draftFilter[e.target.dataset.id] = e.detail.value;
         trackAmplitudeEvent('Timeline Event', {type: 'Changing filters'});
-        console.log('Changing filters');
     }
 
     handleCheckboxChange(e) {

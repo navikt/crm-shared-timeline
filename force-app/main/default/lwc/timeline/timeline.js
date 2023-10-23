@@ -305,7 +305,6 @@ export default class Timeline extends LightningElement {
         this.loading = true;
         this.amountOfMonths = this.getMonthsToLoad();
         trackAmplitudeEvent('Timeline Event', {type: 'Load more (months)'});
-        console.log('Load more (months)');
     }
 
     refreshData() {
@@ -316,14 +315,12 @@ export default class Timeline extends LightningElement {
         return refreshApex(this.deWireResult).then(() => {
             this.loading = false;
             trackAmplitudeEvent('Timeline Event', {type: 'Refresh list'});
-            console.log('Refresh list');
         });
     }
 
     collapseAccordions() {
         this.openAccordionSections = this.collapsed ? this.allSections : [];
         trackAmplitudeEvent('Timeline Event', {type: 'Collapse/open accordions'});
-       console.log('Collapse/open accordions');
     }
 
     handleSectionToggle(event) {
@@ -339,7 +336,6 @@ export default class Timeline extends LightningElement {
             this.collapsed = false;
         }
        trackAmplitudeEvent('Timeline Event', {type: 'Toggle expand section'});
-       console.log('Toggle expand section');
     }
 
     handleFilter(e) {
