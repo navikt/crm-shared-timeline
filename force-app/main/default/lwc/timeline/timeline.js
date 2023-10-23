@@ -5,11 +5,11 @@ import LANG from '@salesforce/i18n/lang';
 import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 import userId from '@salesforce/user/Id';
 import { subscribe } from 'lightning/empApi';
-
 import MOMENT_JS from '@salesforce/resourceUrl/moment';
 import getTimelineData from '@salesforce/apex/Timeline_Controller.getTimelineData';
 import getTotalRecords from '@salesforce/apex/Timeline_Controller.getTotalRecords';
 import getTimelineObjects from '@salesforce/apex/Timeline_Controller.getTimelineObjects';
+import {trackAmplitudeEvent} from 'c/amplitude';
 
 import labels from './labels';
 
@@ -71,6 +71,8 @@ export default class Timeline extends LightningElement {
     @api picklistFilter2Label;
     @api hideMyActivitiesFilter = false;
     @api includeAmountInTitle = false;
+    @api logEvent = false;
+    
     @track filterProperties;
     masterData;
 
@@ -161,7 +163,6 @@ export default class Timeline extends LightningElement {
                         amount++;
                     }
                 }
-
                 newDataCopy.splice(this.amountOfMonths + amount);
             }
 
@@ -204,7 +205,6 @@ export default class Timeline extends LightningElement {
                 }
             }
         }
-
         this.accordionsAreSet = true;
     }
 
@@ -304,6 +304,8 @@ export default class Timeline extends LightningElement {
     loadMore(event) {
         this.loading = true;
         this.amountOfMonths = this.getMonthsToLoad();
+        trackAmplitudeEvent('Timeline Event', {type: 'Load more (months)'});
+        console.log('Load more (months)');
     }
 
     refreshData() {
@@ -313,11 +315,15 @@ export default class Timeline extends LightningElement {
 
         return refreshApex(this.deWireResult).then(() => {
             this.loading = false;
+            trackAmplitudeEvent('Timeline Event', {type: 'Refresh list'});
+            console.log('Refresh list');
         });
     }
 
     collapseAccordions() {
         this.openAccordionSections = this.collapsed ? this.allSections : [];
+        trackAmplitudeEvent('Timeline Event', {type: 'Collapse/open accordions'});
+       console.log('Collapse/open accordions');
     }
 
     handleSectionToggle(event) {
@@ -332,6 +338,8 @@ export default class Timeline extends LightningElement {
             this.collapseText = this.labels.collapse;
             this.collapsed = false;
         }
+       trackAmplitudeEvent('Timeline Event', {type: 'Toggle expand section'});
+       console.log('Toggle expand section');
     }
 
     handleFilter(e) {

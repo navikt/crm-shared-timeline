@@ -25,10 +25,12 @@ export default class TimelineThreadViewer extends LightningElement {
             this.hasMessages = true;
         }
     }
+
     @wire(getRecord, {
         recordId: '$recordId',
         fields: '$recordWireFields'
     })
+
     deWireRecord(result) {
         if (result.data) {
             this.setJournalForing(getFieldValue(result.data, this.recordWireFields[0]));
@@ -36,6 +38,7 @@ export default class TimelineThreadViewer extends LightningElement {
             //Something went terribly wrong
         }
     }
+    
     setJournalForing(text){
         let parser = new DOMParser();
         const doc = parser.parseFromString(text, 'text/html');

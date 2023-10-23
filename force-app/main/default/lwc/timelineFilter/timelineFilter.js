@@ -4,6 +4,7 @@ import LANG from '@salesforce/i18n/lang';
 import save from '@salesforce/label/c.Timeline_Save';
 import reset from '@salesforce/label/c.Timeline_Reset';
 import cancel from '@salesforce/label/c.Timeline_Cancel';
+import {trackAmplitudeEvent} from 'c/amplitude';
 
 export default class TimelineFilter extends LightningElement {
     @api filterProperties;
@@ -18,26 +19,38 @@ export default class TimelineFilter extends LightningElement {
 
     toggle() {
         this.isActive ? (this.isActive = false) : (this.isActive = true);
+        if (this.isActive){
+            trackAmplitudeEvent('Timeline Event', {type: 'Click on filter button'});
+            console.log('Click on filter button');
+        }
     }
 
     handleSave() {
         this.updateFilter();
         this.toggle();
+        trackAmplitudeEvent('Timeline Event', {type: 'Save filter changes'});
+        console.log('Save filter changes');
     }
 
     handleCancel() {
         this.draftFilter = {};
         this.toggle();
+        trackAmplitudeEvent('Timeline Event', {type: 'Cancel filtering'});
+        console.log('Cancel filtering');
     }
 
     handleReset() {
         this.draftFilter = {};
         this.filter = {};
         this.updateFilter();
+        trackAmplitudeEvent('Timeline Event', {type: 'Reset filtering'});
+        console.log('Reset filtering');
     }
 
     handleChange(e) {
         this.draftFilter[e.target.dataset.id] = e.detail.value;
+        trackAmplitudeEvent('Timeline Event', {type: 'Changing filters'});
+        console.log('Changing filters');
     }
 
     handleCheckboxChange(e) {
@@ -46,7 +59,6 @@ export default class TimelineFilter extends LightningElement {
 
     updateFilter() {
         this.filter = { ...this.filter, ...this.draftFilter };
-
         const event = new CustomEvent('filterchange', { detail: this.filter });
         this.dispatchEvent(event);
     }

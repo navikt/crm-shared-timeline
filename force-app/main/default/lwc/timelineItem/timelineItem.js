@@ -1,6 +1,6 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
-
+import {trackAmplitudeEvent} from 'c/amplitude';
 export default class TimelineItem extends NavigationMixin(LightningElement) {
     @api row;
     @api recordId;
@@ -103,11 +103,15 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
                 actionName: 'view'
             }
         });
+        trackAmplitudeEvent('Timeline Event', {type: 'Navigate to record'});
+       console.log('Navigate to record');
     }
 
     toggleExpand() {
         this.expanded = !this.expanded;
         this.loadingDetails = this.expanded;
+        trackAmplitudeEvent('Timeline Event', {type: 'Toggle expand section details'});
+        console.log('Toggle expand section details');
     }
 
     detailsLoaded() {

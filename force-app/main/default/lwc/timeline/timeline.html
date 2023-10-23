@@ -70,13 +70,13 @@
         <div if:true={loading} class="slds-scrollable" style={loadingStyle}>
             <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
         </div>
-        <div if:true={error} class="slds-m-top_large">
+        <div if:true={error} class="slds-var-m-top_large">
             <div class="slds-text-heading_large slds-align_absolute-center">{labels.errorTitle}</div>
-            <div class="slds-text-color_destructive slds-align_absolute-center slds-m-around_x-large">{errorMsg}</div>
+            <div class="slds-text-color_destructive slds-align_absolute-center slds-var-m-around_x-large">{errorMsg}</div>
         </div>
-        <div if:true={empty} class="slds-m-top_large">
+        <div if:true={empty} class="slds-var-m-top_large">
             <div class="slds-text-heading_large slds-align_absolute-center">{labels.emptyTitle}</div>
-            <div class="slds-text-heading_small slds-align_absolute-center slds-m-around_x-large">{emptySubtitle}</div>
+            <div class="slds-text-heading_small slds-align_absolute-center slds-var-m-around_x-large">{emptySubtitle}</div>
         </div>
 
         <!-- ************************************************************************ -->
@@ -88,7 +88,7 @@
             </div>
             <div
                 if:false={hasMoreDataToLoad}
-                class="slds-align_absolute-center slds-text-color_weak slds-p-top_medium slds-p-bottom_xx-small"
+                class="slds-align_absolute-center slds-text-color_weak slds-var-p-top_medium slds-var-p-bottom_xx-small"
             ></div>
         </div>
     </lightning-card>
