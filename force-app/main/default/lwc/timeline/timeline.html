@@ -27,6 +27,7 @@
                     picklist-filter-2-label={picklistFilter2Label}
                     hide-my-activities-filter={hideMyActivitiesFilter}
                     onfilterchange={handleFilter}
+                    log-event={logEvent}
                 ></c-timeline-filter>
                 <c-timeline-new-object
                     if:true={showCreateRecords}
@@ -58,6 +59,7 @@
                         open-accordion-sections={openAccordionSections}
                         group-index={groupIndex}
                         expand-check={expandCheck}
+                        log-event={logEvent}
                     >
                     </c-timeline-group>
                 </template>

@@ -9,6 +9,7 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
     @api index;
     @api period;
     @api groupLevelExpandCheck;
+    @api logEvent;
 
     expanded = false;
     loadingDetails = false;
@@ -103,13 +104,17 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
                 actionName: 'view'
             }
         });
-        trackAmplitudeEvent('Timeline Event', {type: 'Navigate to record'});
+        if (this.logEvent) {
+            trackAmplitudeEvent('Timeline Event', {type: 'Navigate to record'});
+        }
     }
 
     toggleExpand() {
         this.expanded = !this.expanded;
         this.loadingDetails = this.expanded;
-        trackAmplitudeEvent('Timeline Event', {type: 'Toggle expand section details'});
+        if (this.logEvent) {
+            trackAmplitudeEvent('Timeline Event', {type: 'Toggle expand section details'});
+        }
     }
 
     detailsLoaded() {

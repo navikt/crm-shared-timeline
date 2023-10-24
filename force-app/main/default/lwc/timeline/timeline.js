@@ -9,9 +9,8 @@ import MOMENT_JS from '@salesforce/resourceUrl/moment';
 import getTimelineData from '@salesforce/apex/Timeline_Controller.getTimelineData';
 import getTotalRecords from '@salesforce/apex/Timeline_Controller.getTotalRecords';
 import getTimelineObjects from '@salesforce/apex/Timeline_Controller.getTimelineObjects';
-import {trackAmplitudeEvent} from 'c/amplitude';
-
 import labels from './labels';
+import {trackAmplitudeEvent} from 'c/amplitude';
 
 export default class Timeline extends LightningElement {
     // config settings
@@ -23,7 +22,6 @@ export default class Timeline extends LightningElement {
     @api recordWireFields;
     @api parentRecordId;
     @api timelineParentField = 'Id'; //Determine which field to use ase the timeline parent record id
-
     @api amountOfMonths = 3;
     @api amountOfMonthsToLoad = 3;
     @api amountOfMonthsToOpen = 2;
@@ -31,38 +29,31 @@ export default class Timeline extends LightningElement {
     @api amountOfRecordsToLoad = 3;
     @api amountOfRecordsToOpen;
     @api configId = '';
-
     @api buttonIsHidden = false;
-
     @api customEmptySubtitle = '';
-
     @api timestamp = ''; // ! deprecated but cannot be removed
+    @api logEvent = false;
 
     @track data;
     @track deWireResult;
     @track overdueData;
-
     @track recordsLoaded = 0;
     @track maxRecords = 0;
+    @track openAccordionSections = [labels.overdue, labels.upcoming];
+    @track allSections = [];
+    @track labels = labels;
 
     header;
     error = false;
     errorMsg;
     empty = false;
-
     loading = true;
     finishedLoading = false;
     loadingStyle = 'height:5rem;width:24rem';
-
-    @track openAccordionSections = [labels.overdue, labels.upcoming];
     accordionsAreSet = false;
-    @track allSections = [];
-    @track labels = labels;
-
     collapsed = false;
     collapseIcon = 'utility:justify_text';
     collapseText = labels.collapse;
-
     isRendered = false;
 
     /******** Filter ********/
@@ -71,9 +62,9 @@ export default class Timeline extends LightningElement {
     @api picklistFilter2Label;
     @api hideMyActivitiesFilter = false;
     @api includeAmountInTitle = false;
-    @api logEvent = false;
     
     @track filterProperties;
+
     masterData;
 
     connectedCallback() {
@@ -304,7 +295,9 @@ export default class Timeline extends LightningElement {
     loadMore(event) {
         this.loading = true;
         this.amountOfMonths = this.getMonthsToLoad();
-        trackAmplitudeEvent('Timeline Event', {type: 'Load more (months)'});
+        if (this.logEvent) {
+            trackAmplitudeEvent('Timeline Event', {type: 'Load more (months)'});
+        }
     }
 
     refreshData() {
@@ -314,13 +307,17 @@ export default class Timeline extends LightningElement {
 
         return refreshApex(this.deWireResult).then(() => {
             this.loading = false;
-            trackAmplitudeEvent('Timeline Event', {type: 'Refresh list'});
+            if (this.logEvent) {
+                trackAmplitudeEvent('Timeline Event', {type: 'Refresh list'});
+            }
         });
     }
 
     collapseAccordions() {
         this.openAccordionSections = this.collapsed ? this.allSections : [];
-        trackAmplitudeEvent('Timeline Event', {type: 'Collapse/open accordions'});
+        if (this.logEvent) {
+            trackAmplitudeEvent('Timeline Event', {type: 'Collapse/open accordions'});
+        }
     }
 
     handleSectionToggle(event) {
@@ -335,7 +332,9 @@ export default class Timeline extends LightningElement {
             this.collapseText = this.labels.collapse;
             this.collapsed = false;
         }
-       trackAmplitudeEvent('Timeline Event', {type: 'Toggle expand section'});
+        if(this.logEvent) {
+            trackAmplitudeEvent('Timeline Event', {type: 'Toggle expand section'});
+        }
     }
 
     handleFilter(e) {

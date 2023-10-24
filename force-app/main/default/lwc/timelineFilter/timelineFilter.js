@@ -12,6 +12,8 @@ export default class TimelineFilter extends LightningElement {
     @api picklistFilter1Label;
     @api picklistFilter2Label;
     @api hideMyActivitiesFilter;
+    @api logEvent;
+
     currentUser = userId;
     isActive = false;
     draftFilter = {};
@@ -19,7 +21,7 @@ export default class TimelineFilter extends LightningElement {
 
     toggle() {
         this.isActive ? (this.isActive = false) : (this.isActive = true);
-        if (this.isActive){
+        if (this.isActive && this.logEvent){
             trackAmplitudeEvent('Timeline Event', {type: 'Click on filter button'});
         }
     }
@@ -27,25 +29,33 @@ export default class TimelineFilter extends LightningElement {
     handleSave() {
         this.updateFilter();
         this.toggle();
-        trackAmplitudeEvent('Timeline Event', {type: 'Save filter changes'});
+        if (this.logEvent) {
+            trackAmplitudeEvent('Timeline Event', {type: 'Save filter changes'});
+        }
     }
 
     handleCancel() {
         this.draftFilter = {};
         this.toggle();
-        trackAmplitudeEvent('Timeline Event', {type: 'Cancel filtering'});
+        if (this.logEvent) {
+            trackAmplitudeEvent('Timeline Event', {type: 'Cancel filtering'});
+        }
     }
 
     handleReset() {
         this.draftFilter = {};
         this.filter = {};
         this.updateFilter();
-        trackAmplitudeEvent('Timeline Event', {type: 'Reset filtering'});
+        if (this.logEvent) {
+            trackAmplitudeEvent('Timeline Event', {type: 'Reset filtering'});
+        }
     }
 
     handleChange(e) {
         this.draftFilter[e.target.dataset.id] = e.detail.value;
-        trackAmplitudeEvent('Timeline Event', {type: 'Changing filters'});
+        if (this.logEvent) {
+            trackAmplitudeEvent('Timeline Event', {type: 'Changing filters'});
+        }
     }
 
     handleCheckboxChange(e) {
