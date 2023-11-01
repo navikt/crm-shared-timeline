@@ -10,7 +10,8 @@ import getTimelineData from '@salesforce/apex/Timeline_Controller.getTimelineDat
 import getTotalRecords from '@salesforce/apex/Timeline_Controller.getTotalRecords';
 import getTimelineObjects from '@salesforce/apex/Timeline_Controller.getTimelineObjects';
 import labels from './labels';
-import {trackAmplitudeEvent} from 'c/amplitude';
+import { MessageContext, publish } from 'lightning/messageService';
+import AMPLITUDE_CHANNEL from '@salesforce/messageChannel/amplitude__c';
 
 export default class Timeline extends LightningElement {
     // config settings
@@ -66,6 +67,9 @@ export default class Timeline extends LightningElement {
     @track filterProperties;
 
     masterData;
+
+    @wire(MessageContext)
+    messageContext;
 
     connectedCallback() {
         //getRecord requires field in array
@@ -296,7 +300,11 @@ export default class Timeline extends LightningElement {
         this.loading = true;
         this.amountOfMonths = this.getMonthsToLoad();
         if (this.logEvent) {
-            trackAmplitudeEvent('Timeline Event', {type: 'Load more (months)'});
+            let message = {
+                eventType: 'Timeline',
+                properties: { type: 'Load more (months)' }
+            };
+            publish(this.messageContext, AMPLITUDE_CHANNEL, message);
         }
     }
 
@@ -308,7 +316,11 @@ export default class Timeline extends LightningElement {
         return refreshApex(this.deWireResult).then(() => {
             this.loading = false;
             if (this.logEvent) {
-                trackAmplitudeEvent('Timeline Event', {type: 'Refresh list'});
+                let message = {
+                    eventType: 'Timeline',
+                    properties: { type: 'Refresh list' }
+                };
+                publish(this.messageContext, AMPLITUDE_CHANNEL, message);
             }
         });
     }
@@ -316,7 +328,11 @@ export default class Timeline extends LightningElement {
     collapseAccordions() {
         this.openAccordionSections = this.collapsed ? this.allSections : [];
         if (this.logEvent) {
-            trackAmplitudeEvent('Timeline Event', {type: 'Collapse/open accordions'});
+            let message = {
+                eventType: 'Timeline',
+                properties: { type: 'Collapse/open accordions' }
+            };
+            publish(this.messageContext, AMPLITUDE_CHANNEL, message);
         }
     }
 
@@ -333,7 +349,11 @@ export default class Timeline extends LightningElement {
             this.collapsed = false;
         }
         if(this.logEvent) {
-            trackAmplitudeEvent('Timeline Event', {type: 'Toggle expand section'});
+            let message = {
+                eventType: 'Timeline',
+                properties: { type: 'Toggle expand section' }
+            };
+            publish(this.messageContext, AMPLITUDE_CHANNEL, message);
         }
     }
 

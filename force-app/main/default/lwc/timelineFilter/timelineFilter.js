@@ -1,10 +1,11 @@
-import { LightningElement, api } from 'lwc';
+import { LightningElement, api, wire } from 'lwc';
 import userId from '@salesforce/user/Id';
 import LANG from '@salesforce/i18n/lang';
 import save from '@salesforce/label/c.Timeline_Save';
 import reset from '@salesforce/label/c.Timeline_Reset';
 import cancel from '@salesforce/label/c.Timeline_Cancel';
-import {trackAmplitudeEvent} from 'c/amplitude';
+import { MessageContext, publish } from 'lightning/messageService';
+import AMPLITUDE_CHANNEL from '@salesforce/messageChannel/amplitude__c';
 
 export default class TimelineFilter extends LightningElement {
     @api filterProperties;
@@ -19,10 +20,17 @@ export default class TimelineFilter extends LightningElement {
     draftFilter = {};
     filter = {};
 
+    @wire(MessageContext)
+    messageContext;
+
     toggle() {
         this.isActive ? (this.isActive = false) : (this.isActive = true);
         if (this.isActive && this.logEvent){
-            trackAmplitudeEvent('Timeline Event', {type: 'Click on filter button'});
+            let message = {
+                eventType: 'Timeline',
+                properties: { type: 'Click on filter button' }
+            };
+            publish(this.messageContext, AMPLITUDE_CHANNEL, message);
         }
     }
 
@@ -30,7 +38,11 @@ export default class TimelineFilter extends LightningElement {
         this.updateFilter();
         this.toggle();
         if (this.logEvent) {
-            trackAmplitudeEvent('Timeline Event', {type: 'Save filter changes'});
+            let message = {
+                eventType: 'Timeline',
+                properties: { type: 'Save filter changes' }
+            };
+            publish(this.messageContext, AMPLITUDE_CHANNEL, message);
         }
     }
 
@@ -38,7 +50,11 @@ export default class TimelineFilter extends LightningElement {
         this.draftFilter = {};
         this.toggle();
         if (this.logEvent) {
-            trackAmplitudeEvent('Timeline Event', {type: 'Cancel filtering'});
+            let message = {
+                eventType: 'Timeline',
+                properties: { type: 'Cancel filtering' }
+            };
+            publish(this.messageContext, AMPLITUDE_CHANNEL, message);
         }
     }
 
@@ -47,14 +63,22 @@ export default class TimelineFilter extends LightningElement {
         this.filter = {};
         this.updateFilter();
         if (this.logEvent) {
-            trackAmplitudeEvent('Timeline Event', {type: 'Reset filtering'});
+            let message = {
+                eventType: 'Timeline',
+                properties: { type: 'Reset filtering' }
+            };
+            publish(this.messageContext, AMPLITUDE_CHANNEL, message);
         }
     }
 
     handleChange(e) {
         this.draftFilter[e.target.dataset.id] = e.detail.value;
         if (this.logEvent) {
-            trackAmplitudeEvent('Timeline Event', {type: 'Changing filters'});
+            let message = {
+                eventType: 'Timeline',
+                properties: { type: 'Changing filters' }
+            };
+            publish(this.messageContext, AMPLITUDE_CHANNEL, message);
         }
     }
 
