@@ -1,7 +1,6 @@
-import { LightningElement, api, wire } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
-import { MessageContext, publish } from 'lightning/messageService';
-import AMPLITUDE_CHANNEL from '@salesforce/messageChannel/amplitude__c';
+import { publishToAmplitude } from 'c/amplitude';
 
 export default class TimelineItem extends NavigationMixin(LightningElement) {
     @api row;
@@ -16,10 +15,6 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
     expanded = false;
     loadingDetails = false;
     timelineColor = 'slds-timeline__item_expandable';
-
-    @wire(MessageContext)
-    messageContext;
-
 
     connectedCallback() {
         this.itemLevelExpandCheck();
@@ -111,11 +106,7 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
             }
         });
         if (this.logEvent) {
-            let message = {
-                eventType: 'Timeline',
-                properties: { type: 'Navigate to record' }
-            };
-            publish(this.messageContext, AMPLITUDE_CHANNEL, message);
+            publishToAmplitude('Timeline', { type: 'Navigate to record' });
         }
     }
 
@@ -123,11 +114,7 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
         this.expanded = !this.expanded;
         this.loadingDetails = this.expanded;
         if (this.logEvent) {
-            let message = {
-                eventType: 'Timeline',
-                properties: { type: 'Toggle expand section details' }
-            };
-            publish(this.messageContext, AMPLITUDE_CHANNEL, message);
+            publishToAmplitude('Timeline', { type: 'Toggle expand section details' });
         }
     }
 
