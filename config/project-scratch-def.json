@@ -3,57 +3,21 @@
     "edition": "Enterprise",
     "release": "Current",
     "adminEmail": "fakeemail@nav.no.invalid",
-    "features": [
-        "Sites",
-        "ForceComPlatform",
-        "Communities",
-        "CustomerCommunity",
-        "CustomerCommunityPlus",
-        "PersonAccounts",
-        "ProcessBuilder",
-        "Knowledge",
-        "API",
-        "ServiceCloud",
-        "LiveAgent",
-        "LightningServiceConsole",
-        "FIELDSERVICE:1"
-    ],
+    "features": ["LiveAgent"],
     "country": "NO",
     "language": "en_US",
     "settings": {
-        "communitiesSettings": {
-            "enableNetworksEnabled": true
-        },
         "lightningExperienceSettings": {
             "enableS1DesktopEnabled": true
-        },
-        "accountSettings": {
-            "enableRelateContactToMultipleAccounts": true
-        },
-        "knowledgeSettings": {
-            "enableKnowledge": true,
-            "enableLightningKnowledge": true
         },
         "languageSettings": {
             "enableTranslationWorkbench": true
         },
+        "emailAdministrationSettings": {
+            "enableEnhancedEmailEnabled": true
+        },
         "nameSettings": {
             "enableMiddleName": true
-        },
-        "liveAgentSettings": {
-            "enableLiveAgent": true
-        },
-        "omniChannelSettings": {
-            "enableOmniChannel": true
-        },
-        "fieldServiceSettings": {
-            "fieldServiceOrgPref": true,
-            "doesShareSaParentWoWithAr": false,
-            "doesShareSaWithAr": false,
-            "enableWorkOrders": true,
-            "isGeoCodeSyncEnabled": false,
-            "isLocationHistoryEnabled": false,
-            "fieldServiceNotificationsOrgPref": true
         }
     }
 }

@@ -8,7 +8,6 @@ export default class TimelineGroup extends LightningElement {
     @api openAccordionSections;
     @api expandCheck;
     @api groupIndex;
-    @api logEvent;
 
     amount;
     empty = false;
