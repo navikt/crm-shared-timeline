@@ -4,6 +4,7 @@ import LANG from '@salesforce/i18n/lang';
 import save from '@salesforce/label/c.Timeline_Save';
 import reset from '@salesforce/label/c.Timeline_Reset';
 import cancel from '@salesforce/label/c.Timeline_Cancel';
+import { publishToAmplitude } from 'c/amplitude';
 
 export default class TimelineFilter extends LightningElement {
     @api filterProperties;
@@ -11,6 +12,8 @@ export default class TimelineFilter extends LightningElement {
     @api picklistFilter1Label;
     @api picklistFilter2Label;
     @api hideMyActivitiesFilter;
+    @api logEvent;
+
     currentUser = userId;
     isActive = false;
     draftFilter = {};
@@ -18,26 +21,41 @@ export default class TimelineFilter extends LightningElement {
 
     toggle() {
         this.isActive ? (this.isActive = false) : (this.isActive = true);
+        if (this.isActive && this.logEvent){
+            publishToAmplitude('Timeline', { type: 'Click on filter button' });
+        }
     }
 
     handleSave() {
         this.updateFilter();
         this.toggle();
+        if (this.logEvent) {
+            publishToAmplitude('Timeline', { type: 'Save filter changes' });
+        }
     }
 
     handleCancel() {
         this.draftFilter = {};
         this.toggle();
+        if (this.logEvent) {
+            publishToAmplitude('Timeline', { type: 'Cancel filtering' });
+        }
     }
 
     handleReset() {
         this.draftFilter = {};
         this.filter = {};
         this.updateFilter();
+        if (this.logEvent) {
+            publishToAmplitude('Timeline', { type: 'Reset filtering' });
+        }
     }
 
     handleChange(e) {
         this.draftFilter[e.target.dataset.id] = e.detail.value;
+        if (this.logEvent) {
+            publishToAmplitude('Timeline', { type: 'Changing filters' });
+        }
     }
 
     handleCheckboxChange(e) {
@@ -46,7 +64,6 @@ export default class TimelineFilter extends LightningElement {
 
     updateFilter() {
         this.filter = { ...this.filter, ...this.draftFilter };
-
         const event = new CustomEvent('filterchange', { detail: this.filter });
         this.dispatchEvent(event);
     }

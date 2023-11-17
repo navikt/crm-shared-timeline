@@ -5,13 +5,12 @@ import LANG from '@salesforce/i18n/lang';
 import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 import userId from '@salesforce/user/Id';
 import { subscribe } from 'lightning/empApi';
-
 import MOMENT_JS from '@salesforce/resourceUrl/moment';
 import getTimelineData from '@salesforce/apex/Timeline_Controller.getTimelineData';
 import getTotalRecords from '@salesforce/apex/Timeline_Controller.getTotalRecords';
 import getTimelineObjects from '@salesforce/apex/Timeline_Controller.getTimelineObjects';
-
 import labels from './labels';
+import { publishToAmplitude } from 'c/amplitude';
 
 export default class Timeline extends LightningElement {
     // config settings
@@ -23,7 +22,6 @@ export default class Timeline extends LightningElement {
     @api recordWireFields;
     @api parentRecordId;
     @api timelineParentField = 'Id'; //Determine which field to use ase the timeline parent record id
-
     @api amountOfMonths = 3;
     @api amountOfMonthsToLoad = 3;
     @api amountOfMonthsToOpen = 2;
@@ -31,38 +29,31 @@ export default class Timeline extends LightningElement {
     @api amountOfRecordsToLoad = 3;
     @api amountOfRecordsToOpen;
     @api configId = '';
-
     @api buttonIsHidden = false;
-
     @api customEmptySubtitle = '';
-
     @api timestamp = ''; // ! deprecated but cannot be removed
+    @api logEvent = false;
 
     @track data;
     @track deWireResult;
     @track overdueData;
-
     @track recordsLoaded = 0;
     @track maxRecords = 0;
+    @track openAccordionSections = [labels.overdue, labels.upcoming];
+    @track allSections = [];
+    @track labels = labels;
 
     header;
     error = false;
     errorMsg;
     empty = false;
-
     loading = true;
     finishedLoading = false;
     loadingStyle = 'height:5rem;width:24rem';
-
-    @track openAccordionSections = [labels.overdue, labels.upcoming];
     accordionsAreSet = false;
-    @track allSections = [];
-    @track labels = labels;
-
     collapsed = false;
     collapseIcon = 'utility:justify_text';
     collapseText = labels.collapse;
-
     isRendered = false;
 
     /******** Filter ********/
@@ -71,7 +62,9 @@ export default class Timeline extends LightningElement {
     @api picklistFilter2Label;
     @api hideMyActivitiesFilter = false;
     @api includeAmountInTitle = false;
+    
     @track filterProperties;
+
     masterData;
 
     connectedCallback() {
@@ -161,7 +154,6 @@ export default class Timeline extends LightningElement {
                         amount++;
                     }
                 }
-
                 newDataCopy.splice(this.amountOfMonths + amount);
             }
 
@@ -204,7 +196,6 @@ export default class Timeline extends LightningElement {
                 }
             }
         }
-
         this.accordionsAreSet = true;
     }
 
@@ -301,9 +292,12 @@ export default class Timeline extends LightningElement {
     // ------------- BUTTONS ------------- //
     // ----------------------------------- //
 
-    loadMore(event) {
+    loadMore() {
         this.loading = true;
         this.amountOfMonths = this.getMonthsToLoad();
+        if (this.logEvent) {
+            publishToAmplitude('Timeline', { type: 'Load more (months)' });
+        }
     }
 
     refreshData() {
@@ -313,11 +307,17 @@ export default class Timeline extends LightningElement {
 
         return refreshApex(this.deWireResult).then(() => {
             this.loading = false;
+            if (this.logEvent) {
+                publishToAmplitude('Timeline', { type: 'Refresh list' });
+            }
         });
     }
 
     collapseAccordions() {
         this.openAccordionSections = this.collapsed ? this.allSections : [];
+        if (this.logEvent) {
+            publishToAmplitude('Timeline', { type: 'Collapse/open accordions' });
+        }
     }
 
     handleSectionToggle(event) {
@@ -331,6 +331,9 @@ export default class Timeline extends LightningElement {
             this.collapseIcon = 'utility:justify_text';
             this.collapseText = this.labels.collapse;
             this.collapsed = false;
+        }
+        if (this.logEvent) {
+            publishToAmplitude('Timeline', { type: 'Toggle expand section' });
         }
     }
 
