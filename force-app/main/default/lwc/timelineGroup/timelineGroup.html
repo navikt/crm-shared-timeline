@@ -19,7 +19,6 @@
                     amount={amount}
                     period={group.id}
                     group-level-expand-check={groupLevelExpandCheck}
-                    log-event={logEvent}
                 >
                 </c-timeline-item>
             </template>
@@ -29,7 +28,7 @@
         <!-- ********************** LOADING AND INFO/ERROR TEXT ********************* -->
         <!-- ************************************************************************ -->
         <div if:true={empty}>
-            <div class="slds-text-body_small slds-align_absolute-center slds-var-m-bottom_medium">{labels.emptyGroup}</div>
+            <div class="slds-text-body_small slds-align_absolute-center slds-m-bottom_medium">{labels.emptyGroup}</div>
         </div>
 
         <!-- ************************************************************************ -->

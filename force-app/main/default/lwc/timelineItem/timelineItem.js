@@ -1,6 +1,5 @@
-import { LightningElement, api } from 'lwc';
+import { LightningElement, api, track } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
-import { publishToAmplitude } from 'c/amplitude';
 
 export default class TimelineItem extends NavigationMixin(LightningElement) {
     @api row;
@@ -10,7 +9,6 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
     @api index;
     @api period;
     @api groupLevelExpandCheck;
-    @api logEvent;
 
     expanded = false;
     loadingDetails = false;
@@ -105,17 +103,11 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
                 actionName: 'view'
             }
         });
-        if (this.logEvent) {
-            publishToAmplitude('Timeline', { type: 'Navigate to record' });
-        }
     }
 
     toggleExpand() {
         this.expanded = !this.expanded;
         this.loadingDetails = this.expanded;
-        if (this.logEvent) {
-            publishToAmplitude('Timeline', { type: 'Toggle expand section details' });
-        }
     }
 
     detailsLoaded() {
