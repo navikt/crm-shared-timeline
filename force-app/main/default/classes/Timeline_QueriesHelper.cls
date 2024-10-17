@@ -31,6 +31,8 @@ public with sharing class Timeline_QueriesHelper {
             'Timeline_Child__r.CreateableObject_Field1__c, Timeline_Child__r.CreateableObject_Value1__c,  ' +
             'Timeline_Child__r.CreateableObject_Field2__c, Timeline_Child__r.CreateableObject_Value2__c,  ' +
             'Timeline_Child__r.CreateableObject_Field3__c, Timeline_Child__r.CreateableObject_Value3__c,  ' +
+            'Timeline_Child__r.CreateableObject_Field4__c, Timeline_Child__r.CreateableObject_Value4__c,  ' +
+            'Timeline_Child__r.CreateableObject_Field5__c, Timeline_Child__r.CreateableObject_Value5__c,  ' +
             'Timeline_Child__r.SubtitlePastEnglish__c, Timeline_Child__r.SubtitlePastNorwegian__c,  ' +
             'Timeline_Child__r.SubtitleFutureEnglish__c, Timeline_Child__r.SubtitleFutureNorwegian__c,  ' +
             'Timeline_Child__r.SubtitleRelatedUserPrepositionEng__c, Timeline_Child__r.SubtitleRelatedUserPrepositionNor__c, ' +
