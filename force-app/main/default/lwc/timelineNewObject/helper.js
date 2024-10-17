@@ -38,6 +38,22 @@ const getFieldValues = (row, recordId) => {
     );
     if (val3 !== null) {
         fields.push(val3);
+    };
+
+    let val4 = getKeyAndValueIfValid(
+        row.Timeline_Child__r.CreateableObject_Field4__c,
+        row.Timeline_Child__r.CreateableObject_Value4__c
+    );
+    if (val4 !== null) {
+        fields.push(val4);
+    };
+
+    let val5 = getKeyAndValueIfValid(
+        row.Timeline_Child__r.CreateableObject_Field5__c,
+        row.Timeline_Child__r.CreateableObject_Value5__c
+    );
+    if (val5 !== null) {
+        fields.push(val5);
     }
 
     // combine them all
