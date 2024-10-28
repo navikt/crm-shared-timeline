@@ -67,18 +67,18 @@ public with sharing class Timeline_QueriesHelper {
         List<TimelineParent__mdt> sObjectsToQuery,
         TimelineParent__mdt mdt,
         String recordId,
-        Integer amountOfMonths
+        Integer amountOfMonths,
+        String recordTypeId
     ) {
         String fields = getQueryFields(sObjectsToQuery, mdt);
-        String parameters = getQueryParameters(mdt, recordId, amountOfMonths);
+        String parameters = getQueryParameters(mdt, recordId, amountOfMonths, recordTypeId);
 
         // ! Vurder å bruk nested SOQL hvis det blir problemer med for mange soql spørringer (men burde ha nok)
         return buildSoqlQuery(
             fields,
             mdt.Timeline_Child__r.SObjectName__c,
             parameters,
-            mdt.Timeline_Child__r.SObjectDateField__c
-        );
+            mdt.Timeline_Child__r.SObjectDateField__c);
     }
 
     // --------------------------------------------------- //
@@ -122,12 +122,17 @@ public with sharing class Timeline_QueriesHelper {
     // ---------------- getQueryParameters --------------- //
     // --------------------------------------------------- //
 
-    public static String getQueryParameters(TimelineParent__mdt mdt, String recordId, Integer amountOfMonths) {
+    public static String getQueryParameters(TimelineParent__mdt mdt, String recordId, Integer amountOfMonths, String recordTypeId) {
         String now = getTime(mdt.Timeline_Child__r.SObjectDateFieldIsDate__c);
         String dateField = mdt.Timeline_Child__r.SObjectDateField__c;
+        String parameters = '';
 
-        String parameters = mdt.SObjectRelationshipField__c + ' = \'' + recordId + '\' AND ';
-
+        if(String.isNotBlank(recordTypeId)) {
+            parameters = mdt.SObjectRelationshipField__c + ' = \'' + recordId + '\' AND ' + 'RecordTypeId = \'' + recordTypeId + '\' AND ';
+        }
+        else {
+            parameters = mdt.SObjectRelationshipField__c + ' = \'' + recordId + '\' AND ';
+        }
         // task specific parameter
         if (mdt.Timeline_Child__r.SObjectName__c == 'Task') {
             return parameters + addTaskParameters(mdt, amountOfMonths);

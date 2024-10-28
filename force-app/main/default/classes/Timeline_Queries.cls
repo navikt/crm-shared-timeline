@@ -38,12 +38,18 @@ public with sharing class Timeline_Queries {
     ) {
         Set<String> queriedSobjects = new Set<String>();
         List<String> queries = new List<String>();
+        Map<String, Id> recordTypesMap = Timeline_Helper.getRecordTypes(sObjectsToQuery);
+        String recordTypeId = '';
 
         for (TimelineParent__mdt mdt : sObjectsToQuery) {
             // only query an sobject once
             if (!queriedSobjects.contains(mdt.Timeline_Child__r.SObjectName__c + mdt.SObjectRelationshipField__c)) {
-                queries.add(Timeline_QueriesHelper.getQuery(sObjectsToQuery, mdt, recordId, amountOfMonths));
+                if (String.isNotBlank(mdt.Timeline_Child__r.CreateableObject_RecordType__c)) {
+                    recordTypeId = recordTypesMap.get(mdt.Timeline_Child__r.SObjectName__c + mdt.Timeline_Child__r.CreateableObject_RecordType__c);
+                }
+                queries.add(Timeline_QueriesHelper.getQuery(sObjectsToQuery, mdt, recordId, amountOfMonths, recordTypeId));
                 queriedSobjects.add(mdt.Timeline_Child__r.SObjectName__c + mdt.SObjectRelationshipField__c);
+                recordTypeId = '';
             }
         }
 
@@ -106,6 +112,8 @@ public with sharing class Timeline_Queries {
     public static Integer getTotalRecords(List<TimelineParent__mdt> sObjectsToQuery, String recordId) {
         List<String> queries = new List<String>();
         Set<String> queriedSobjects = new Set<String>();
+        Map<String, Id> recordTypesMap = Timeline_Helper.getRecordTypes(sObjectsToQuery);
+        String recordTypeId = '';
 
         for (TimelineParent__mdt mdt : sObjectsToQuery) {
             if (!queriedSobjects.contains(mdt.Timeline_Child__r.SObjectName__c + mdt.SObjectRelationshipField__c)) {
@@ -116,9 +124,14 @@ public with sharing class Timeline_Queries {
                 if (mdt.Timeline_Child__r.SObjectName__c == 'Task') {
                     parameter += ' AND TaskSubType != \'Email\'';
                 }
+                if (String.isNotBlank(mdt.Timeline_Child__r.CreateableObject_RecordType__c)) {
+                    recordTypeId = recordTypesMap.get(mdt.Timeline_Child__r.SObjectName__c + mdt.Timeline_Child__r.CreateableObject_RecordType__c);
+                    parameter += ' AND RecordTypeId = \'' + recordTypeId + '\'';
+                }
 
                 queries.add(Timeline_QueriesHelper.buildSoqlQuery(fields, sObjectType, parameter, null));
                 queriedSobjects.add(mdt.Timeline_Child__r.SObjectName__c + mdt.SObjectRelationshipField__c);
+                recordTypeId = '';
             }
         }
 
