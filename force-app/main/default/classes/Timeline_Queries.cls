@@ -41,9 +41,9 @@ public with sharing class Timeline_Queries {
 
         for (TimelineParent__mdt mdt : sObjectsToQuery) {
             // only query an sobject once
-            if (!queriedSobjects.contains(mdt.Timeline_Child__r.SObjectName__c)) {
+            if (!queriedSobjects.contains(mdt.Timeline_Child__r.SObjectName__c + mdt.SObjectRelationshipField__c)) {
                 queries.add(Timeline_QueriesHelper.getQuery(sObjectsToQuery, mdt, recordId, amountOfMonths));
-                queriedSobjects.add(mdt.Timeline_Child__r.SObjectName__c);
+                queriedSobjects.add(mdt.Timeline_Child__r.SObjectName__c + mdt.SObjectRelationshipField__c);
             }
         }
 
@@ -108,7 +108,7 @@ public with sharing class Timeline_Queries {
         Set<String> queriedSobjects = new Set<String>();
 
         for (TimelineParent__mdt mdt : sObjectsToQuery) {
-            if (!queriedSobjects.contains(mdt.Timeline_Child__r.SObjectName__c)) {
+            if (!queriedSobjects.contains(mdt.Timeline_Child__r.SObjectName__c + mdt.SObjectRelationshipField__c)) {
                 String fields = 'Count()';
                 String sObjectType = mdt.Timeline_Child__r.SObjectName__c;
                 String parameter = mdt.SObjectRelationshipField__c + ' = \'' + recordId + '\'';
@@ -118,7 +118,7 @@ public with sharing class Timeline_Queries {
                 }
 
                 queries.add(Timeline_QueriesHelper.buildSoqlQuery(fields, sObjectType, parameter, null));
-                queriedSobjects.add(mdt.Timeline_Child__r.SObjectName__c);
+                queriedSobjects.add(mdt.Timeline_Child__r.SObjectName__c + mdt.SObjectRelationshipField__c);
             }
         }
 
