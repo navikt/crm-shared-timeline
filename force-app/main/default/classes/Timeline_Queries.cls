@@ -43,12 +43,12 @@ public with sharing class Timeline_Queries {
 
         for (TimelineParent__mdt mdt : sObjectsToQuery) {
             // only query an sobject once
-            if (!queriedSobjects.contains(mdt.Timeline_Child__r.SObjectName__c + mdt.SObjectRelationshipField__c)) {
+            if (!queriedSobjects.contains(mdt.Timeline_Child__r.SObjectName__c + mdt.SObjectRelationshipField__c + mdt.Timeline_Child__r.CreateableObject_RecordType__c)) {
                 if (String.isNotBlank(mdt.Timeline_Child__r.CreateableObject_RecordType__c)) {
                     recordTypeId = recordTypesMap.get(mdt.Timeline_Child__r.SObjectName__c + mdt.Timeline_Child__r.CreateableObject_RecordType__c);
                 }
                 queries.add(Timeline_QueriesHelper.getQuery(sObjectsToQuery, mdt, recordId, amountOfMonths, recordTypeId));
-                queriedSobjects.add(mdt.Timeline_Child__r.SObjectName__c + mdt.SObjectRelationshipField__c);
+                queriedSobjects.add(mdt.Timeline_Child__r.SObjectName__c + mdt.SObjectRelationshipField__c + mdt.Timeline_Child__r.CreateableObject_RecordType__c);
                 recordTypeId = '';
             }
         }
@@ -62,14 +62,18 @@ public with sharing class Timeline_Queries {
 
     public static List<SObject> getSObjectsFromQueries(List<String> queries) {
         List<SObject> sObjects = new List<SObject>();
+        Map<Id, SObject> uniqueSObjects = new Map<Id, SObject>();
 
         for (String query : queries) {
-            System.debug('query: ' + query);
             List<SObject> sObjs = Database.query(query);
             sObjects.addAll(sObjs);
+            for (SObject sObj : sObjs) {
+                // Added to remove duplicates
+                uniqueSObjects.put(sObj.Id, sObj);
+            }
         }
 
-        return sObjects;
+        return uniqueSObjects.values();
     }
 
     // --------------------------------------------------- //
@@ -116,8 +120,8 @@ public with sharing class Timeline_Queries {
         String recordTypeId = '';
 
         for (TimelineParent__mdt mdt : sObjectsToQuery) {
-            if (!queriedSobjects.contains(mdt.Timeline_Child__r.SObjectName__c + mdt.SObjectRelationshipField__c)) {
-                String fields = 'Count()';
+            if (!queriedSobjects.contains(mdt.Timeline_Child__r.SObjectName__c + mdt.SObjectRelationshipField__c + mdt.Timeline_Child__r.CreateableObject_RecordType__c)) {
+                String fields = 'Id';
                 String sObjectType = mdt.Timeline_Child__r.SObjectName__c;
                 String parameter = mdt.SObjectRelationshipField__c + ' = \'' + recordId + '\'';
 
@@ -128,9 +132,10 @@ public with sharing class Timeline_Queries {
                     recordTypeId = recordTypesMap.get(mdt.Timeline_Child__r.SObjectName__c + mdt.Timeline_Child__r.CreateableObject_RecordType__c);
                     parameter += ' AND RecordTypeId = \'' + recordTypeId + '\'';
                 }
+                parameter += ' GROUP BY Id';
 
                 queries.add(Timeline_QueriesHelper.buildSoqlQuery(fields, sObjectType, parameter, null));
-                queriedSobjects.add(mdt.Timeline_Child__r.SObjectName__c + mdt.SObjectRelationshipField__c);
+                queriedSobjects.add(mdt.Timeline_Child__r.SObjectName__c + mdt.SObjectRelationshipField__c + mdt.Timeline_Child__r.CreateableObject_RecordType__c);
                 recordTypeId = '';
             }
         }
@@ -138,7 +143,8 @@ public with sharing class Timeline_Queries {
         Integer count = 0;
 
         for (String query : queries) {
-            count += Database.countQuery(query);
+            List<AggregateResult> results = Database.query(query);
+            count += results.size();
         }
 
         return count;
