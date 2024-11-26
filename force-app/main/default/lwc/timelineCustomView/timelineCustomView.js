@@ -1,13 +1,11 @@
 import { LightningElement, api} from 'lwc';
 export default class TimelineCustomView extends LightningElement {
     @api recordId;
-    @api recordType;
+    @api customComponentName;
+    
+    customComponent;
 
-    get isThread(){
-        return this.recordType ==='Thread__c';
+    connectedCallback() {
+        import('c/' + this.customComponentName).then(({ default: ctor }) => (this.customComponent = ctor))            
     }
-
-    get isConversationNote(){
-        return this.recordType ==='Conversation_Note__c';
-    } 
 }
