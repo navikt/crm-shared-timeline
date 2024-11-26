@@ -38,7 +38,7 @@ public with sharing class Timeline_QueriesHelper {
             'Timeline_Child__r.SubtitleRelatedUserPrepositionEng__c, Timeline_Child__r.SubtitleRelatedUserPrepositionNor__c, ' +
             'Timeline_Child__r.AutomaticRefresh__c, Timeline_Child__r.AutomaticRefresh_PushTopicName__c, ' +
             'Timeline_Child__r.AllowAutoOpen__c, ' +
-            'Timeline_Child__r.CustomView__c,' +
+            'Timeline_Child__r.CustomComponent__c,' +
             'Timeline_Child__r.FilterablePicklist1__c, Timeline_Child__r.FilterablePicklist2__c, Timeline_Child__r.FilterableCheckbox__c ' +
             'FROM TimelineParent__mdt ' +
             'WHERE SObjectParent__c = : parentSObjectType';
