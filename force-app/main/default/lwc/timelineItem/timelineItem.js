@@ -1,8 +1,13 @@
 import { LightningElement, api } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
 import { publishToAmplitude } from 'c/amplitude';
+import slickLayout from './slick.html';
+import defaultLayout from './timelineItem.html';
+import sharedStyling from './sharedStyling.css';
 
 export default class TimelineItem extends NavigationMixin(LightningElement) {
+    static stylesheets = [sharedStyling];
+
     @api row;
     @api recordId;
     @api labels;
@@ -11,6 +16,8 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
     @api period;
     @api groupLevelExpandCheck;
     @api logEvent;
+    @api design;
+    @api isLast;
 
     expanded = false;
     loadingDetails = false;
@@ -21,6 +28,13 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
         if (this.row.theme.sldsTimelineItemColor != null) {
             this.timelineColor = '	background-color: #' + this.row.theme.sldsTimelineItemColor + ';';
         }
+    }
+
+    render() {
+        if (this.design === 'Slick') {
+            return slickLayout;
+        }
+        return defaultLayout;
     }
 
     get expandedFieldsToDisplay() {
@@ -64,7 +78,6 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
                     .replaceAll('/', '.');
             }
         } catch (error) {
-            console.log('error: ' + error);
             return this.row.record.dateValueDb;
         }
     }
@@ -81,12 +94,14 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
         return this.expandedFieldsToDisplay.length > 0 || this.isCustom ? true : false;
     }
 
-    get assistiveSubtitle(){
+    get assistiveSubtitle() {
         const ASSISTIVE_TEXT_LENGTH = 150;
         let tmp = new DOMParser().parseFromString(this.row.record.subtitleOverride, 'text/html');
-        let textContent = tmp.body.textContent || "";
-        
-        return textContent.length > ASSISTIVE_TEXT_LENGTH ? textContent.slice(0, ASSISTIVE_TEXT_LENGTH) + '...': textContent;
+        let textContent = tmp.body.textContent || '';
+
+        return textContent.length > ASSISTIVE_TEXT_LENGTH
+            ? textContent.slice(0, ASSISTIVE_TEXT_LENGTH) + '...'
+            : textContent;
     }
 
     itemLevelExpandCheck() {

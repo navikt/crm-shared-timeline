@@ -48,6 +48,8 @@
             <property name="includeAmountInTitle" type="Boolean"
                 label="Includes the amount of records in a month" default="false" />
             <property name="logEvent" type="Boolean" label="Log events by Amplitude" default="false" />
+            <property name="design" type="String" default="Default"
+                label="Select the design varient" datasource="Default,Slick" />
             <supportedFormFactors>
                 <supportedFormFactor type="Small" />
                 <supportedFormFactor type="Large" />

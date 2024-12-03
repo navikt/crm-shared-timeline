@@ -10,16 +10,19 @@
         <!-- ********************************* DATA ********************************* -->
         <!-- ************************************************************************ -->
         <template if:false={isClosed}>
-            <template if:false={empty} for:each={group.models} for:item="row" for:index="i">
+            <!-- <template if:false={empty} for:each={group.models} for:item="row" for:index="i"> -->
+            <template if:false={empty} iterator:it={group.models}>
                 <c-timeline-item
-                    key={row.record.recordId}
-                    row={row}
+                    key={it.value.record.recordId}
+                    row={it.value}
                     labels={labels}
-                    index={i}
+                    index={it.index}
                     amount={amount}
                     period={group.id}
                     group-level-expand-check={groupLevelExpandCheck}
                     log-event={logEvent}
+                    design={design}
+                    is-last={it.last}
                 >
                 </c-timeline-item>
             </template>
@@ -29,7 +32,9 @@
         <!-- ********************** LOADING AND INFO/ERROR TEXT ********************* -->
         <!-- ************************************************************************ -->
         <div if:true={empty}>
-            <div class="slds-text-body_small slds-align_absolute-center slds-var-m-bottom_medium">{labels.emptyGroup}</div>
+            <div class="slds-text-body_small slds-align_absolute-center slds-var-m-bottom_medium">
+                {labels.emptyGroup}
+            </div>
         </div>
 
         <!-- ************************************************************************ -->

@@ -33,6 +33,7 @@ export default class Timeline extends LightningElement {
     @api customEmptySubtitle = '';
     @api timestamp = ''; // ! deprecated but cannot be removed
     @api logEvent = false;
+    @api design;
 
     @track data;
     @track deWireResult;
@@ -62,7 +63,7 @@ export default class Timeline extends LightningElement {
     @api picklistFilter2Label;
     @api hideMyActivitiesFilter = false;
     @api includeAmountInTitle = false;
-    
+
     @track filterProperties;
 
     masterData;

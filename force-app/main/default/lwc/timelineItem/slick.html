@@ -1,0 +1,72 @@
+<template>
+    <div if:true={showRow}>
+        <li class="row">
+            <span class="slds-assistive-text">{row.record.sObjectLabel}</span>
+            <div class="slds-media">
+                <div class="table" style="width: 100%">
+                    <div class="cell cell-left">
+                        <!-- ICON & CHEVRON -->
+                        <div class="container">
+                            <lightning-icon
+                                class="cell-icon"
+                                style="--slds-c-icon-radius-border: 1rem"
+                                size="medium"
+                                icon-name={row.theme.icon}
+                            >
+                            </lightning-icon>
+                            <div class="stripe" is-last={isLast} style={timelineColor}></div>
+                        </div>
+                    </div>
+                    <div class="cell cell-right">
+                        <div class="slds-media__body">
+                            <c-nks-expandable-panel>
+                                <div slot="title">
+                                    <h3 style="display: contents" class="slds-truncate" title={row.record.title}>
+                                        <strong
+                                            ><lightning-formatted-rich-text class="img-reset" value={row.record.title}>
+                                            </lightning-formatted-rich-text>
+                                        </strong>
+                                    </h3>
+                                    <div aria-hidden="true" class="text-divider"></div>
+                                    <p lwc:if={row.record.overdue} class="slds-timeline__date slds-text-color_error">
+                                        {getDateFormat}
+                                    </p>
+                                    <p lwc:else style="display: contents" class="slds-timeline__date">
+                                        {getDateFormat}
+                                    </p>
+                                </div>
+                                <p slot="subtitle">
+                                    <a if:true={isAssigneeAUser} data-id={row.record.assigneeId} onclick={openUser}
+                                        >{row.record.assignee}</a
+                                    >
+                                    <span if:false={isAssigneeAUser}>{row.record.assignee}</span>
+                                    <span if:false={isOverride}> {row.record.subtitle} </span>
+                                    <a
+                                        if:true={isRelatedUserAUser}
+                                        data-id={row.record.relatedUserId}
+                                        onclick={openUser}
+                                        >{row.record.relatedUser}</a
+                                    >
+                                    <span if:false={isRelatedUserAUser}>{row.record.relatedUser}</span>
+                                    <span if:true={isOverride} class="slds-assistive-text">{assistiveSubtitle}</span>
+                                    <lightning-formatted-rich-text
+                                        aria-hidden="true"
+                                        class="slds-line-clamp_small"
+                                        value={row.record.subtitleOverride}
+                                        if:true={isOverride}
+                                    ></lightning-formatted-rich-text>
+                                </p>
+                                <template if:true={isCustom}>
+                                    <c-timeline-custom-view
+                                        record-id={row.record.recordId}
+                                        record-type={row.record.sObjectKind}
+                                    ></c-timeline-custom-view>
+                                </template>
+                            </c-nks-expandable-panel>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </div>
+</template>

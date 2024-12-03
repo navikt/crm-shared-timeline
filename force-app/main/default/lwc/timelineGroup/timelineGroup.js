@@ -9,6 +9,7 @@ export default class TimelineGroup extends LightningElement {
     @api expandCheck;
     @api groupIndex;
     @api logEvent;
+    @api design;
 
     amount;
     empty = false;

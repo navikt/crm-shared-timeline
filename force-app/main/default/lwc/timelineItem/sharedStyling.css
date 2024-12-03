@@ -1,0 +1,27 @@
+.row {
+    margin-bottom: 1.4em;
+}
+
+.table {
+    display: table;
+    height: 100%;
+}
+
+.cell {
+    vertical-align: top;
+    display: table-cell;
+    height: 100%;
+}
+
+.cell-right {
+    width: 100%;
+}
+
+lightning-layout[data-expandable='true'] {
+    margin-left: -1.5em;
+}
+
+/* This class is used to remove the margin from images in the timeline title */
+.img-reset {
+    --lwc-spacingSmall: 0px;
+}
