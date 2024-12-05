@@ -5,6 +5,8 @@ import save from '@salesforce/label/c.Timeline_Save';
 import reset from '@salesforce/label/c.Timeline_Reset';
 import cancel from '@salesforce/label/c.Timeline_Cancel';
 import { publishToAmplitude } from 'c/amplitude';
+import defaultTemplate from './timelineFilter.html';
+import slickTemplate from './slick.html';
 
 export default class TimelineFilter extends LightningElement {
     @api filterProperties;
@@ -13,15 +15,20 @@ export default class TimelineFilter extends LightningElement {
     @api picklistFilter2Label;
     @api hideMyActivitiesFilter;
     @api logEvent;
+    @api design;
 
     currentUser = userId;
     isActive = false;
     draftFilter = {};
     filter = {};
 
+    render() {
+        return this.design === 'Slick' ? slickTemplate : defaultTemplate;
+    }
+
     toggle() {
         this.isActive ? (this.isActive = false) : (this.isActive = true);
-        if (this.isActive && this.logEvent){
+        if (this.isActive && this.logEvent) {
             publishToAmplitude('Timeline', { type: 'Click on filter button' });
         }
     }
@@ -56,6 +63,10 @@ export default class TimelineFilter extends LightningElement {
         if (this.logEvent) {
             publishToAmplitude('Timeline', { type: 'Changing filters' });
         }
+
+        if (this.design === 'Slick') {
+            this.updateFilter();
+        }
     }
 
     handleCheckboxChange(e) {
@@ -64,12 +75,15 @@ export default class TimelineFilter extends LightningElement {
 
     updateFilter() {
         this.filter = { ...this.filter, ...this.draftFilter };
-        const event = new CustomEvent('filterchange', { detail: this.filter });
-        this.dispatchEvent(event);
+        this.dispatchEvent(new CustomEvent('filterchange', { detail: this.filter }));
     }
 
-    @api filterRecords(records) {
-        if (Object.entries(this.filter).length < 1) return records;
+    @api
+    filterRecords(records) {
+        if (Object.entries(this.filter).length < 1 || Object.values(this.filter).includes('Alle')) {
+            return records;
+        }
+
         const dataCopy = [...records];
 
         for (let i = 0; i < dataCopy.length; i++) {
@@ -133,7 +147,12 @@ export default class TimelineFilter extends LightningElement {
     }
 
     get picklistFilter1() {
-        return this.getValues('picklistValue1');
+        const values = this.getValues('picklistValue1');
+        if (this.design === 'Slick') {
+            return values ? [{ label: 'Alle', value: 'Alle' }, ...values] : [{ label: '', value: '' }];
+        } else {
+            return values ? [...values] : [{ label: '', value: '' }];
+        }
     }
 
     get picklistFilter2() {

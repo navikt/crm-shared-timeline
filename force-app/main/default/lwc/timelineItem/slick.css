@@ -10,12 +10,13 @@
 .cell-icon {
     margin-top: 0.35rem;
     border: 0.15em solid white;
+    --slds-c-icon-radius-border: 1rem;
 }
 
 .container {
     height: 100%;
     -moz-box-sizing: border-box;
-    margin: 0 0.7em 0 -0.4em;
+    margin: 0 0.7em 0 -0.18em;
 }
 
 .text-divider {

@@ -1,0 +1,16 @@
+.custom-border {
+    border-bottom: 1px solid #767676;
+}
+
+.custom-header {
+    margin-bottom: 1.25rem;
+}
+
+.custom-filter {
+    margin-bottom: 1.5rem;
+    padding-top: 1rem;
+}
+
+.custom-padding {
+    padding: 1rem 1rem 0 1rem;
+}

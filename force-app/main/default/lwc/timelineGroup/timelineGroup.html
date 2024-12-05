@@ -11,7 +11,7 @@
         <!-- ************************************************************************ -->
         <template if:false={isClosed}>
             <!-- <template if:false={empty} for:each={group.models} for:item="row" for:index="i"> -->
-            <template if:false={empty} iterator:it={group.models}>
+            <template if:false={isEmpty} iterator:it={group.models}>
                 <c-timeline-item
                     key={it.value.record.recordId}
                     row={it.value}
@@ -31,7 +31,7 @@
         <!-- ************************************************************************ -->
         <!-- ********************** LOADING AND INFO/ERROR TEXT ********************* -->
         <!-- ************************************************************************ -->
-        <div if:true={empty}>
+        <div if:true={isEmpty}>
             <div class="slds-text-body_small slds-align_absolute-center slds-var-m-bottom_medium">
                 {labels.emptyGroup}
             </div>
