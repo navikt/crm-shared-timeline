@@ -168,6 +168,6 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
         return this.row.record.subtitleOverride != null ? (this.expanded === true ? false : true) : false;
     }
     get isCustom() {
-        return this.row.record.useCustomView;
+        return this.row.record.customComponent != null && this.row.record.customComponent != '';
     }
 }
