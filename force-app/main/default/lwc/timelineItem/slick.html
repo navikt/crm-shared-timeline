@@ -51,7 +51,7 @@
                                 <template if:true={isCustom}>
                                     <c-timeline-custom-view
                                         record-id={row.record.recordId}
-                                        record-type={row.record.sObjectKind}
+                                        custom-component-name={row.record.customComponent}
                                     ></c-timeline-custom-view>
                                 </template>
                             </c-nks-expandable-panel>
