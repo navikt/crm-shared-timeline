@@ -66,7 +66,7 @@ export default class TimelineGroup extends LightningElement {
     }
 
     get accordionSectionClass() {
-        return this.isOpen ? 'slds-accordion__section slds-is-open' : 'slds-accordion__section slds-is-closed';
+        return `slds-accordion__section ${this.isOpen ? 'slds-is-open' : 'slds-is-closed'}`;
     }
 
     get isExpanded() {
