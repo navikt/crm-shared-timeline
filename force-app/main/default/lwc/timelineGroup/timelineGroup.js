@@ -13,6 +13,7 @@ export default class TimelineGroup extends LightningElement {
     @api logEvent;
     @api design;
     @api includeAmountInTitle;
+    @api showSubtitle;
 
     amount;
     expanded;

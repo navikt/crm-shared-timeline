@@ -1,6 +1,6 @@
 <!-- sldsValidatorIgnore -->
 <template>
-    <div if:true={showRow}>
+    <div lwc:if={showRow}>
         <li class="row">
             <span class="slds-assistive-text">{row.record.sObjectLabel}</span>
             <div class="slds-media">
@@ -13,7 +13,7 @@
                                     style="background: none; border: none"
                                     class="slds-assistive slds-p-horizontal_none"
                                     onclick={toggleExpand}
-                                    if:true={isExpandable}
+                                    lwc:if={isExpandable}
                                     aria-label="Forhåndsvisning"
                                     aria-expanded={expanded}
                                 >
@@ -73,10 +73,11 @@
 
                                 <!-- DATE -->
                                 <div class="slds-timeline__actions slds-timeline__actions_inline">
-                                    <p if:false={row.record.overdue} class="slds-timeline__date">{getDateFormat}</p>
-                                    <p if:true={row.record.overdue} class="slds-timeline__date slds-text-color_error">
-                                        {getDateFormat}
+                                    <p lwc:if={row.record.overdue} class="slds-timeline__date slds-text-color_error">
+                                        {dateFormat}
                                     </p>
+                                    <p lwc:else class="slds-timeline__date">{dateFormat}</p>
+                                   
                                     <!-- <button
 									class="slds-button slds-button_icon slds-button_icon-border-filled slds-button_icon-x-small"
 									aria-haspopup="true" title="More Options for this item">
@@ -88,32 +89,38 @@
                                 </div>
                             </div>
 
-                            <!-- SUBTITLE -->
-                            <p class="slds-m-horizontal_xx-small">
-                                <a if:true={isAssigneeAUser} data-id={row.record.assigneeId} onclick={openUser}
-                                    >{row.record.assignee}</a
-                                >
-                                <span if:false={isAssigneeAUser}>{row.record.assignee}</span>
-                                <span if:false={isOverride}> {row.record.subtitle} </span>
-                                <a if:true={isRelatedUserAUser} data-id={row.record.relatedUserId} onclick={openUser}
-                                    >{row.record.relatedUser}</a
-                                >
-                                <span if:false={isRelatedUserAUser}>{row.record.relatedUser}</span>
-                                <span if:true={isOverride} class="slds-assistive-text">{assistiveSubtitle}</span>
-                                <lightning-formatted-rich-text
-                                    aria-hidden="true"
-                                    class="slds-line-clamp_small"
-                                    value={row.record.subtitleOverride}
-                                    if:true={isOverride}
-                                ></lightning-formatted-rich-text>
+                           <!-- SUBTITLE -->
+                            <p class="slds-m-horizontal_xx-small">  
+                                <template lwc:if={isAssigneeAUser}>
+                                    <a data-id={row.record.assigneeId} onclick={openUser}>{row.record.assignee}</a>
+                                </template>
+                                <template lwc:else>
+                                    <span>{row.record.assignee}</span>
+                                </template>
+                                <template lwc:if={isRelatedUserAUser}>
+                                    <a data-id={row.record.relatedUserId} onclick={openUser}>{row.record.relatedUser}</a>
+                                </template>
+                                <template lwc:else>
+                                    <span>{row.record.relatedUser}</span>
+                                </template>
+                                <template lwc:if={isOverride}>
+                                    <span class="slds-assistive-text">{assistiveSubtitle}</span>
+                                    <lightning-formatted-rich-text
+                                        aria-hidden="true"
+                                        class="slds-line-clamp_small"
+                                        value={row.record.subtitleOverride}
+                                    ></lightning-formatted-rich-text>
+                                </template>
+                                <template lwc:else>
+                                    <span>{row.record.subtitle}</span> 
+                                </template>
                             </p>
-
                             <div
-                                if:true={expanded}
+                                lwc:if={expanded}
                                 class="slds-box slds-theme_shade slds-is-relative slds-m-top_x-small slds-m-horizontal_xx-small slds-p-around_medium"
                             >
                                 <lightning-spinner
-                                    if:true={loadingDetails}
+                                   lwc:if={loadingDetails}
                                     size="small"
                                     variant="brand"
                                     alternative-text="Loading details"
