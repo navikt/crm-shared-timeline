@@ -1,9 +1,9 @@
 import { LightningElement, api } from 'lwc';
 import userId from '@salesforce/user/Id';
 import LANG from '@salesforce/i18n/lang';
-import save from '@salesforce/label/c.Timeline_Save';
-import reset from '@salesforce/label/c.Timeline_Reset';
-import cancel from '@salesforce/label/c.Timeline_Cancel';
+import SAVE_LABEL from '@salesforce/label/c.Timeline_Save';
+import RESET_LABEL from '@salesforce/label/c.Timeline_Reset';
+import CANCEL_LABEL from '@salesforce/label/c.Timeline_Cancel';
 import { publishToAmplitude } from 'c/amplitude';
 import defaultTemplate from './timelineFilter.html';
 import slickTemplate from './slick.html';
@@ -21,56 +21,45 @@ export default class TimelineFilter extends LightningElement {
     isActive = false;
     draftFilter = {};
     filter = {};
+    labels = { SAVE_LABEL, RESET_LABEL, CANCEL_LABEL };
 
     render() {
         return this.design === 'Slick' ? slickTemplate : defaultTemplate;
     }
 
     toggle() {
-        this.isActive ? (this.isActive = false) : (this.isActive = true);
-        if (this.isActive && this.logEvent) {
-            publishToAmplitude('Timeline', { type: 'Click on filter button' });
-        }
+        this.isActive = !this.isActive;
+        if (this.isActive) this.publishAmplitudeEvent('Click on filter button');
     }
 
     handleSave() {
         this.updateFilter();
         this.toggle();
-        if (this.logEvent) {
-            publishToAmplitude('Timeline', { type: 'Save filter changes' });
-        }
+        this.publishAmplitudeEvent('Save filter changes');
     }
 
     handleCancel() {
         this.draftFilter = {};
         this.toggle();
-        if (this.logEvent) {
-            publishToAmplitude('Timeline', { type: 'Cancel filtering' });
-        }
+        this.publishAmplitudeEvent('Cancel filtering');
     }
 
     handleReset() {
         this.draftFilter = {};
         this.filter = {};
         this.updateFilter();
-        if (this.logEvent) {
-            publishToAmplitude('Timeline', { type: 'Reset filtering' });
-        }
+        this.toggle();
+        this.publishAmplitudeEvent('Reset filtering');
     }
 
     handleChange(e) {
         this.draftFilter[e.target.dataset.id] = e.detail.value;
-        if (this.logEvent) {
-            publishToAmplitude('Timeline', { type: 'Changing filters' });
-        }
-
-        if (this.design === 'Slick') {
-            this.updateFilter();
-        }
+        this.publishAmplitudeEvent('Changing filters');
+        if (this.design === 'Slick') this.updateFilter();
     }
 
     handleCheckboxChange(e) {
-        this.draftFilter[e.target.dataset.id] = e.detail.checked ? true : undefined;
+        this.draftFilter[e.target.dataset.id] = e.detail.checked || undefined;
     }
 
     updateFilter() {
@@ -78,109 +67,86 @@ export default class TimelineFilter extends LightningElement {
         this.dispatchEvent(new CustomEvent('filterchange', { detail: this.filter }));
     }
 
+    publishAmplitudeEvent(action) {
+        if (this.logEvent) publishToAmplitude('Timeline', { type: action });
+    }
+
     @api
     filterRecords(records) {
-        if (Object.entries(this.filter).length < 1 || Object.values(this.filter).includes('Alle')) {
-            return records;
-        }
+        if (!Object.keys(this.filter).length || this.filterContainsAll()) return records;
 
-        const dataCopy = [...records];
+        return records.map(this.filterGroupModels.bind(this)).filter((group) => group !== null);
+    }
 
-        for (let i = 0; i < dataCopy.length; i++) {
-            for (let j = 0; j < dataCopy[i].models.length; j++) {
-                let record = dataCopy[i].models[j].record;
-                let filter = dataCopy[i].models[j].filter;
+    filterContainsAll() {
+        return Object.values(this.filter).includes('Alle');
+    }
 
-                if (this.isFilterable('this_user') && record.assigneeId !== this.currentUser) {
-                    dataCopy[i].models.splice(j, 1);
-                    j--;
-                } else if (
-                    this.isFilterable('checkBoxFilter') &&
-                    !this.filter.checkBoxFilter.includes(filter.checkBoxValue)
-                ) {
-                    dataCopy[i].models.splice(j, 1);
-                    j--;
-                } else if (
-                    this.isFilterable('picklistFilter1') &&
-                    this.filter.picklistFilter1 !== filter.picklistValue1
-                ) {
-                    dataCopy[i].models.splice(j, 1);
-                    j--;
-                } else if (
-                    this.isFilterable('picklistFilter2') &&
-                    this.filter.picklistFilter2 !== filter.picklistValue2
-                ) {
-                    dataCopy[i].models.splice(j, 1);
-                    j--;
-                }
-            }
-            // remove if object not longer has any models
-            if (dataCopy[i].models.length < 1) {
-                dataCopy.splice(i, 1);
-                i--;
-            }
-        }
-        return dataCopy;
+    filterGroupModels(group) {
+        const filteredModels = group.models.filter(this.isModelValid.bind(this));
+        group.models = filteredModels;
+        group.size = filteredModels.length;
+
+        return group.models.length ? group : null;
+    }
+
+    isModelValid(model) {
+        const { record, filter } = model;
+
+        return (
+            (!this.isFilterable('this_user') || record.assigneeId === this.currentUser) &&
+            (!this.isFilterable('checkBoxFilter') || this.filter.checkBoxFilter.includes(filter.checkBoxValue)) &&
+            (!this.isFilterable('picklistFilter1') || this.filter.picklistFilter1 === filter.picklistValue1) &&
+            (!this.isFilterable('picklistFilter2') || this.filter.picklistFilter2 === filter.picklistValue2)
+        );
     }
 
     isFilterable(property) {
-        if (this.filter[property] === undefined || this.filter[property].length < 1) {
-            return false;
-        }
-        return true;
+        return Boolean(this.filter[property]?.length);
     }
 
     getValues(property) {
-        if (this.filterProperties === undefined) return false;
+        const uniqueValues = this.filterProperties
+            ?.map(({ [property]: value }) => value)
+            .filter((value, index, self) => value !== undefined && self.indexOf(value) === index)
+            .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
 
-        const values = [];
-        this.filterProperties.forEach((value) => {
-            if (value[property] === undefined) return;
-            if (values.map((item) => item.value).includes(value[property]) === true) return;
-            values.push({ label: value[property], value: value[property] });
-        });
-        if (values.length < 1) return false;
-        values.sort((val1, val2) => {
-            return val1.label.toLowerCase() > val2.label.toLowerCase() ? 1 : -1; //val1 and val2 should never be equal as they are uniquely mapped;
-        });
-        return values;
+        return uniqueValues?.map((value) => ({ label: value, value })) || [];
+    }
+
+    enhanceValues(values) {
+        return this.design === 'Slick' && values.length ? [{ label: 'Alle', value: 'Alle' }, ...values] : values;
     }
 
     get picklistFilter1() {
-        const values = this.getValues('picklistValue1');
-        if (this.design === 'Slick') {
-            return values ? [{ label: 'Alle', value: 'Alle' }, ...values] : [{ label: '', value: '' }];
-        } else {
-            return values ? [...values] : [{ label: '', value: '' }];
-        }
+        const values = this.enhanceValues(this.getValues('picklistValue1'));
+        return values.length ? values : null;
     }
 
     get picklistFilter2() {
-        return this.getValues('picklistValue2');
+        const values = this.getValues('picklistValue2');
+        return values.length ? values : null;
     }
 
     get checkBoxFilter() {
-        return this.getValues('checkBoxValue');
+        const values = this.getValues('checkBoxValue');
+        return values.length ? values : null;
     }
 
     get selectedCheckboxes() {
-        if (this.filter.checkBoxFilter === undefined) return [];
-        return this.filter.checkBoxFilter;
+        return this.getSelectedFilter('checkBoxFilter', []);
     }
 
     get selectedPicklistFilter1() {
-        if (this.filter.picklistFilter1 === undefined) return null;
-        return this.filter.picklistFilter1;
+        return this.getSelectedFilter('picklistFilter1');
     }
 
     get selectedPicklistFilter2() {
-        if (this.filter.picklistFilter2 === undefined) return null;
-        return this.filter.picklistFilter2;
+        return this.getSelectedFilter('picklistFilter2');
     }
 
     get myActivitiesFilter() {
-        if (this.filter.this_user === undefined) return false;
-        return this.filter.this_user;
+        return this.getSelectedFilter('this_user', false);
     }
 
     get buttonStyle() {
@@ -191,30 +157,23 @@ export default class TimelineFilter extends LightningElement {
         return this.isGrouped ? 'container bttn-grouped-container' : 'container';
     }
 
-    get saveLabel() {
-        return save;
-    }
-
-    get resetLabel() {
-        return reset;
-    }
-
-    get cancelLabel() {
-        return cancel;
-    }
-
     get myActivitiesLabel() {
-        if (LANG === 'no') return 'Kun mine aktiviteter';
-        return 'My activities';
+        return LANG === 'no' ? 'Kun mine aktiviteter' : 'My activities';
     }
 
     get picklist1Label() {
-        if (this.picklistFilter1Label === undefined) return ' ';
-        return this.picklistFilter1Label;
+        return this.getLabel('picklistFilter1Label');
     }
 
     get picklist2Label() {
-        if (this.picklistFilter2Label === undefined) return ' ';
-        return this.picklistFilter2Label;
+        return this.getLabel('picklistFilter2Label');
+    }
+
+    getSelectedFilter(property, defaultValue = null) {
+        return this.filter[property] === undefined ? defaultValue : this.filter[property];
+    }
+
+    getLabel(property, defaultValue = ' ') {
+        return this[property] === undefined ? defaultValue : this[property];
     }
 }

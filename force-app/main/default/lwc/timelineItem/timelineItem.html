@@ -120,7 +120,10 @@
                                 ></lightning-spinner>
                                 <!-- ! Displays expand information useing lightning record view form. Does not support event and task object -->
                                 <template lwc:if={isCustom}>
-                                    <c-timeline-custom-view record-id={row.record.recordId} custom-component-name={row.record.customComponent}></c-timeline-custom-view>
+                                    <c-timeline-custom-view
+                                        record-id={row.record.recordId}
+                                        custom-component-name={row.record.customComponent}
+                                    ></c-timeline-custom-view>
                                 </template>
                                 <lightning-record-view-form
                                     record-id={row.record.recordId}

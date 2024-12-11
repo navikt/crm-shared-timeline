@@ -1,7 +1,7 @@
 .custom-container {
     align-items: flex-start;
     border-bottom: 1px solid #767676;
-    padding: 0 1rem;
+    margin: 0 1rem;
 }
 
 .left-column {

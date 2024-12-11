@@ -13,7 +13,7 @@
                 <div class="slds-panel__body inner-container">
                     <div>
                         <lightning-combobox
-                            if:true={picklistFilter1}
+                            lwc:if={picklistFilter1}
                             name={picklist1Label}
                             label={picklist1Label}
                             class="slds-var-m-bottom_small"
@@ -23,7 +23,7 @@
                             onchange={handleChange}
                         ></lightning-combobox>
                         <lightning-combobox
-                            if:true={picklistFilter2}
+                            lwc:if={picklistFilter2}
                             name={picklist2Label}
                             label={picklist2Label}
                             data-id="picklistFilter2"
@@ -32,7 +32,7 @@
                             onchange={handleChange}
                         ></lightning-combobox>
                     </div>
-                    <div if:true={checkBoxFilter}>
+                    <div lwc:if={checkBoxFilter}>
                         <lightning-checkbox-group
                             name="Type"
                             label="Type"
@@ -58,21 +58,21 @@
                 <div class="slds-modal__footer">
                     <lightning-button
                         variant="base"
-                        label={resetLabel}
-                        title={resetLabel}
+                        label={labels.RESET_LABEL}
+                        title={labels.RESET_LABEL}
                         onclick={handleReset}
                         class="slds-var-m-left_x-small"
                     ></lightning-button>
                     <lightning-button
-                        label={cancelLabel}
-                        title={cancelLabel}
+                        label={labels.CANCEL_LABEL}
+                        title={labels.CANCEL_LABEL}
                         onclick={handleCancel}
                         class="slds-var-m-left_x-small"
                     ></lightning-button>
                     <lightning-button
                         variant="brand"
-                        label={saveLabel}
-                        title={saveLabel}
+                        label={labels.SAVE_LABEL}
+                        title={labels.SAVE_LABEL}
                         onclick={handleSave}
                         class="slds-var-m-left_x-small"
                     ></lightning-button>
