@@ -14,21 +14,48 @@
                     </div>
                     <div class="cell cell-right">
                         <div class="slds-media__body">
-                            <c-nks-expandable-panel>
+                            <c-nks-expandable-panel is-expanded={expanded}>
                                 <div slot="title">
-                                    <h3 style="display: contents" class="slds-truncate" title={row.record.title}>
-                                        <strong
-                                            ><lightning-formatted-rich-text class="img-reset" value={row.record.title}>
-                                            </lightning-formatted-rich-text>
-                                        </strong>
+                                    <h3>
+                                        <template if:true={row.record.headers} iterator:header={row.record.headers}>
+                                            <span key={header.value.header}>
+                                                <span
+                                                    style="display: contents"
+                                                    class="slds-truncate"
+                                                    lwc:if={header.value.isString}
+                                                >
+                                                    <strong
+                                                        ><lightning-formatted-rich-text
+                                                            class="img-reset"
+                                                            value={header.value.header}
+                                                        >
+                                                        </lightning-formatted-rich-text>
+                                                    </strong>
+                                                </span>
+                                                <span lwc:elseif={header.value.isDatetime}>
+                                                    <c-timeline-date
+                                                        class="date-font-hook"
+                                                        date-value-db={header.value.header}
+                                                        overdue={row.record.overdue}
+                                                        period={period}
+                                                        labels={labels}
+                                                    ></c-timeline-date>
+                                                </span>
+                                                <span lwc:elseif={header.value.isDate}>
+                                                    <c-timeline-date
+                                                        class="date-font-hook"
+                                                        date-value-db={header.value.header}
+                                                        is-date={header.value.isDate}
+                                                        overdue={row.record.overdue}
+                                                        period={period}
+                                                        labels={labels}
+                                                    ></c-timeline-date>
+                                                </span>
+                                                <div lwc:if={header.last}></div>
+                                                <div lwc:else aria-hidden="true" class="text-divider"></div>
+                                            </span>
+                                        </template>
                                     </h3>
-                                    <div aria-hidden="true" class="text-divider"></div>
-                                    <p lwc:if={row.record.overdue} class="slds-timeline__date slds-text-color_error">
-                                        {getDateFormat}
-                                    </p>
-                                    <p lwc:else style="display: contents" class="slds-timeline__date">
-                                        {getDateFormat}
-                                    </p>
                                 </div>
                                 <p slot="subtitle">
                                     <a if:true={isAssigneeAUser} data-id={row.record.assigneeId} onclick={openUser}

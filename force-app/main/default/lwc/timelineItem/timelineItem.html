@@ -94,17 +94,19 @@
                                     >{row.record.assignee}</a
                                 >
                                 <span if:false={isAssigneeAUser}>{row.record.assignee}</span>
-                                <span if:false={isOverride}> {row.record.subtitle} </span>
+                                <span if:false={isOverrideAndNotExpanded}> {row.record.subtitle} </span>
                                 <a if:true={isRelatedUserAUser} data-id={row.record.relatedUserId} onclick={openUser}
                                     >{row.record.relatedUser}</a
                                 >
                                 <span if:false={isRelatedUserAUser}>{row.record.relatedUser}</span>
-                                <span if:true={isOverride} class="slds-assistive-text">{assistiveSubtitle}</span>
+                                <span if:true={isOverrideAndNotExpanded} class="slds-assistive-text"
+                                    >{assistiveSubtitle}</span
+                                >
                                 <lightning-formatted-rich-text
                                     aria-hidden="true"
                                     class="slds-line-clamp_small"
                                     value={row.record.subtitleOverride}
-                                    if:true={isOverride}
+                                    if:true={isOverrideAndNotExpanded}
                                 ></lightning-formatted-rich-text>
                             </p>
 
@@ -120,7 +122,10 @@
                                 ></lightning-spinner>
                                 <!-- ! Displays expand information useing lightning record view form. Does not support event and task object -->
                                 <template lwc:if={isCustom}>
-                                    <c-timeline-custom-view record-id={row.record.recordId} custom-component-name={row.record.customComponent}></c-timeline-custom-view>
+                                    <c-timeline-custom-view
+                                        record-id={row.record.recordId}
+                                        custom-component-name={row.record.customComponent}
+                                    ></c-timeline-custom-view>
                                 </template>
                                 <lightning-record-view-form
                                     record-id={row.record.recordId}
