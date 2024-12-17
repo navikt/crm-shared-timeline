@@ -133,7 +133,7 @@ global with sharing class Timeline_Model implements Comparable {
             ? (Id) get(sObj, config.Timeline_Child__r.SObjectRelatedUserId__c)
             : null;
         record.assigneeId = config.SObjectAssigneeId__c != null ? (Id) get(sObj, config.SObjectAssigneeId__c) : null;
-        record.title = (String) get(sObj, config.Timeline_Child__r.SObjectTitle__c.split(',')[0]);
+        record.title = (String) get(sObj, config.Timeline_Child__r.SObjectTitle__c.deleteWhiteSpace().split(',')[0]);
         record.durationInMinute = (Integer) get(sObj, 'DurationInMinutes');
         record.allowAutoOpen = config.Timeline_Child__r.AllowAutoOpen__c;
         record.sObjectKind = config.Timeline_Child__r.SObjectName__c;
@@ -147,7 +147,7 @@ global with sharing class Timeline_Model implements Comparable {
         record.customComponent = config.Timeline_Child__r.CustomComponent__c;
 
         record.headers = new List<Header>();
-        for (String headerField : config.Timeline_Child__r.SObjectTitle__c.split(',')) {
+        for (String headerField : config.Timeline_Child__r.SObjectTitle__c.deleteWhiteSpace().split(',')) {
             record.headers.add(new Header(headerField, sObj));
         }
 
