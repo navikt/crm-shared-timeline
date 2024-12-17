@@ -89,31 +89,26 @@
                                 </div>
                             </div>
 
-                           <!-- SUBTITLE -->
-                            <p class="slds-m-horizontal_xx-small">  
-                                <template lwc:if={isAssigneeAUser}>
-                                    <a data-id={row.record.assigneeId} onclick={openUser}>{row.record.assignee}</a>
-                                </template>
-                                <template lwc:else>
-                                    <span>{row.record.assignee}</span>
-                                </template>
-                                <template lwc:if={isRelatedUserAUser}>
-                                    <a data-id={row.record.relatedUserId} onclick={openUser}>{row.record.relatedUser}</a>
-                                </template>
-                                <template lwc:else>
-                                    <span>{row.record.relatedUser}</span>
-                                </template>
-                                <template lwc:if={isOverride}>
-                                    <span class="slds-assistive-text">{assistiveSubtitle}</span>
-                                    <lightning-formatted-rich-text
-                                        aria-hidden="true"
-                                        class="slds-line-clamp_small"
-                                        value={row.record.subtitleOverride}
-                                    ></lightning-formatted-rich-text>
-                                </template>
-                                <template lwc:else>
-                                    <span>{row.record.subtitle}</span> 
-                                </template>
+                            <!-- SUBTITLE -->
+                            <p class="slds-m-horizontal_xx-small">
+                                <a if:true={isAssigneeAUser} data-id={row.record.assigneeId} onclick={openUser}
+                                    >{row.record.assignee}</a
+                                >
+                                <span if:false={isAssigneeAUser}>{row.record.assignee}</span>
+                                <span if:false={isOverrideAndNotExpanded}> {row.record.subtitle} </span>
+                                <a if:true={isRelatedUserAUser} data-id={row.record.relatedUserId} onclick={openUser}
+                                    >{row.record.relatedUser}</a
+                                >
+                                <span if:false={isRelatedUserAUser}>{row.record.relatedUser}</span>
+                                <span if:true={isOverrideAndNotExpanded} class="slds-assistive-text"
+                                    >{assistiveSubtitle}</span
+                                >
+                                <lightning-formatted-rich-text
+                                    aria-hidden="true"
+                                    class="slds-line-clamp_small"
+                                    value={row.record.subtitleOverride}
+                                    if:true={isOverrideAndNotExpanded}
+                                ></lightning-formatted-rich-text>
                             </p>
                             <div
                                 lwc:if={expanded}

@@ -78,7 +78,8 @@ public with sharing class Timeline_QueriesHelper {
             fields,
             mdt.Timeline_Child__r.SObjectName__c,
             parameters,
-            mdt.Timeline_Child__r.SObjectDateField__c);
+            mdt.Timeline_Child__r.SObjectDateField__c
+        );
     }
 
     // --------------------------------------------------- //
@@ -97,7 +98,10 @@ public with sharing class Timeline_QueriesHelper {
                         field = (String) mdt.get(mdtField);
                     }
                     if (field != null) {
-                        fieldsToQuery.add(field);
+                        List<String> splitFields = field.split(',');
+                        for (String f : splitFields) {
+                            fieldsToQuery.add(f.trim());
+                        }
                     }
                 }
                 if (!mdt.Timeline_Child__r.SLDS_Icon__c.contains(':')) {
@@ -122,15 +126,26 @@ public with sharing class Timeline_QueriesHelper {
     // ---------------- getQueryParameters --------------- //
     // --------------------------------------------------- //
 
-    public static String getQueryParameters(TimelineParent__mdt mdt, String recordId, Integer amountOfMonths, String recordTypeId) {
+    public static String getQueryParameters(
+        TimelineParent__mdt mdt,
+        String recordId,
+        Integer amountOfMonths,
+        String recordTypeId
+    ) {
         String now = getTime(mdt.Timeline_Child__r.SObjectDateFieldIsDate__c);
         String dateField = mdt.Timeline_Child__r.SObjectDateField__c;
         String parameters = '';
 
-        if(String.isNotBlank(recordTypeId)) {
-            parameters = mdt.SObjectRelationshipField__c + ' = \'' + recordId + '\' AND ' + 'RecordTypeId = \'' + recordTypeId + '\' AND ';
-        }
-        else {
+        if (String.isNotBlank(recordTypeId)) {
+            parameters =
+                mdt.SObjectRelationshipField__c +
+                ' = \'' +
+                recordId +
+                '\' AND ' +
+                'RecordTypeId = \'' +
+                recordTypeId +
+                '\' AND ';
+        } else {
             parameters = mdt.SObjectRelationshipField__c + ' = \'' + recordId + '\' AND ';
         }
         // task specific parameter

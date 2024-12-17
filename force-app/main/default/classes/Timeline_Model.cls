@@ -65,6 +65,35 @@ global with sharing class Timeline_Model implements Comparable {
 
         @AuraEnabled
         public String customComponent;
+
+        @AuraEnabled
+        public List<Header> headers;
+    }
+
+    public class Header {
+        @AuraEnabled
+        public Object header;
+        @AuraEnabled
+        public String type;
+        @AuraEnabled
+        public boolean isString;
+        @AuraEnabled
+        public boolean isDatetime;
+        @AuraEnabled
+        public boolean isDate;
+
+        public Header(String header, sObject sObj) {
+            this.header = get(sObj, header);
+            Schema.DescribeFieldResult fi = sObj.getSObjectType()
+                .getDescribe()
+                .fields.getMap()
+                .get(header)
+                .getDescribe();
+            this.type = fi.getType().name();
+            this.isString = this.type == 'STRING';
+            this.isDatetime = this.type == 'DATETIME';
+            this.isDate = this.type == 'DATE';
+        }
     }
 
     public class Filter {
@@ -104,7 +133,7 @@ global with sharing class Timeline_Model implements Comparable {
             ? (Id) get(sObj, config.Timeline_Child__r.SObjectRelatedUserId__c)
             : null;
         record.assigneeId = config.SObjectAssigneeId__c != null ? (Id) get(sObj, config.SObjectAssigneeId__c) : null;
-        record.title = (String) get(sObj, config.Timeline_Child__r.SObjectTitle__c);
+        record.title = (String) get(sObj, config.Timeline_Child__r.SObjectTitle__c.deleteWhiteSpace().split(',')[0]);
         record.durationInMinute = (Integer) get(sObj, 'DurationInMinutes');
         record.allowAutoOpen = config.Timeline_Child__r.AllowAutoOpen__c;
         record.sObjectKind = config.Timeline_Child__r.SObjectName__c;
@@ -116,6 +145,11 @@ global with sharing class Timeline_Model implements Comparable {
         record.dateValueDb = getDateValue(config, sObj, record);
         record.subtitleOverride = (String) get(sObj, config.Timeline_Child__r.SObjectSubtitle__c); // To add subtitle for samtale
         record.customComponent = config.Timeline_Child__r.CustomComponent__c;
+
+        record.headers = new List<Header>();
+        for (String headerField : config.Timeline_Child__r.SObjectTitle__c.deleteWhiteSpace().split(',')) {
+            record.headers.add(new Header(headerField, sObj));
+        }
 
         theme.sldsTimelineItemColor = config.Timeline_Child__r.SLDS_Timeline_Color__c;
         theme.icon = getIconValue(config, sObj);
