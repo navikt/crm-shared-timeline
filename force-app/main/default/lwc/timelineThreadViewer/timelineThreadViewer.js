@@ -12,7 +12,7 @@ export default class TimelineThreadViewer extends LightningElement {
 
     connectedCallback() {
         //getRecord requires field in array
-        this.recordWireFields = [ 'Thread__c.CRM_Journal_Status_Formula__c' ];
+        this.recordWireFields = ['Thread__c.CRM_Journal_Status_Formula__c'];
     }
 
     @wire(getmessages, { threadId: '$recordId' }) //Calls apex and extracts messages related to this record
@@ -30,7 +30,6 @@ export default class TimelineThreadViewer extends LightningElement {
         recordId: '$recordId',
         fields: '$recordWireFields'
     })
-
     deWireRecord(result) {
         if (result.data) {
             this.setJournalForing(getFieldValue(result.data, this.recordWireFields[0]));
@@ -38,8 +37,8 @@ export default class TimelineThreadViewer extends LightningElement {
             //Something went terribly wrong
         }
     }
-    
-    setJournalForing(text){
+
+    setJournalForing(text) {
         let parser = new DOMParser();
         const doc = parser.parseFromString(text, 'text/html');
         let imgs = doc.getElementsByTagName('img');

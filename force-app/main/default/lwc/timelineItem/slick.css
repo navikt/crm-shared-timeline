@@ -4,12 +4,12 @@
     width: 0.15em;
     background-color: gray;
     margin: 0 auto;
-    min-height: calc(100% - 1.3rem);
+    min-height: calc(100% - 0.75rem);
 }
 
 .cell-icon {
     margin-top: 0.35rem;
-    border: 0.15em solid white;
+    border: 0.2em solid white;
     --slds-c-icon-radius-border: 1rem;
 }
 
@@ -31,4 +31,8 @@
 .date-font-hook {
     --lwc-fontSize2: 1em;
     --slds-g-color-neutral-base-30: black;
+}
+
+.clamp-override {
+    white-space: revert;
 }

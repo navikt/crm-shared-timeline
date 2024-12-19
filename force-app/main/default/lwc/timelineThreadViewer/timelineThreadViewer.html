@@ -2,15 +2,16 @@
     <section role="log" class="slds-box slds-theme_default">
         <template if:true={hasMessages}>
             <template for:each={messages} for:item="message">
-                <c-crm-thread-view-message-container message={message} key={message.Id}></c-crm-thread-view-message-container>
+                <c-crm-thread-view-message-container
+                    message={message}
+                    key={message.Id}
+                ></c-crm-thread-view-message-container>
             </template>
         </template>
     </section>
     <div if:true={journalforing} class="slds-var-p-top_small slds-var-p-left_xx-small">
         <strong>
-            <lightning-formatted-rich-text                 
-                value={journalforing}
-            ></lightning-formatted-rich-text>
+            <lightning-formatted-rich-text value={journalforing}></lightning-formatted-rich-text>
         </strong>
     </div>
 </template>
