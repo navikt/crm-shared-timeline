@@ -67,6 +67,9 @@ global with sharing class Timeline_Model implements Comparable {
         public String customComponent;
 
         @AuraEnabled
+        public Integer clampLines;
+
+        @AuraEnabled
         public List<Header> headers;
     }
 
@@ -145,6 +148,7 @@ global with sharing class Timeline_Model implements Comparable {
         record.dateValueDb = getDateValue(config, sObj, record);
         record.subtitleOverride = (String) get(sObj, config.Timeline_Child__r.SObjectSubtitle__c); // To add subtitle for samtale
         record.customComponent = config.Timeline_Child__r.CustomComponent__c;
+        record.clampLines = (Integer) config.Timeline_Child__r.ClampLines__c;
 
         record.headers = new List<Header>();
         for (String headerField : config.Timeline_Child__r.SObjectTitle__c.deleteWhiteSpace().split(',')) {

@@ -40,7 +40,6 @@ export default class Timeline extends LightningElement {
     @api picklistFilter2Label;
     @api hideMyActivitiesFilter = false;
     @api includeAmountInTitle = false;
-    @api showSubtitle = false;
 
     data;
     deWireResult;

@@ -50,7 +50,6 @@
             <property name="logEvent" type="Boolean" label="Log events by Amplitude" default="false" />
             <property name="design" type="String" default="Default"
                 label="Select the design varient" datasource="Default,Slick" />
-            <property name="showSubtitle" type="Boolean" label="Show subtitle" default="false" />
             <supportedFormFactors>
                 <supportedFormFactor type="Small" />
                 <supportedFormFactor type="Large" />

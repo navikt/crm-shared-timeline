@@ -56,37 +56,36 @@
                                         </template>
                                     </h3>
                                 </div>
-                                <template lwc:if={showSubtitle}>
-                                    <p slot="subtitle">
-                                        <template lwc:if={isAssigneeAUser}>
-                                            <a data-id={row.record.assigneeId} onclick={openUser}>
-                                                {row.record.assignee}
-                                            </a>
-                                        </template>
-                                        <template lwc:else>
-                                            <span>{row.record.assignee}</span>
-                                        </template>
-                                        <template lwc:if={isRelatedUserAUser}>
-                                            <a data-id={row.record.relatedUserId} onclick={openUser}>
-                                                {row.record.relatedUser}
-                                            </a>
-                                        </template>
-                                        <template lwc:else>
-                                            <span>{row.record.relatedUser}</span>
-                                        </template>
-                                        <template lwc:if={isOverride}>
-                                            <span class="slds-assistive-text">{assistiveSubtitle}</span>
-                                            <lightning-formatted-rich-text
-                                                aria-hidden="true"
-                                                class="slds-line-clamp_small"
-                                                value={row.record.subtitleOverride}
-                                            ></lightning-formatted-rich-text>
-                                        </template>
-                                        <template lwc:else>
-                                            <span>{row.record.subtitle}</span> 
-                                        </template>
-                                    </p>
-                                </template>
+                                <p slot="subtitle">
+                                    <template lwc:if={isAssigneeAUser}>
+                                        <a data-id={row.record.assigneeId} onclick={openUser}>
+                                            {row.record.assignee}
+                                        </a>
+                                    </template>
+                                    <template lwc:else>
+                                        <span>{row.record.assignee}</span>
+                                    </template>
+                                    <template lwc:if={isRelatedUserAUser}>
+                                        <a data-id={row.record.relatedUserId} onclick={openUser}>
+                                            {row.record.relatedUser}
+                                        </a>
+                                    </template>
+                                    <template lwc:else>
+                                        <span>{row.record.relatedUser}</span>
+                                    </template>
+                                    <template lwc:if={isOverride}>
+                                        <span class="slds-assistive-text">{assistiveSubtitle}</span>
+                                        <lightning-formatted-rich-text
+                                            aria-hidden="true"
+                                            class="slds-line-clamp clamp-override"
+                                            style={clampOverride}
+                                            value={row.record.subtitleOverride}
+                                        ></lightning-formatted-rich-text>
+                                    </template>
+                                    <template lwc:else>
+                                        <span>{row.record.subtitle}</span> 
+                                    </template>
+                                </p>
                                 <template lwc:if={isCustom}>
                                     <c-timeline-custom-view
                                         record-id={row.record.recordId}

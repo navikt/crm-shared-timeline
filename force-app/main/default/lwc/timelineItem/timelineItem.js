@@ -18,7 +18,6 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
     @api logEvent;
     @api design;
     @api isLast;
-    @api showSubtitle;
 
     expanded = false;
     loadingDetails = false;
@@ -175,5 +174,9 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
 
     get isCustom() {
         return this.row.record.customComponent != null && this.row.record.customComponent != '';
+    }
+
+    get clampOverride() {
+        if(this.row.record.clampLines != null) return '--lwc-lineClamp: ' + this.row.record.clampLines;
     }
 }
