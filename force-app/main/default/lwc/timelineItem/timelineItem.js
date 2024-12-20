@@ -37,73 +37,6 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
         return defaultLayout;
     }
 
-    get expandedFieldsToDisplay() {
-        let fieldArray = [];
-        let fieldCounter = 0;
-        if (this.row && this.row.record.expandedFields && !this.row.record.expandedFields.length !== 0) {
-            this.row.record.expandedFields.forEach((field) => {
-                fieldArray.push({ id: fieldCounter, apiName: field });
-                fieldCounter++;
-            });
-        }
-        return fieldArray;
-    }
-
-    get getDateFormat() {
-        // TODO mouseover to get relative fromNow()
-
-        try {
-            if (this.period === this.labels.upcoming || this.period === this.labels.overdue) {
-                var settings = this.row.record.isDate
-                    ? {
-                          sameDay: '[' + this.labels.today + ']',
-                          nextDay: '[' + this.labels.tomorrow + ']',
-                          nextWeek: 'dddd',
-                          lastDay: '[' + this.labels.yesterday + ']',
-                          lastWeek: '[' + this.labels.last + '] dddd',
-                          sameElse: 'DD.MM.YYYY'
-                      }
-                    : {
-                          sameDay: '[' + this.labels.today + ' ' + this.labels.timePrefix + '] HH:mm',
-                          nextDay: '[' + this.labels.tomorrow + ' ' + this.labels.timePrefix + '] HH:mm',
-                          nextWeek: 'DD.MM.YYYY [' + this.labels.timePrefix + '] HH:mm',
-                          lastDay: '[' + this.labels.yesterday + ' ' + this.labels.timePrefix + '] HH:mm',
-                          lastWeek: 'DD.MM.YYYY [' + this.labels.timePrefix + '] HH:mm',
-                          sameElse: 'DD.MM.YYYY [' + this.labels.timePrefix + '] HH:mm'
-                      };
-                return moment(this.row.record.dateValueDb).calendar(null, settings);
-            } else {
-                return moment(this.row.record.dateValueDb)
-                    .format(this.row.record.isDate ? 'L' : 'L [' + this.labels.timePrefix + '] HH:mm')
-                    .replaceAll('/', '.');
-            }
-        } catch (error) {
-            return this.row.record.dateValueDb;
-        }
-    }
-
-    get showRow() {
-        return this.index < this.amount;
-    }
-
-    get isTask() {
-        return this.row.record.sObjectKind === 'Task';
-    }
-
-    get isExpandable() {
-        return this.expandedFieldsToDisplay.length > 0 || this.isCustom ? true : false;
-    }
-
-    get assistiveSubtitle() {
-        const ASSISTIVE_TEXT_LENGTH = 150;
-        let tmp = new DOMParser().parseFromString(this.row.record.subtitleOverride, 'text/html');
-        let textContent = tmp.body.textContent || '';
-
-        return textContent.length > ASSISTIVE_TEXT_LENGTH
-            ? textContent.slice(0, ASSISTIVE_TEXT_LENGTH) + '...'
-            : textContent;
-    }
-
     itemLevelExpandCheck() {
         if (this.isExpandable && this.row.record.allowAutoOpen && this.groupLevelExpandCheck(this.index)) {
             this.toggleExpand();
@@ -152,6 +85,73 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
         });
     }
 
+    get expandedFieldsToDisplay() {
+        let fieldArray = [];
+        let fieldCounter = 0;
+        if (this.row && this.row.record.expandedFields && !this.row.record.expandedFields.length !== 0) {
+            this.row.record.expandedFields.forEach((field) => {
+                fieldArray.push({ id: fieldCounter, apiName: field });
+                fieldCounter++;
+            });
+        }
+        return fieldArray;
+    }
+
+    get dateFormat() {
+        // TODO mouseover to get relative fromNow()
+
+        try {
+            if (this.period === this.labels.upcoming || this.period === this.labels.overdue) {
+                var settings = this.row.record.isDate
+                    ? {
+                          sameDay: '[' + this.labels.today + ']',
+                          nextDay: '[' + this.labels.tomorrow + ']',
+                          nextWeek: 'dddd',
+                          lastDay: '[' + this.labels.yesterday + ']',
+                          lastWeek: '[' + this.labels.last + '] dddd',
+                          sameElse: 'DD.MM.YYYY'
+                      }
+                    : {
+                          sameDay: '[' + this.labels.today + ' ' + this.labels.timePrefix + '] HH:mm',
+                          nextDay: '[' + this.labels.tomorrow + ' ' + this.labels.timePrefix + '] HH:mm',
+                          nextWeek: 'DD.MM.YYYY [' + this.labels.timePrefix + '] HH:mm',
+                          lastDay: '[' + this.labels.yesterday + ' ' + this.labels.timePrefix + '] HH:mm',
+                          lastWeek: 'DD.MM.YYYY [' + this.labels.timePrefix + '] HH:mm',
+                          sameElse: 'DD.MM.YYYY [' + this.labels.timePrefix + '] HH:mm'
+                      };
+                return moment(this.row.record.dateValueDb).calendar(null, settings);
+            } else {
+                return moment(this.row.record.dateValueDb)
+                    .format(this.row.record.isDate ? 'L' : 'L [' + this.labels.timePrefix + '] HH:mm')
+                    .replaceAll('/', '.');
+            }
+        } catch (error) {
+            return this.row.record.dateValueDb;
+        }
+    }
+
+    get showRow() {
+        return this.index < this.amount;
+    }
+
+    get isTask() {
+        return this.row.record.sObjectKind === 'Task';
+    }
+
+    get isExpandable() {
+        return this.expandedFieldsToDisplay.length > 0 || this.isCustom;
+    }
+
+    get assistiveSubtitle() {
+        const ASSISTIVE_TEXT_LENGTH = 150;
+        let tmp = new DOMParser().parseFromString(this.row.record.subtitleOverride, 'text/html');
+        let textContent = tmp.body.textContent || '';
+
+        return textContent.length > ASSISTIVE_TEXT_LENGTH
+            ? textContent.slice(0, ASSISTIVE_TEXT_LENGTH) + '...'
+            : textContent;
+    }
+
     get expandIcon() {
         return this.expanded === true ? 'utility:chevrondown' : 'utility:chevronright';
     }
@@ -174,5 +174,9 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
 
     get isCustom() {
         return this.row.record.customComponent != null && this.row.record.customComponent != '';
+    }
+
+    get clampOverride() {
+        if(this.row.record.clampLines != null) return '--lwc-lineClamp: ' + this.row.record.clampLines;
     }
 }

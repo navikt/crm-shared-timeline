@@ -222,8 +222,6 @@ public with sharing class Timeline_Helper {
         for (String key : modelsSeparatedByMonth.keySet()) {
             Datetime d = modelsSeparatedByMonth.get(key)[0].record.dateValueDb;
             String name = getMonth(d.month()) + ' ' + d.year();
-            if (includeSize == true)
-                name += ' (' + modelsSeparatedByMonth.get(key).size() + ')';
             results.add(new Timeline_ModelList(key, name, modelsSeparatedByMonth.get(key), true));
         }
 

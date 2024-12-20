@@ -22,7 +22,7 @@ export default class Timeline extends LightningElement {
     @api recordId;
     @api recordWireFields;
     @api parentRecordId;
-    @api timelineParentField = 'Id'; // Field for parent record id
+    @api timelineParentField = 'Id';
     @api amountOfMonths = 3;
     @api amountOfMonthsToLoad = 3;
     @api amountOfMonthsToOpen = 2;
@@ -35,8 +35,6 @@ export default class Timeline extends LightningElement {
     @api timestamp = ''; // Deprecated
     @api logEvent = false;
     @api design;
-
-    /******** Filter ********/
     @api filterIsActive = false;
     @api picklistFilter1Label;
     @api picklistFilter2Label;
@@ -45,7 +43,6 @@ export default class Timeline extends LightningElement {
 
     data;
     deWireResult;
-    overdueData;
     recordsLoaded = 0;
     maxRecords = 0;
     openAccordionSections = [labels.overdue, labels.upcoming];
@@ -71,37 +68,24 @@ export default class Timeline extends LightningElement {
     }
 
     connectedCallback() {
-        if (this.objectApiName && this.timelineParentField) {
-            this.recordWireFields = [`${this.objectApiName}.${this.timelineParentField}`];
-        }
-        this.header =
-            LANG === 'no' && this.headerTitleNorwegian
-                ? this.headerTitleNorwegian
-                : LANG === 'en-US' && this.headerTitleEnglish
-                ? this.headerTitleEnglish
-                : this.labels.activities;
+        this.initializeRecordWireFields();
+        this.initializeHeader();
     }
 
     renderedCallback() {
         if (!this.isRendered) {
             this.isRendered = true;
-            loadScript(this, MOMENT_JS)
-                .then(() => {
-                    moment.locale(this.labels.MomentJsLanguage); // Global setting
-                })
-                .catch((error) => {
-                    console.error('Error loading script: ', error);
-                });
+            this.loadMomentJs();
         }
     }
 
     @wire(getRecord, { recordId: '$recordId', fields: '$recordWireFields' })
-    deWireRecord(result) {
+    handleRecordWire(result) {
         const { data, error } = result;
         if (data) {
             this.parentRecordId = getFieldValue(data, this.recordWireFields[0]);
         } else if (error) {
-            console.error('Error getting parent Id: ', error);
+            this.handleError('Error fetching record data', error);
         }
     }
 
@@ -112,56 +96,63 @@ export default class Timeline extends LightningElement {
         configId: '$configId',
         includeSize: '$includeAmountInTitle'
     })
-    deWire(result) {
+    handleTimelineData(result) {
         this.deWireResult = result;
-        if (this.isRendered === true) {
-            this.refreshData();
-        }
         const { data, error } = result;
         if (data) {
-            this.getTotalRecords();
-            this.setData(result.data);
-            this.setParams(this.data);
-            this.setAccordions(this.data);
-            this.countRecordsLoaded(this.data);
-            this.setFilterProperties(this.data);
+            this.processTimelineData(data);
         } else if (error) {
-            this.error = true;
-            this.loading = false;
-            this.setError(result.error);
+            this.handleError('Error fetching timeline data', error);
         }
     }
 
     @wire(getTimelineObjects, { recordId: '$parentRecordId', configId: '$configId' })
-    deWireObjects(result) {
+    handleTimelineObjects(result) {
         const { data, error } = result;
         if (data) {
-            result.data.forEach((obj) => {
-                if (obj.Timeline_Child__r.AutomaticRefresh__c) {
-                    this.initSubscription(obj.Timeline_Child__r.AutomaticRefresh_PushTopicName__c);
-                }
-            });
+            this.setupSubscriptions(data);
         } else if (error) {
-            console.error('Error getting timeline objects: ', error);
+            this.handleError('Error fetching timeline objects', error);
         }
     }
 
-    setData(newData) {
-        const newDataCopy = JSON.parse(JSON.stringify(newData));
-        this.masterData = newDataCopy;
-
-        try {
-            if (!this.data) {
-                const extraAmount =
-                    newDataCopy[0]?.id === this.labels.overdue || newDataCopy[0]?.id === this.labels.upcoming ? 1 : 0;
-                newDataCopy.slice(0, this.amountOfMonths + extraAmount);
-            } else {
-                newDataCopy.slice(0, this.data.length + this.amountOfMonthsToLoad);
-            }
-        } catch (error) {
-            console.error('Error in setData:', error);
+    // Initialization
+    initializeRecordWireFields() {
+        if (this.objectApiName && this.timelineParentField) {
+            this.recordWireFields = [`${this.objectApiName}.${this.timelineParentField}`];
         }
-        this.data = newDataCopy;
+    }
+
+    initializeHeader() {
+        this.header =
+            LANG === 'no' && this.headerTitleNorwegian
+                ? this.headerTitleNorwegian
+                : LANG === 'en-US' && this.headerTitleEnglish
+                ? this.headerTitleEnglish
+                : this.labels.activities;
+    }
+
+    loadMomentJs() {
+        loadScript(this, MOMENT_JS)
+            .then(() => moment.locale(this.labels.MomentJsLanguage))
+            .catch((error) => this.handleError('Error loading Moment.js', error));
+    }
+
+    initSubscription(topicName) {
+        const messageCallback = function (response) {
+            this.refreshData();
+        };
+        subscribe('/topic/' + topicName + '?CreatedBy=' + userId, -1, messageCallback.bind(this));
+    }
+
+    // Data Processing
+    processTimelineData(data) {
+        this.setParams(data);
+        this.setData(data);
+        this.setFilterProperties(data);
+        this.setupAccordions(data);
+        this.countRecordsLoaded(data);
+        this.fetchTotalRecords();
     }
 
     setParams(data) {
@@ -171,40 +162,51 @@ export default class Timeline extends LightningElement {
         this.empty = data.length === 0;
     }
 
-    setFilterProperties(data) {
-        const filter = data
-            .map(({ models }) => models)
-            .flat(Infinity)
-            .map(({ filter }) => filter);
-        this.filterProperties = filter;
+    setData(data) {
+        try {
+            const parsedData = JSON.parse(JSON.stringify(data));
+            this.masterData = parsedData;
+
+            parsedData.forEach((group) => {
+                group.size = group.models?.length || 0;
+            });
+
+            this.data = parsedData.slice(0, this.amountOfMonths + 2);
+        } catch (error) {
+            this.handleError('Error setting timeline data', error);
+        }
     }
 
-    setAccordions(data) {
-        if (this.accordionsAreSet) {
-            return;
-        }
+    setFilterProperties(data) {
+        this.filterProperties = data.flatMap(({ models }) => models.map(({ filter }) => filter));
+    }
 
-        for (let index = 0; index < this.amountOfMonthsToOpen + 2; index++) {
-            if (data[index] && this.openAccordionSections.length < this.amountOfMonthsToOpen + 2) {
-                const element = data[index];
+    setupAccordions(data) {
+        if (this.accordionsAreSet) return;
+        const maxSectionsToOpen = this.amountOfMonthsToOpen + 2;
+        for (let index = 0; index < maxSectionsToOpen; index++) {
+            const element = data[index];
+            if (element && this.openAccordionSections.length < maxSectionsToOpen) {
                 if (element.id !== this.labels.overdue && element.id !== this.labels.upcoming) {
                     this.openAccordionSections.push(element.id);
                 }
             }
         }
+
         this.accordionsAreSet = true;
     }
 
     resetAccordions(data) {
         setTimeout(() => {
-            this.openAccordionSections = [labels.overdue, labels.upcoming];
+            this.openAccordionSections = [this.labels.overdue, this.labels.upcoming];
             this.accordionsAreSet = false;
-            this.setAccordions(data);
+            this.setupAccordions(data);
         });
     }
 
     countRecordsLoaded(data) {
         let recordsLoaded = 0;
+        this.allSections = [];
         data.forEach((elem) => {
             this.allSections.push(elem.id);
             if (elem.id !== this.labels.overdue && elem.models) {
@@ -214,26 +216,23 @@ export default class Timeline extends LightningElement {
         this.recordsLoaded = recordsLoaded;
     }
 
-    getTotalRecords() {
+    fetchTotalRecords() {
         getTotalRecords({ recordId: this.parentRecordId, configId: this.configId })
             .then((result) => {
                 this.maxRecords = result;
             })
-            .catch((error) => {
-                console.error('Error getting total records: ', error);
-            });
+            .catch((error) => this.handleError('Error fetching total records', error));
     }
 
     getMonthsToLoad() {
         let today = new Date();
         let lastRecordDate = new Date(this.data[this.data.length - 1].models[0].record.dateValueDb);
 
-        let months;
-        months = (today.getFullYear() - lastRecordDate.getFullYear()) * 12;
+        let months = (today.getFullYear() - lastRecordDate.getFullYear()) * 12;
         months -= lastRecordDate.getMonth();
         months += today.getMonth();
 
-        return parseInt(months) + this.amountOfMonthsToLoad;
+        return months + this.amountOfMonthsToLoad;
     }
 
     expandCheck = (groupIndex, itemIndex) => {
@@ -247,60 +246,36 @@ export default class Timeline extends LightningElement {
         );
     };
 
-    setError(error) {
-        if (error?.body?.exceptionType && error?.body?.message) {
-            this.errorMsg = `[ ${error.body.exceptionType} ] : ${error.body.message}`;
-        } else if (error?.body?.message) {
-            this.errorMsg = `${error.body.message}`;
-        } else if (typeof error === 'string') {
-            this.errorMsg = error;
-        } else {
-            this.errorMsg = JSON.stringify(error);
-        }
-    }
-
-    initSubscription(topicName) {
-        const messageCallback = function (response) {
-            this.refreshData();
-        };
-        subscribe('/topic/' + topicName + '?CreatedBy=' + userId, -1, messageCallback.bind(this));
+    handleError(message, error) {
+        console.error(message, error);
+        this.errorMsg = error.body?.message || error.message || 'An unknown error occurred.';
+        this.error = true;
     }
 
     loadMore() {
         this.loading = true;
-        this.amountOfMonths = this.getMonthsToLoad();
-        if (this.logEvent) {
-            publishToAmplitude('Timeline', { type: 'Load more (months)' });
-        }
+        this.amountOfMonths += this.amountOfMonthsToLoad;
+        this.publishAmplitudeEvent('Load more (months)');
     }
 
     refreshData() {
         this.error = false;
         this.loading = true;
-        this.getTotalRecords();
-
         return refreshApex(this.deWireResult)
             .then(() => {
                 this.loading = false;
-                if (this.logEvent) {
-                    publishToAmplitude('Timeline', { type: 'Refresh list' });
-                }
-
-                if (this.deWireResult.data) {
+                if (this.deWireResult?.data) {
                     this.setData(this.deWireResult.data);
+                    this.publishAmplitudeEvent('Refresh list');
                 }
             })
-            .catch((error) => {
-                this.loading = false;
-                console.error('Error refreshing data: ', error);
-            });
+            .catch((error) => this.handleError('Error refreshing timeline data', error));
     }
 
     collapseAccordions() {
         this.openAccordionSections = this.collapsed ? this.allSections : [];
-        if (this.logEvent) {
-            publishToAmplitude('Timeline', { type: 'Collapse/open accordions' });
-        }
+        this.collapsed = !this.collapsed;
+        this.publishAmplitudeEvent('Collapse/open accordions');
     }
 
     handleSectionToggle(event) {
@@ -315,9 +290,7 @@ export default class Timeline extends LightningElement {
             this.collapseText = this.labels.collapse;
             this.collapsed = false;
         }
-        if (this.logEvent) {
-            publishToAmplitude('Timeline', { type: 'Toggle expand section' });
-        }
+        this.publishAmplitudeEvent('Toggle expand section');
     }
 
     handleFilter(e) {
@@ -333,6 +306,20 @@ export default class Timeline extends LightningElement {
             });
     }
 
+    setupSubscriptions(objects) {
+        objects.forEach((obj) => {
+            if (obj.Timeline_Child__r.AutomaticRefresh__c) {
+                this.initSubscription(obj.Timeline_Child__r.AutomaticRefresh_PushTopicName__c);
+            }
+        });
+    }
+
+    publishAmplitudeEvent(eventType) {
+        if (this.logEvent) {
+            publishToAmplitude('Timeline', { type: eventType });
+        }
+    }
+
     get hasMoreDataToLoad() {
         return this.recordsLoaded < this.maxRecords;
     }
@@ -346,6 +333,6 @@ export default class Timeline extends LightningElement {
     }
 
     get emptySubtitle() {
-        return this.customEmptySubtitle?.length > 0 ? this.customEmptySubtitle : this.labels.emptySubtitle;
+        return this.customEmptySubtitle || this.labels.emptySubtitle;
     }
 }
