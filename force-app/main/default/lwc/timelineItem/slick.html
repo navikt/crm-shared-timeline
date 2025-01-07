@@ -75,7 +75,7 @@
                                         ></lightning-formatted-rich-text>
                                     </template>
                                     <template lwc:else>
-                                        <span>{row.record.subtitle}</span> 
+                                        <span>{row.record.subtitle}</span>
                                     </template>
                                     <template lwc:if={isRelatedUserAUser}>
                                         <a data-id={row.record.relatedUserId} onclick={openUser}>
@@ -90,6 +90,7 @@
                                     <c-timeline-custom-view
                                         record-id={row.record.recordId}
                                         custom-component-name={row.record.customComponent}
+                                        log-event={logEvent}
                                     ></c-timeline-custom-view>
                                 </template>
                             </c-nks-expandable-panel>
