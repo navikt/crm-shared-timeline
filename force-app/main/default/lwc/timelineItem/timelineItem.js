@@ -31,10 +31,7 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
     }
 
     render() {
-        if (this.design === 'Slick') {
-            return slickLayout;
-        }
-        return defaultLayout;
+        return this.design === 'Slick' ? slickLayout : defaultLayout;
     }
 
     itemLevelExpandCheck() {
@@ -177,6 +174,6 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
     }
 
     get clampOverride() {
-        if(this.row.record.clampLines != null) return '--lwc-lineClamp: ' + this.row.record.clampLines;
+        return this.row.record.clampLines != null ? `--lwc-lineClamp: ${this.row.record.clampLines}` : null;
     }
 }

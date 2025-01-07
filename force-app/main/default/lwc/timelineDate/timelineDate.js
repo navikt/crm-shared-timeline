@@ -34,7 +34,7 @@ export default class TimelineDate extends LightningElement {
                     .replaceAll('/', '.');
             }
         } catch (error) {
-            console.log('Geir');
+            console.log(error);
             return this.dateValueDb;
         }
     }
