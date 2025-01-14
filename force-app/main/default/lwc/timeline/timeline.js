@@ -254,7 +254,6 @@ export default class Timeline extends LightningElement {
     }
 
     loadMore() {
-        this.loading = true;
         this.amountOfMonths += this.amountOfMonthsToLoad;
         this.publishAmplitudeEvent('Load more (months)');
     }
