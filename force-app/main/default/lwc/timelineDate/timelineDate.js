@@ -35,8 +35,9 @@ export default class TimelineDate extends LightningElement {
             const format = this.isDate ? 'L' : `L [${this.labels.timePrefix}] HH:mm`;
             return moment(this.dateValueDb).format(format).replaceAll('/', '.');
         } catch (error) {
-            console.error('Error formatting date:', error);
-            return null;
+            console.error('Error formatting date:');
+            console.error(error);
+            return this.dateValueDb;
         }
     }
 }
