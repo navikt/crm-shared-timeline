@@ -62,6 +62,7 @@ export default class Timeline extends LightningElement {
     collapseText = labels.collapse;
     isRendered = false;
     masterData;
+    isFiltered = false;
 
     render() {
         return this.design === 'Slick' ? slickTemplate : defaultTemplate;
@@ -128,8 +129,8 @@ export default class Timeline extends LightningElement {
             LANG === 'no' && this.headerTitleNorwegian
                 ? this.headerTitleNorwegian
                 : LANG === 'en-US' && this.headerTitleEnglish
-                ? this.headerTitleEnglish
-                : this.labels.activities;
+                  ? this.headerTitleEnglish
+                  : this.labels.activities;
     }
 
     loadMomentJs() {
@@ -296,8 +297,10 @@ export default class Timeline extends LightningElement {
     handleFilter(e) {
         this.refreshData()
             .then(() => {
-                const filteredData = this.template.querySelector('c-timeline-filter').filterRecords(this.masterData);
+                const filterTemplate = this.template.querySelector('c-timeline-filter');
+                const filteredData = filterTemplate.filterRecords(this.masterData);
                 this.data = filteredData;
+                this.isFiltered = !filterTemplate.filterContainsAll();
 
                 this.resetAccordions(this.data);
             })
@@ -321,7 +324,7 @@ export default class Timeline extends LightningElement {
     }
 
     get hasMoreDataToLoad() {
-        return this.recordsLoaded < this.maxRecords;
+        return this.recordsLoaded < this.maxRecords && !this.isFiltered;
     }
 
     get showCreateRecords() {
