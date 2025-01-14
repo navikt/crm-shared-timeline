@@ -338,4 +338,8 @@ export default class Timeline extends LightningElement {
     get emptySubtitle() {
         return this.customEmptySubtitle || this.labels.emptySubtitle;
     }
+
+    get headerClass() {
+        return `slds-grid custom-container${this.empty ? '' : ' border-bottom'}`;
+    }
 }
