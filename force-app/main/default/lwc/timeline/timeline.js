@@ -163,19 +163,39 @@ export default class Timeline extends LightningElement {
         this.empty = data.length === 0;
     }
 
-    setData(data) {
+    setData(newData) {
+        let newDataCopy = JSON.parse(JSON.stringify(newData));
+        this.masterData = newDataCopy;
+
+        newDataCopy.forEach((group) => {
+            group.size = group.models?.length || 0;
+        });
+
+        // try to process, fallbacks to original data which is always OK
         try {
-            const parsedData = JSON.parse(JSON.stringify(data));
-            this.masterData = parsedData;
+            // first run, remove all that exceeds amountOfMonths
+            if (!this.data) {
+                let amount = 0;
+                if (newDataCopy[0]) {
+                    if (newDataCopy[0].id == this.labels.overdue || newDataCopy[0].id == this.labels.upcoming) {
+                        amount++;
+                    }
+                }
+                if (newDataCopy[1]) {
+                    if (newDataCopy[1].id == this.labels.upcoming) {
+                        amount++;
+                    }
+                }
+                newDataCopy.splice(this.amountOfMonths + amount);
+            }
 
-            parsedData.forEach((group) => {
-                group.size = group.models?.length || 0;
-            });
+            // loading using load more button, take the previous amount + amountOfMonthsToLoad, and remove all that exceeds the amount
+            else {
+                newDataCopy.splice(this.data.length + this.amountOfMonthsToLoad);
+            }
+        } catch (error) {}
 
-            this.data = parsedData.slice(0, this.amountOfMonths + 2);
-        } catch (error) {
-            this.handleError('Error setting timeline data', error);
-        }
+        this.data = newDataCopy;
     }
 
     setFilterProperties(data) {
@@ -254,7 +274,8 @@ export default class Timeline extends LightningElement {
     }
 
     loadMore() {
-        this.amountOfMonths += this.amountOfMonthsToLoad;
+        this.loading = true;
+        this.amountOfMonths = this.getMonthsToLoad();
         this.publishAmplitudeEvent('Load more (months)');
     }
 
