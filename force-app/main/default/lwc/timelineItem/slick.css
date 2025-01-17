@@ -1,22 +1,19 @@
 .stripe:not([is-last='true']) {
-    /* position: absolute; */
-    /* border-left: 0.2em solid red; */
-    width: 0.15em;
+    width: 1px;
     background-color: gray;
-    margin: 0 auto;
-    min-height: calc(100% - 0.75rem);
+    margin: 4px auto 0 auto;
+    min-height: calc(100% - 0.75rem - 4px);
 }
 
 .cell-icon {
     margin-top: 0.35rem;
-    border: 0.2em solid white;
-    --slds-c-icon-radius-border: 1rem;
+    --slds-c-icon-radius-border: 20rem;
 }
 
 .container {
     height: 100%;
     -moz-box-sizing: border-box;
-    margin: 0 0.7em 0 -0.18em;
+    margin: 0px 0.7em 0px 0px;
 }
 
 .text-divider {
