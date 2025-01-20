@@ -150,9 +150,9 @@ export default class Timeline extends LightningElement {
     processTimelineData(data) {
         this.setParams(data);
         this.setData(data);
-        this.setFilterProperties(data);
-        this.setupAccordions(data);
-        this.countRecordsLoaded(data);
+        this.setFilterProperties(this.data);
+        this.setupAccordions(this.data);
+        this.countRecordsLoaded(this.data);
         this.fetchTotalRecords();
     }
 
