@@ -1,6 +1,5 @@
 .custom-container {
     align-items: flex-start;
-    border-bottom: 1px solid #767676;
     margin: 0 1rem;
 }
 
@@ -11,4 +10,8 @@
 
 .right-column {
     padding-top: 1.75rem;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #767676;
 }

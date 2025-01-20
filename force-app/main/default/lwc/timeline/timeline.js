@@ -62,6 +62,7 @@ export default class Timeline extends LightningElement {
     collapseText = labels.collapse;
     isRendered = false;
     masterData;
+    isFiltered = false;
 
     render() {
         return this.design === 'Slick' ? slickTemplate : defaultTemplate;
@@ -128,8 +129,8 @@ export default class Timeline extends LightningElement {
             LANG === 'no' && this.headerTitleNorwegian
                 ? this.headerTitleNorwegian
                 : LANG === 'en-US' && this.headerTitleEnglish
-                ? this.headerTitleEnglish
-                : this.labels.activities;
+                  ? this.headerTitleEnglish
+                  : this.labels.activities;
     }
 
     loadMomentJs() {
@@ -149,9 +150,9 @@ export default class Timeline extends LightningElement {
     processTimelineData(data) {
         this.setParams(data);
         this.setData(data);
-        this.setFilterProperties(data);
-        this.setupAccordions(data);
-        this.countRecordsLoaded(data);
+        this.setFilterProperties(this.data);
+        this.setupAccordions(this.data);
+        this.countRecordsLoaded(this.data);
         this.fetchTotalRecords();
     }
 
@@ -162,19 +163,39 @@ export default class Timeline extends LightningElement {
         this.empty = data.length === 0;
     }
 
-    setData(data) {
+    setData(newData) {
+        let newDataCopy = JSON.parse(JSON.stringify(newData));
+        this.masterData = newDataCopy;
+
+        newDataCopy.forEach((group) => {
+            group.size = group.models?.length || 0;
+        });
+
+        // try to process, fallbacks to original data which is always OK
         try {
-            const parsedData = JSON.parse(JSON.stringify(data));
-            this.masterData = parsedData;
+            // first run, remove all that exceeds amountOfMonths
+            if (!this.data) {
+                let amount = 0;
+                if (newDataCopy[0]) {
+                    if (newDataCopy[0].id == this.labels.overdue || newDataCopy[0].id == this.labels.upcoming) {
+                        amount++;
+                    }
+                }
+                if (newDataCopy[1]) {
+                    if (newDataCopy[1].id == this.labels.upcoming) {
+                        amount++;
+                    }
+                }
+                newDataCopy.splice(this.amountOfMonths + amount);
+            }
 
-            parsedData.forEach((group) => {
-                group.size = group.models?.length || 0;
-            });
+            // loading using load more button, take the previous amount + amountOfMonthsToLoad, and remove all that exceeds the amount
+            else {
+                newDataCopy.splice(this.data.length + this.amountOfMonthsToLoad);
+            }
+        } catch (error) {}
 
-            this.data = parsedData.slice(0, this.amountOfMonths + 2);
-        } catch (error) {
-            this.handleError('Error setting timeline data', error);
-        }
+        this.data = newDataCopy;
     }
 
     setFilterProperties(data) {
@@ -254,7 +275,7 @@ export default class Timeline extends LightningElement {
 
     loadMore() {
         this.loading = true;
-        this.amountOfMonths += this.amountOfMonthsToLoad;
+        this.amountOfMonths = this.getMonthsToLoad();
         this.publishAmplitudeEvent('Load more (months)');
     }
 
@@ -296,8 +317,10 @@ export default class Timeline extends LightningElement {
     handleFilter(e) {
         this.refreshData()
             .then(() => {
-                const filteredData = this.template.querySelector('c-timeline-filter').filterRecords(this.masterData);
+                const filterTemplate = this.template.querySelector('c-timeline-filter');
+                const filteredData = filterTemplate.filterRecords(this.masterData);
                 this.data = filteredData;
+                this.isFiltered = !filterTemplate.filterContainsAll();
 
                 this.resetAccordions(this.data);
             })
@@ -321,7 +344,7 @@ export default class Timeline extends LightningElement {
     }
 
     get hasMoreDataToLoad() {
-        return this.recordsLoaded < this.maxRecords;
+        return this.recordsLoaded < this.maxRecords && !this.isFiltered;
     }
 
     get showCreateRecords() {
@@ -334,5 +357,9 @@ export default class Timeline extends LightningElement {
 
     get emptySubtitle() {
         return this.customEmptySubtitle || this.labels.emptySubtitle;
+    }
+
+    get headerClass() {
+        return `slds-grid custom-container${this.empty ? '' : ' border-bottom'}`;
     }
 }
