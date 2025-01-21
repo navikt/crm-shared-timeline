@@ -1,7 +1,3 @@
-.row {
-    margin-bottom: 1.4em;
-}
-
 .stripe {
     /* position: absolute; */
     /* border-left: 0.2em solid red; */
@@ -9,21 +5,6 @@
     background-color: gray;
     margin: 0 auto;
     min-height: 100%;
-}
-
-.table {
-    display: table;
-    height: 100%;
-}
-
-.cell {
-    vertical-align: top;
-    display: table-cell;
-    height: 100%;
-}
-
-.cell-right {
-    width: 100%;
 }
 
 .cell-icon {
@@ -35,13 +16,4 @@
     height: 100%;
     -moz-box-sizing: border-box;
     margin: 0 0.7em 0 1.7em;
-}
-
-lightning-layout[data-expandable='true'] {
-    margin-left: -1.5em;
-}
-
-/* This class is used to remove the margin from images in the timeline title */
-.img-reset {
-    --lwc-spacingSmall: 0px;
 }

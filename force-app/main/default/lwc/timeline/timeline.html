@@ -60,6 +60,8 @@
                         group-index={groupIndex}
                         expand-check={expandCheck}
                         log-event={logEvent}
+                        design={design}
+                        include-amount-in-title={includeAmountInTitle}
                     >
                     </c-timeline-group>
                 </template>
@@ -74,11 +76,15 @@
         </div>
         <div if:true={error} class="slds-var-m-top_large">
             <div class="slds-text-heading_large slds-align_absolute-center">{labels.errorTitle}</div>
-            <div class="slds-text-color_destructive slds-align_absolute-center slds-var-m-around_x-large">{errorMsg}</div>
+            <div class="slds-text-color_destructive slds-align_absolute-center slds-var-m-around_x-large">
+                {errorMsg}
+            </div>
         </div>
         <div if:true={empty} class="slds-var-m-top_large">
             <div class="slds-text-heading_large slds-align_absolute-center">{labels.emptyTitle}</div>
-            <div class="slds-text-heading_small slds-align_absolute-center slds-var-m-around_x-large">{emptySubtitle}</div>
+            <div class="slds-text-heading_small slds-align_absolute-center slds-var-m-around_x-large">
+                {emptySubtitle}
+            </div>
         </div>
 
         <!-- ************************************************************************ -->

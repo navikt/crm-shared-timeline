@@ -1,0 +1,35 @@
+.stripe:not([is-last='true']) {
+    width: 1px;
+    background-color: gray;
+    margin: 4px auto 0 auto;
+    min-height: calc(100% - 0.75rem - 4px);
+}
+
+.cell-icon {
+    margin-top: 0.35rem;
+    --slds-c-icon-radius-border: 20rem;
+}
+
+.container {
+    height: 100%;
+    -moz-box-sizing: border-box;
+    margin: 0px 0.7em 0px 0px;
+}
+
+.text-divider {
+    display: inline;
+    margin: 0 0.8rem;
+}
+
+.text-divider::after {
+    content: '|';
+}
+
+.date-font-hook {
+    --lwc-fontSize2: 1em;
+    --slds-g-color-neutral-base-30: black;
+}
+
+.clamp-override {
+    white-space: revert;
+}

@@ -1,0 +1,17 @@
+.custom-container {
+    align-items: flex-start;
+    margin: 0 1rem;
+}
+
+.left-column {
+    padding-top: 4rem;
+    padding-bottom: 1.25rem;
+}
+
+.right-column {
+    padding-top: 1.75rem;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #767676;
+}

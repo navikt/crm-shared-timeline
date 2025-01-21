@@ -1,4 +1,4 @@
-import { LightningElement, track, api, wire } from 'lwc';
+import { LightningElement, api, wire } from 'lwc';
 import { loadScript } from 'lightning/platformResourceLoader';
 import { refreshApex } from '@salesforce/apex';
 import LANG from '@salesforce/i18n/lang';
@@ -11,9 +11,10 @@ import getTotalRecords from '@salesforce/apex/Timeline_Controller.getTotalRecord
 import getTimelineObjects from '@salesforce/apex/Timeline_Controller.getTimelineObjects';
 import labels from './labels';
 import { publishToAmplitude } from 'c/amplitude';
+import defaultTemplate from './timeline.html';
+import slickTemplate from './slick.html';
 
 export default class Timeline extends LightningElement {
-    // config settings
     @api headerIcon = 'custom:custom18';
     @api headerTitleNorwegian;
     @api headerTitleEnglish;
@@ -21,7 +22,7 @@ export default class Timeline extends LightningElement {
     @api recordId;
     @api recordWireFields;
     @api parentRecordId;
-    @api timelineParentField = 'Id'; //Determine which field to use ase the timeline parent record id
+    @api timelineParentField = 'Id';
     @api amountOfMonths = 3;
     @api amountOfMonthsToLoad = 3;
     @api amountOfMonthsToOpen = 2;
@@ -31,19 +32,23 @@ export default class Timeline extends LightningElement {
     @api configId = '';
     @api buttonIsHidden = false;
     @api customEmptySubtitle = '';
-    @api timestamp = ''; // ! deprecated but cannot be removed
+    @api timestamp = ''; // Deprecated
     @api logEvent = false;
     @api design;
+    @api filterIsActive = false;
+    @api picklistFilter1Label;
+    @api picklistFilter2Label;
+    @api hideMyActivitiesFilter = false;
+    @api includeAmountInTitle = false;
 
-    @track data;
-    @track deWireResult;
-    @track overdueData;
-    @track recordsLoaded = 0;
-    @track maxRecords = 0;
-    @track openAccordionSections = [labels.overdue, labels.upcoming];
-    @track allSections = [];
-    @track labels = labels;
-
+    data;
+    deWireResult;
+    recordsLoaded = 0;
+    maxRecords = 0;
+    openAccordionSections = [labels.overdue, labels.upcoming];
+    allSections = [];
+    labels = labels;
+    filterProperties;
     header;
     error = false;
     errorMsg;
@@ -56,50 +61,32 @@ export default class Timeline extends LightningElement {
     collapseIcon = 'utility:justify_text';
     collapseText = labels.collapse;
     isRendered = false;
-
-    /******** Filter ********/
-    @api filterIsActive = false;
-    @api picklistFilter1Label;
-    @api picklistFilter2Label;
-    @api hideMyActivitiesFilter = false;
-    @api includeAmountInTitle = false;
-
-    @track filterProperties;
-
     masterData;
+    isFiltered = false;
+
+    render() {
+        return this.design === 'Slick' ? slickTemplate : defaultTemplate;
+    }
 
     connectedCallback() {
-        //getRecord requires field in array
-        this.recordWireFields = [this.objectApiName + '.' + this.timelineParentField];
-
-        if (LANG === 'no' && this.headerTitleNorwegian !== undefined) {
-            this.header = this.headerTitleNorwegian;
-        } else if (LANG === 'en-US' && this.headerTitleEnglish !== undefined) {
-            this.header = this.headerTitleEnglish;
-        } else {
-            this.header = this.labels.activities;
-        }
+        this.initializeRecordWireFields();
+        this.initializeHeader();
     }
 
     renderedCallback() {
         if (!this.isRendered) {
             this.isRendered = true;
-
-            loadScript(this, MOMENT_JS).then(() => {
-                moment.locale(this.labels.MomentJsLanguage);
-            });
+            this.loadMomentJs();
         }
     }
 
-    @wire(getRecord, {
-        recordId: '$recordId',
-        fields: '$recordWireFields'
-    })
-    deWireRecord({ data, error }) {
+    @wire(getRecord, { recordId: '$recordId', fields: '$recordWireFields' })
+    handleRecordWire(result) {
+        const { data, error } = result;
         if (data) {
             this.parentRecordId = getFieldValue(data, this.recordWireFields[0]);
         } else if (error) {
-            //Something went terribly wrong
+            this.handleError('Error fetching record data', error);
         }
     }
 
@@ -110,35 +97,78 @@ export default class Timeline extends LightningElement {
         configId: '$configId',
         includeSize: '$includeAmountInTitle'
     })
-    deWire(result) {
+    handleTimelineData(result) {
         this.deWireResult = result;
-        if (this.isRendered === true) {
-            //Handling data refresh if wire is triggered by for example an update action that can result in new records in the timeline
-            this.refreshData();
-        }
-
-        if (result.data) {
-            //Moved get total records here as it is now dependent on the parentRecordId which is not set until above wire runs
-            this.getTotalRecords();
-            this.setData(result.data);
-            this.setParams(this.data);
-            this.setAccordions(this.data);
-            this.countRecordsLoaded(this.data);
-            this.setFilterProperties(this.data);
-        } else if (result.error) {
-            this.error = true;
-            this.loading = false;
-            this.setError(result.error);
+        const { data, error } = result;
+        if (data) {
+            this.processTimelineData(data);
+        } else if (error) {
+            this.handleError('Error fetching timeline data', error);
         }
     }
 
-    // ----------------------------------- //
-    // ------------- HELPERS ------------- //
-    // ----------------------------------- //
+    @wire(getTimelineObjects, { recordId: '$parentRecordId', configId: '$configId' })
+    handleTimelineObjects(result) {
+        const { data, error } = result;
+        if (data) {
+            this.setupSubscriptions(data);
+        } else if (error) {
+            this.handleError('Error fetching timeline objects', error);
+        }
+    }
 
-    setData(newData) {
-        let newDataCopy = JSON.parse(JSON.stringify(newData));
-        this.masterData = newDataCopy;
+    // Initialization
+    initializeRecordWireFields() {
+        if (this.objectApiName && this.timelineParentField) {
+            this.recordWireFields = [`${this.objectApiName}.${this.timelineParentField}`];
+        }
+    }
+
+    initializeHeader() {
+        this.header =
+            LANG === 'no' && this.headerTitleNorwegian
+                ? this.headerTitleNorwegian
+                : LANG === 'en-US' && this.headerTitleEnglish
+                  ? this.headerTitleEnglish
+                  : this.labels.activities;
+    }
+
+    loadMomentJs() {
+        loadScript(this, MOMENT_JS)
+            .then(() => moment.locale(this.labels.MomentJsLanguage))
+            .catch((error) => this.handleError('Error loading Moment.js', error));
+    }
+
+    initSubscription(topicName) {
+        const messageCallback = function (response) {
+            this.refreshData();
+        };
+        subscribe('/topic/' + topicName + '?CreatedBy=' + userId, -1, messageCallback.bind(this));
+    }
+
+    // Data Processing
+    processTimelineData(data) {
+        this.setParams(data);
+        this.setData(data);
+        this.setFilterProperties(this.data);
+        this.setupAccordions(this.data);
+        this.countRecordsLoaded(this.data);
+        this.fetchTotalRecords();
+    }
+
+    setParams(data) {
+        this.loading = false;
+        this.finishedLoading = true;
+        this.loadingStyle = '';
+        this.empty = data.length === 0;
+    }
+
+    setData(newData) {       
+        let newDataCopy = structuredClone(newData);
+        newDataCopy.forEach((group) => {
+            group.size = group.models?.length || 0;
+        });
+        this.masterData = structuredClone(newDataCopy);
 
         // try to process, fallbacks to original data which is always OK
         try {
@@ -167,158 +197,104 @@ export default class Timeline extends LightningElement {
         this.data = newDataCopy;
     }
 
-    setParams(data) {
-        this.loading = false;
-        this.finishedLoading = true;
-        this.loadingStyle = '';
-        this.empty = data.length === 0;
-    }
-
     setFilterProperties(data) {
-        const filter = data
-            .map(({ models }) => models)
-            .flat(Infinity)
-            .map(({ filter }) => filter);
-
-        this.filterProperties = filter;
+        this.filterProperties = data.flatMap(({ models }) => models.map(({ filter }) => filter));
     }
 
-    setAccordions(data) {
-        if (this.accordionsAreSet) {
-            return;
-        }
-
-        for (let index = 0; index < this.amountOfMonthsToOpen + 2; index++) {
-            if (data[index] && this.openAccordionSections.length < this.amountOfMonthsToOpen + 2) {
-                const element = data[index];
-
-                if (element.id != this.labels.overdue && element.id != this.labels.upcoming) {
+    setupAccordions(data) {
+        if (this.accordionsAreSet) return;
+        const maxSectionsToOpen = this.amountOfMonthsToOpen + 2;
+        for (let index = 0; index < maxSectionsToOpen; index++) {
+            const element = data[index];
+            if (element && this.openAccordionSections.length < maxSectionsToOpen) {
+                if (element.id !== this.labels.overdue && element.id !== this.labels.upcoming) {
                     this.openAccordionSections.push(element.id);
                 }
             }
         }
+
         this.accordionsAreSet = true;
     }
 
-    resetAccordians(data) {
-        // Delay to allow all accordian sections to render before assigning open sections.
+    resetAccordions(data) {
         setTimeout(() => {
-            this.openAccordionSections = [labels.overdue, labels.upcoming];
+            this.openAccordionSections = [this.labels.overdue, this.labels.upcoming];
             this.accordionsAreSet = false;
-            this.setAccordions(data);
+            this.setupAccordions(data);
         });
     }
 
     countRecordsLoaded(data) {
         let recordsLoaded = 0;
-
-        for (let i = 0; i < data.length; i++) {
-            const elem = data[i];
+        this.allSections = [];
+        data.forEach((elem) => {
             this.allSections.push(elem.id);
-
-            if (elem.id != this.labels.overdue && elem.models) {
+            if (elem.id !== this.labels.overdue && elem.models) {
                 recordsLoaded += elem.models.length;
             }
-        }
-
+        });
         this.recordsLoaded = recordsLoaded;
     }
 
-    getTotalRecords() {
-        getTotalRecords({
-            recordId: this.parentRecordId,
-            configId: this.configId
-        }).then((result) => {
-            this.maxRecords = result;
-        });
+    fetchTotalRecords() {
+        getTotalRecords({ recordId: this.parentRecordId, configId: this.configId })
+            .then((result) => {
+                this.maxRecords = result;
+            })
+            .catch((error) => this.handleError('Error fetching total records', error));
     }
 
     getMonthsToLoad() {
         let today = new Date();
         let lastRecordDate = new Date(this.data[this.data.length - 1].models[0].record.dateValueDb);
 
-        let months;
-        months = (today.getFullYear() - lastRecordDate.getFullYear()) * 12;
+        let months = (today.getFullYear() - lastRecordDate.getFullYear()) * 12;
         months -= lastRecordDate.getMonth();
         months += today.getMonth();
-
-        return parseInt(months) + this.amountOfMonthsToLoad;
+        return months + this.amountOfMonthsToLoad +1;
     }
 
     expandCheck = (groupIndex, itemIndex) => {
-        let totalIndices = 0;
-        for (let i = 0; i < groupIndex; i++) {
-            totalIndices += this.data[i].models.length;
-            if (totalIndices > this.amountOfRecordsToLoad) {
-                return false;
-            }
-        }
-        return totalIndices + itemIndex < this.amountOfRecordsToOpen;
+        const totalModelsBeforeGroup = this.data
+            .slice(0, groupIndex)
+            .reduce((total, group) => total + group.models.length, 0);
+
+        return (
+            totalModelsBeforeGroup <= this.amountOfRecordsToLoad &&
+            totalModelsBeforeGroup + itemIndex < this.amountOfRecordsToOpen
+        );
     };
 
-    setError(error) {
-        if (error.body && error.body.exceptionType && error.body.message) {
-            this.errorMsg = `[ ${error.body.exceptionType} ] : ${error.body.message}`;
-        } else if (error.body && error.body.message) {
-            this.errorMsg = `${error.body.message}`;
-        } else if (typeof error === String) {
-            this.errorMsg = error;
-        } else {
-            this.errorMsg = JSON.stringify(error);
-        }
+    handleError(message, error) {
+        console.error(message, error);
+        this.errorMsg = error.body?.message || error.message || 'An unknown error occurred.';
+        this.error = true;
     }
-
-    // used to listen to new records, to automatically update timeline with new records
-    // --------------------------------------------------------------------------------
-
-    @wire(getTimelineObjects, { recordId: '$parentRecordId', configId: '$configId' })
-    deWireObjects(result) {
-        if (result.data) {
-            result.data.forEach((obj) => {
-                if (obj.Timeline_Child__r.AutomaticRefresh__c) {
-                    this.initSubscription(obj.Timeline_Child__r.AutomaticRefresh_PushTopicName__c);
-                }
-            });
-        }
-    }
-
-    initSubscription(topicName) {
-        const messageCallback = function (response) {
-            this.refreshData();
-        };
-        subscribe('/topic/' + topicName + '?CreatedBy=' + userId, -1, messageCallback.bind(this));
-    }
-
-    // ----------------------------------- //
-    // ------------- BUTTONS ------------- //
-    // ----------------------------------- //
 
     loadMore() {
         this.loading = true;
         this.amountOfMonths = this.getMonthsToLoad();
-        if (this.logEvent) {
-            publishToAmplitude('Timeline', { type: 'Load more (months)' });
-        }
+        this.publishAmplitudeEvent('Load more (months)');
     }
 
     refreshData() {
         this.error = false;
         this.loading = true;
-        this.getTotalRecords();
-
-        return refreshApex(this.deWireResult).then(() => {
-            this.loading = false;
-            if (this.logEvent) {
-                publishToAmplitude('Timeline', { type: 'Refresh list' });
-            }
-        });
+        return refreshApex(this.deWireResult)
+            .then(() => {
+                this.loading = false;
+                if (this.deWireResult?.data) {
+                    this.setData(this.deWireResult.data);
+                    this.publishAmplitudeEvent('Refresh list');
+                }
+            })
+            .catch((error) => this.handleError('Error refreshing timeline data', error));
     }
 
     collapseAccordions() {
         this.openAccordionSections = this.collapsed ? this.allSections : [];
-        if (this.logEvent) {
-            publishToAmplitude('Timeline', { type: 'Collapse/open accordions' });
-        }
+        this.collapsed = !this.collapsed;
+        this.publishAmplitudeEvent('Collapse/open accordions');
     }
 
     handleSectionToggle(event) {
@@ -333,45 +309,62 @@ export default class Timeline extends LightningElement {
             this.collapseText = this.labels.collapse;
             this.collapsed = false;
         }
-        if (this.logEvent) {
-            publishToAmplitude('Timeline', { type: 'Toggle expand section' });
-        }
+        this.publishAmplitudeEvent('Toggle expand section');
     }
 
     handleFilter(e) {
-        const filteredData = this.template.querySelector('c-timeline-filter').filterRecords(this.masterData);
-        const records = filteredData
-            .map(({ models }) => models)
-            .flat(Infinity)
-            .map(({ record }) => record);
-
-        this.maxRecords = records.length;
+        const filterTemplate = this.template.querySelector('c-timeline-filter');
+        let masterDataCopy = structuredClone(this.masterData);
+        let amount = 0;
+        if (masterDataCopy[0]) {
+            if (masterDataCopy[0].id == this.labels.overdue || masterDataCopy[0].id == this.labels.upcoming) {
+                amount++;
+            }
+        }
+        if (masterDataCopy[1]) {
+            if (masterDataCopy[1].id == this.labels.upcoming) {
+                amount++;
+            }
+        }
+        masterDataCopy.splice(this.amountOfMonths + amount);
+        const filteredData = filterTemplate.filterRecords(masterDataCopy);
         this.data = filteredData;
-        this.resetAccordians(this.data);
+        this.isFiltered = !filterTemplate.filterContainsAll();
+
+        this.resetAccordions(this.data);
     }
 
-    // ----------------------------------- //
-    // ------------- GETTERS ------------- //
-    // ----------------------------------- //
+    setupSubscriptions(objects) {
+        objects.forEach((obj) => {
+            if (obj.Timeline_Child__r.AutomaticRefresh__c) {
+                this.initSubscription(obj.Timeline_Child__r.AutomaticRefresh_PushTopicName__c);
+            }
+        });
+    }
+
+    publishAmplitudeEvent(eventType) {
+        if (this.logEvent) {
+            publishToAmplitude('Timeline', { type: eventType });
+        }
+    }
 
     get hasMoreDataToLoad() {
-        // recordsLoaded is less than maxRecords, means there's more records to load
-        return this.recordsLoaded < this.maxRecords;
+        return this.recordsLoaded < this.maxRecords && !this.isFiltered;
     }
 
     get showCreateRecords() {
-        // return formFactorPropertyName !== 'Small';
-        return !this.buttonIsHidden; // temp fix
+        return !this.buttonIsHidden;
     }
 
     get isGrouped() {
-        if (this.buttonIsHidden === false && this.filterIsActive === true) return true;
-        return false;
+        return !this.buttonIsHidden && this.filterIsActive;
     }
 
     get emptySubtitle() {
-        return this.customEmptySubtitle != null && this.customEmptySubtitle.length > 0
-            ? this.customEmptySubtitle
-            : this.labels.emptySubtitle;
+        return this.customEmptySubtitle || this.labels.emptySubtitle;
+    }
+
+    get headerClass() {
+        return `slds-grid custom-container${this.empty ? '' : ' border-bottom'}`;
     }
 }

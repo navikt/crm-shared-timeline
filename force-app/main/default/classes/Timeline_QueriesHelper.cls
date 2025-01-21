@@ -38,7 +38,8 @@ public with sharing class Timeline_QueriesHelper {
             'Timeline_Child__r.SubtitleRelatedUserPrepositionEng__c, Timeline_Child__r.SubtitleRelatedUserPrepositionNor__c, ' +
             'Timeline_Child__r.AutomaticRefresh__c, Timeline_Child__r.AutomaticRefresh_PushTopicName__c, ' +
             'Timeline_Child__r.AllowAutoOpen__c, ' +
-            'Timeline_Child__r.CustomComponent__c,' +
+            'Timeline_Child__r.CustomComponent__c, ' +
+            'Timeline_Child__r.ClampLines__c, ' +
             'Timeline_Child__r.FilterablePicklist1__c, Timeline_Child__r.FilterablePicklist2__c, Timeline_Child__r.FilterableCheckbox__c ' +
             'FROM TimelineParent__mdt ' +
             'WHERE SObjectParent__c = : parentSObjectType';
@@ -78,7 +79,8 @@ public with sharing class Timeline_QueriesHelper {
             fields,
             mdt.Timeline_Child__r.SObjectName__c,
             parameters,
-            mdt.Timeline_Child__r.SObjectDateField__c);
+            mdt.Timeline_Child__r.SObjectDateField__c
+        );
     }
 
     // --------------------------------------------------- //
@@ -97,7 +99,10 @@ public with sharing class Timeline_QueriesHelper {
                         field = (String) mdt.get(mdtField);
                     }
                     if (field != null) {
-                        fieldsToQuery.add(field);
+                        List<String> splitFields = field.split(',');
+                        for (String f : splitFields) {
+                            fieldsToQuery.add(f.trim());
+                        }
                     }
                 }
                 if (!mdt.Timeline_Child__r.SLDS_Icon__c.contains(':')) {
@@ -122,15 +127,26 @@ public with sharing class Timeline_QueriesHelper {
     // ---------------- getQueryParameters --------------- //
     // --------------------------------------------------- //
 
-    public static String getQueryParameters(TimelineParent__mdt mdt, String recordId, Integer amountOfMonths, String recordTypeId) {
+    public static String getQueryParameters(
+        TimelineParent__mdt mdt,
+        String recordId,
+        Integer amountOfMonths,
+        String recordTypeId
+    ) {
         String now = getTime(mdt.Timeline_Child__r.SObjectDateFieldIsDate__c);
         String dateField = mdt.Timeline_Child__r.SObjectDateField__c;
         String parameters = '';
 
-        if(String.isNotBlank(recordTypeId)) {
-            parameters = mdt.SObjectRelationshipField__c + ' = \'' + recordId + '\' AND ' + 'RecordTypeId = \'' + recordTypeId + '\' AND ';
-        }
-        else {
+        if (String.isNotBlank(recordTypeId)) {
+            parameters =
+                mdt.SObjectRelationshipField__c +
+                ' = \'' +
+                recordId +
+                '\' AND ' +
+                'RecordTypeId = \'' +
+                recordTypeId +
+                '\' AND ';
+        } else {
             parameters = mdt.SObjectRelationshipField__c + ' = \'' + recordId + '\' AND ';
         }
         // task specific parameter

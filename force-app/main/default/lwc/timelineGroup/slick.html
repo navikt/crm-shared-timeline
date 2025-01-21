@@ -1,0 +1,50 @@
+<template>
+    <section class={accordionSectionClass}>
+        <div class="slds-accordion__summary slds-var-p-bottom_small">
+            <h2 class="slds-accordion__summary-heading custom-header">
+                <button
+                    class="slds-button slds-button_reset slds-accordion__summary-action custom-button"
+                    aria-expanded={isExpanded}
+                    onclick={toggleButton}
+                >
+                    <div class="icon-container">
+                        <div class="icon">
+                            <svg
+                                width="32"
+                                height="32"
+                                viewBox="0 0 32 32"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                expanded={expanded}
+                            >
+                                <circle cx="16" cy="16" r="16" fill="#DDE0E3" />
+                                <path fill-rule="evenodd" clip-rule="evenodd" fill="#525962" />
+                            </svg>
+                        </div>
+                        <div class="connection-line" expanded={expanded}></div>
+                    </div>
+                    <strong> <span class="slds-accordion__summary-content">{label}</span></strong>
+                </button>
+            </h2>
+        </div>
+        <template lwc:if={expanded}>
+            <template lwc:if={hasModals}>
+                <template iterator:it={group.models}>
+                    <c-timeline-item
+                        key={it.value.record.recordId}
+                        row={it.value}
+                        labels={labels}
+                        index={it.index}
+                        amount={amount}
+                        period={group.id}
+                        group-level-expand-check={groupLevelExpandCheck}
+                        log-event={logEvent}
+                        design={design}
+                        is-last={it.last}
+                    >
+                    </c-timeline-item>
+                </template>
+            </template>
+        </template>
+    </section>
+</template>

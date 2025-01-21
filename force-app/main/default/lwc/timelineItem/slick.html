@@ -1,0 +1,103 @@
+<template>
+    <div lwc:if={showRow}>
+        <li class="row">
+            <span class="slds-assistive-text">{row.record.sObjectLabel}</span>
+            <div class="slds-media">
+                <div class="table">
+                    <div class="cell cell-left">
+                        <div class="container">
+                            <lightning-icon class="cell-icon" size="medium" icon-name={row.theme.icon}>
+                            </lightning-icon>
+                            <div class="stripe" is-last={isLast} style={timelineColor}></div>
+                        </div>
+                    </div>
+                    <div class="cell cell-right">
+                        <div class="slds-media__body">
+                            <c-nks-expandable-panel is-expanded={expanded} is-expandable={isExpandable}>
+                                <div slot="title">
+                                    <h3>
+                                        <template if:true={row.record.headers} iterator:header={row.record.headers}>
+                                            <span key={header.value.header}>
+                                                <span
+                                                    style="display: contents"
+                                                    class="slds-truncate"
+                                                    lwc:if={header.value.isString}
+                                                >
+                                                    <strong>
+                                                        <lightning-formatted-rich-text
+                                                            class="img-reset"
+                                                            value={header.value.header}
+                                                        >
+                                                        </lightning-formatted-rich-text>
+                                                    </strong>
+                                                </span>
+                                                <span lwc:elseif={header.value.isDatetime}>
+                                                    <c-timeline-date
+                                                        class="date-font-hook"
+                                                        date-value-db={header.value.header}
+                                                        overdue={row.record.overdue}
+                                                        period={period}
+                                                        labels={labels}
+                                                    ></c-timeline-date>
+                                                </span>
+                                                <span lwc:elseif={header.value.isDate}>
+                                                    <c-timeline-date
+                                                        class="date-font-hook"
+                                                        date-value-db={header.value.header}
+                                                        is-date={header.value.isDate}
+                                                        overdue={row.record.overdue}
+                                                        period={period}
+                                                        labels={labels}
+                                                    ></c-timeline-date>
+                                                </span>
+                                                <div lwc:if={header.last}></div>
+                                                <div lwc:else aria-hidden="true" class="text-divider"></div>
+                                            </span>
+                                        </template>
+                                    </h3>
+                                </div>
+                                <p slot="subtitle">
+                                    <template lwc:if={isAssigneeAUser}>
+                                        <a data-id={row.record.assigneeId} onclick={openUser}>
+                                            {row.record.assignee}
+                                        </a>
+                                    </template>
+                                    <template lwc:else>
+                                        <span>{row.record.assignee}</span>
+                                    </template>
+                                    <template lwc:if={isOverride}>
+                                        <span class="slds-assistive-text">{assistiveSubtitle}</span>
+                                        <lightning-formatted-rich-text
+                                            aria-hidden="true"
+                                            class="slds-line-clamp clamp-override"
+                                            style={clampOverride}
+                                            value={row.record.subtitleOverride}
+                                        ></lightning-formatted-rich-text>
+                                    </template>
+                                    <template lwc:else>
+                                        <span>{row.record.subtitle}</span>
+                                    </template>
+                                    <template lwc:if={isRelatedUserAUser}>
+                                        <a data-id={row.record.relatedUserId} onclick={openUser}>
+                                            {row.record.relatedUser}
+                                        </a>
+                                    </template>
+                                    <template lwc:else>
+                                        <span>{row.record.relatedUser}</span>
+                                    </template>
+                                </p>
+                                <template lwc:if={isCustom}>
+                                    <c-timeline-custom-view
+                                        record-id={row.record.recordId}
+                                        custom-component-name={row.record.customComponent}
+                                        log-event={logEvent}
+                                    ></c-timeline-custom-view>
+                                </template>
+                            </c-nks-expandable-panel>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </div>
+</template>
