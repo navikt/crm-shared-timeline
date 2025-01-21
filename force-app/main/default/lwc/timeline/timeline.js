@@ -163,13 +163,12 @@ export default class Timeline extends LightningElement {
         this.empty = data.length === 0;
     }
 
-    setData(newData) {
-        let newDataCopy = JSON.parse(JSON.stringify(newData));
-        this.masterData = newDataCopy;
-
+    setData(newData) {       
+        let newDataCopy = structuredClone(newData);
         newDataCopy.forEach((group) => {
             group.size = group.models?.length || 0;
         });
+        this.masterData = structuredClone(newDataCopy);
 
         // try to process, fallbacks to original data which is always OK
         try {
@@ -252,8 +251,7 @@ export default class Timeline extends LightningElement {
         let months = (today.getFullYear() - lastRecordDate.getFullYear()) * 12;
         months -= lastRecordDate.getMonth();
         months += today.getMonth();
-
-        return months + this.amountOfMonthsToLoad;
+        return months + this.amountOfMonthsToLoad +1;
     }
 
     expandCheck = (groupIndex, itemIndex) => {
@@ -315,18 +313,25 @@ export default class Timeline extends LightningElement {
     }
 
     handleFilter(e) {
-        this.refreshData()
-            .then(() => {
-                const filterTemplate = this.template.querySelector('c-timeline-filter');
-                const filteredData = filterTemplate.filterRecords(this.masterData);
-                this.data = filteredData;
-                this.isFiltered = !filterTemplate.filterContainsAll();
+        const filterTemplate = this.template.querySelector('c-timeline-filter');
+        let masterDataCopy = structuredClone(this.masterData);
+        let amount = 0;
+        if (masterDataCopy[0]) {
+            if (masterDataCopy[0].id == this.labels.overdue || masterDataCopy[0].id == this.labels.upcoming) {
+                amount++;
+            }
+        }
+        if (masterDataCopy[1]) {
+            if (masterDataCopy[1].id == this.labels.upcoming) {
+                amount++;
+            }
+        }
+        masterDataCopy.splice(this.amountOfMonths + amount);
+        const filteredData = filterTemplate.filterRecords(masterDataCopy);
+        this.data = filteredData;
+        this.isFiltered = !filterTemplate.filterContainsAll();
 
-                this.resetAccordions(this.data);
-            })
-            .catch((error) => {
-                console.log('Error refreshing data: ', error);
-            });
+        this.resetAccordions(this.data);
     }
 
     setupSubscriptions(objects) {
