@@ -176,4 +176,21 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
     get clampOverride() {
         return this.row.record.clampLines != null ? `--lwc-lineClamp: ${this.row.record.clampLines}` : null;
     }
+
+    get headers() {
+        if (!this.row?.record?.headers) return null;
+        const headers = this.row.record.headers;
+        return headers.map((b) => {
+            if (!b.isString) {
+                return b;
+            }
+            let parser = new DOMParser();
+            const doc = parser.parseFromString(b.header, 'text/html');
+            let imgs = doc.getElementsByTagName('img');
+            [...imgs].forEach((img) => {
+                img.setAttribute('aria-hidden', 'true');
+            });
+            return { ...b, header: doc.body.innerHTML };
+        });
+    }
 }

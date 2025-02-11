@@ -16,7 +16,7 @@
                             <c-nks-expandable-panel is-expanded={expanded} is-expandable={isExpandable}>
                                 <div slot="title">
                                     <h3>
-                                        <template if:true={row.record.headers} iterator:header={row.record.headers}>
+                                        <template if:true={headers} iterator:header={headers}>
                                             <span key={header.value.header}>
                                                 <span
                                                     style="display: contents"
