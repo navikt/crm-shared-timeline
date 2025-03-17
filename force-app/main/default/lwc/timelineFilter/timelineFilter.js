@@ -44,6 +44,7 @@ export default class TimelineFilter extends LightningElement {
         this.publishAmplitudeEvent('Cancel filtering');
     }
 
+    @api
     handleReset() {
         this.draftFilter = {};
         this.filter = {};

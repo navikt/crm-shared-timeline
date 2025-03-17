@@ -275,6 +275,9 @@ export default class Timeline extends LightningElement {
         this.loading = true;
         this.amountOfMonths = this.getMonthsToLoad();
         this.publishAmplitudeEvent('Load more (months)');
+        const filterTemplate = this.template.querySelector('c-timeline-filter');
+        filterTemplate.handleReset();
+        this.isFiltered = false;
     }
 
     refreshData() {
@@ -349,7 +352,7 @@ export default class Timeline extends LightningElement {
     }
 
     get hasMoreDataToLoad() {
-        return this.recordsLoaded < this.maxRecords && !this.isFiltered;
+        return this.recordsLoaded < this.maxRecords;
     }
 
     get showCreateRecords() {

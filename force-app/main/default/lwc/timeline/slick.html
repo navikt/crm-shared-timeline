@@ -60,9 +60,18 @@
                 </template>
             </lightning-accordion>
         </ul>
-        <div lwc:if={hasMoreDataToLoad} class="slds-align_absolute-center loadMoreFooter" onclick={loadMore}>
-            <button class="slds-button loadMoreBtn">{labels.loadMore}</button>
-        </div>
+        <template lwc:if={hasMoreDataToLoad}>
+            <div class="slds-align_absolute-center loadMoreFooter" onclick={loadMore}>
+                <button class="slds-button loadMoreBtn">{labels.loadMore}</button>
+            </div>
+            <template lwc:if={isFiltered}>
+                <div class="slds-align_absolute-center">
+                    <lightning-icon icon-name="utility:info_alt" size="small" class="slds-m-right_xx-small"></lightning-icon>
+                    <p>Temagruppefilteret tilbakestilles ved lasting av flere henvendelser</p>
+                </div>
+            </template>
+        </template>
+
         <div lwc:else class="slds-align_absolute-center slds-text-color_weak slds-var-p-top_medium"></div>
     </div>
 </template>
