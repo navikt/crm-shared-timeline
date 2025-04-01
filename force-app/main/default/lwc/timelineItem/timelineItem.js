@@ -193,4 +193,16 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
             return { ...b, header: doc.body.innerHTML };
         });
     }
+
+    get slickMediaBodyStyle() {
+        return this.row?.record?.slickBackgroundColor != null
+            ? '--override-border-width: 0px; --override-background-color: #' + this.row.record.slickBackgroundColor
+            : '';
+    }
+
+    get slickIconColor() {
+        return this.row?.record?.slickIconColor != null
+            ? '--slds-c-icon-color-background: #' + this.row.record.slickIconColor
+            : '';
+    }
 }

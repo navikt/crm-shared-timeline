@@ -40,7 +40,9 @@ public with sharing class Timeline_QueriesHelper {
             'Timeline_Child__r.AllowAutoOpen__c, ' +
             'Timeline_Child__r.CustomComponent__c, ' +
             'Timeline_Child__r.ClampLines__c, ' +
-            'Timeline_Child__r.FilterablePicklist1__c, Timeline_Child__r.FilterablePicklist2__c, Timeline_Child__r.FilterableCheckbox__c ' +
+            'Timeline_Child__r.FilterablePicklist1__c, Timeline_Child__r.FilterablePicklist2__c, Timeline_Child__r.FilterableCheckbox__c, ' +
+            'Timeline_Child__r.Slick_background_color__c, ' +
+            'Timeline_Child__r.Slick_Icon_Color__c ' +
             'FROM TimelineParent__mdt ' +
             'WHERE SObjectParent__c = : parentSObjectType';
 

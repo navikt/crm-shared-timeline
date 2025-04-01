@@ -6,13 +6,18 @@
                 <div class="table">
                     <div class="cell cell-left">
                         <div class="container">
-                            <lightning-icon class="cell-icon" size="medium" icon-name={row.theme.icon}>
+                            <lightning-icon
+                                class="cell-icon"
+                                size="medium"
+                                icon-name={row.theme.icon}
+                                style={slickIconColor}
+                            >
                             </lightning-icon>
                             <div class="stripe" is-last={isLast} style={timelineColor}></div>
                         </div>
                     </div>
                     <div class="cell cell-right">
-                        <div class="slds-media__body">
+                        <div class="slds-media__body" style={slickMediaBodyStyle}>
                             <c-nks-expandable-panel is-expanded={expanded} is-expandable={isExpandable}>
                                 <div slot="title">
                                     <h3>
@@ -62,7 +67,7 @@
                                             {row.record.assignee}
                                         </a>
                                     </template>
-                                    <template lwc:else>
+                                    <template lwc:elseif={row.record.assignee}>
                                         <span>{row.record.assignee}</span>
                                     </template>
                                     <template lwc:if={isOverride}>
@@ -74,15 +79,15 @@
                                             value={row.record.subtitleOverride}
                                         ></lightning-formatted-rich-text>
                                     </template>
-                                    <template lwc:else>
-                                        <span>{row.record.subtitle}</span>
+                                    <template lwc:elseif={row.record.subtitle}>
+                                        <span> {row.record.subtitle} </span>
                                     </template>
                                     <template lwc:if={isRelatedUserAUser}>
                                         <a data-id={row.record.relatedUserId} onclick={openUser}>
                                             {row.record.relatedUser}
                                         </a>
                                     </template>
-                                    <template lwc:else>
+                                    <template lwc:elseif={row.record.relatedUser}>
                                         <span>{row.record.relatedUser}</span>
                                     </template>
                                 </p>
