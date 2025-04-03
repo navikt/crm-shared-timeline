@@ -23,38 +23,38 @@
                                     <h3>
                                         <template if:true={headers} iterator:header={headers}>
                                             <span key={header.value.header}>
-                                                <span
-                                                    style="display: contents"
-                                                    class="slds-truncate"
-                                                    lwc:if={header.value.isString}
-                                                >
-                                                    <strong>
+                                                <strong>
+                                                    <span
+                                                        style="display: contents"
+                                                        class="slds-truncate"
+                                                        lwc:if={header.value.isString}
+                                                    >
                                                         <lightning-formatted-rich-text
                                                             class="img-reset"
                                                             value={header.value.header}
                                                         >
                                                         </lightning-formatted-rich-text>
-                                                    </strong>
-                                                </span>
-                                                <span lwc:elseif={header.value.isDatetime}>
-                                                    <c-timeline-date
-                                                        class="date-font-hook"
-                                                        date-value-db={header.value.header}
-                                                        overdue={row.record.overdue}
-                                                        period={period}
-                                                        labels={labels}
-                                                    ></c-timeline-date>
-                                                </span>
-                                                <span lwc:elseif={header.value.isDate}>
-                                                    <c-timeline-date
-                                                        class="date-font-hook"
-                                                        date-value-db={header.value.header}
-                                                        is-date={header.value.isDate}
-                                                        overdue={row.record.overdue}
-                                                        period={period}
-                                                        labels={labels}
-                                                    ></c-timeline-date>
-                                                </span>
+                                                    </span>
+                                                    <span lwc:elseif={header.value.isDatetime}>
+                                                        <c-timeline-date
+                                                            class="date-font-hook"
+                                                            date-value-db={header.value.header}
+                                                            overdue={row.record.overdue}
+                                                            period={period}
+                                                            labels={labels}
+                                                        ></c-timeline-date>
+                                                    </span>
+                                                    <span lwc:elseif={header.value.isDate}>
+                                                        <c-timeline-date
+                                                            class="date-font-hook"
+                                                            date-value-db={header.value.header}
+                                                            is-date={header.value.isDate}
+                                                            overdue={row.record.overdue}
+                                                            period={period}
+                                                            labels={labels}
+                                                        ></c-timeline-date>
+                                                    </span>
+                                                </strong>
                                                 <div lwc:if={header.last}></div>
                                                 <div lwc:else aria-hidden="true" class="text-divider"></div>
                                             </span>
