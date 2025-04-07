@@ -111,6 +111,8 @@ global with sharing class Timeline_Model implements Comparable {
         public String picklistValue2;
         @AuraEnabled
         public String checkBoxValue;
+        @AuraEnabled
+        public Boolean shown;
     }
 
     // sorting algorithm
@@ -229,6 +231,7 @@ global with sharing class Timeline_Model implements Comparable {
         filter.checkBoxValue = getFilterProperty(sObj, config.Timeline_Child__r.FilterableCheckbox__c);
         filter.picklistValue1 = getFilterProperty(sObj, config.Timeline_Child__r.FilterablePicklist1__c);
         filter.picklistValue2 = getFilterProperty(sObj, config.Timeline_Child__r.FilterablePicklist2__c);
+        filter.shown = config.Timeline_Child__r.Filter_Shown__c;
 
         return filter;
     }

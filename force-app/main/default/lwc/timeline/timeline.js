@@ -38,6 +38,7 @@ export default class Timeline extends LightningElement {
     @api filterIsActive = false;
     @api picklistFilter1Label;
     @api picklistFilter2Label;
+    @api showHideLabel;
     @api hideMyActivitiesFilter = false;
     @api includeAmountInTitle = false;
 
@@ -151,6 +152,7 @@ export default class Timeline extends LightningElement {
         this.setParams(data);
         this.setData(data);
         this.setFilterProperties(this.data);
+        this.handleFilter();
         this.setupAccordions(this.data);
         this.countRecordsLoaded(this.data);
         this.fetchTotalRecords();
@@ -163,7 +165,7 @@ export default class Timeline extends LightningElement {
         this.empty = data.length === 0;
     }
 
-    setData(newData) {       
+    setData(newData) {
         let newDataCopy = structuredClone(newData);
         newDataCopy.forEach((group) => {
             group.size = group.models?.length || 0;
@@ -251,7 +253,7 @@ export default class Timeline extends LightningElement {
         let months = (today.getFullYear() - lastRecordDate.getFullYear()) * 12;
         months -= lastRecordDate.getMonth();
         months += today.getMonth();
-        return months + this.amountOfMonthsToLoad +1;
+        return months + this.amountOfMonthsToLoad + 1;
     }
 
     expandCheck = (groupIndex, itemIndex) => {
