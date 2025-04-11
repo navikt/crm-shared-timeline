@@ -71,6 +71,11 @@ global with sharing class Timeline_Model implements Comparable {
 
         @AuraEnabled
         public List<Header> headers;
+
+        @AuraEnabled
+        public String slickBackgroundColor;
+        @AuraEnabled
+        public String slickIconColor;
     }
 
     public class Header {
@@ -93,7 +98,7 @@ global with sharing class Timeline_Model implements Comparable {
                 .get(header)
                 .getDescribe();
             this.type = fi.getType().name();
-            this.isString = this.type == 'STRING';
+            this.isString = new List<String>{ 'STRING', 'COMBOBOX' }.contains(this.type);
             this.isDatetime = this.type == 'DATETIME';
             this.isDate = this.type == 'DATE';
         }
@@ -106,6 +111,8 @@ global with sharing class Timeline_Model implements Comparable {
         public String picklistValue2;
         @AuraEnabled
         public String checkBoxValue;
+        @AuraEnabled
+        public Boolean shown;
     }
 
     // sorting algorithm
@@ -149,6 +156,8 @@ global with sharing class Timeline_Model implements Comparable {
         record.subtitleOverride = (String) get(sObj, config.Timeline_Child__r.SObjectSubtitle__c); // To add subtitle for samtale
         record.customComponent = config.Timeline_Child__r.CustomComponent__c;
         record.clampLines = (Integer) config.Timeline_Child__r.ClampLines__c;
+        record.slickBackgroundColor = config.Timeline_Child__r.Slick_background_color__c;
+        record.slickIconColor = config.Timeline_Child__r.Slick_Icon_Color__c;
 
         record.headers = new List<Header>();
         for (String headerField : config.Timeline_Child__r.SObjectTitle__c.deleteWhiteSpace().split(',')) {
@@ -222,6 +231,7 @@ global with sharing class Timeline_Model implements Comparable {
         filter.checkBoxValue = getFilterProperty(sObj, config.Timeline_Child__r.FilterableCheckbox__c);
         filter.picklistValue1 = getFilterProperty(sObj, config.Timeline_Child__r.FilterablePicklist1__c);
         filter.picklistValue2 = getFilterProperty(sObj, config.Timeline_Child__r.FilterablePicklist2__c);
+        filter.shown = config.Timeline_Child__r.Filter_Shown__c;
 
         return filter;
     }

@@ -13,6 +13,7 @@ export default class TimelineFilter extends LightningElement {
     @api isGrouped;
     @api picklistFilter1Label;
     @api picklistFilter2Label;
+    @api showHideLabel;
     @api hideMyActivitiesFilter;
     @api logEvent;
     @api design;
@@ -62,6 +63,11 @@ export default class TimelineFilter extends LightningElement {
         this.draftFilter[e.target.dataset.id] = e.detail.checked || undefined;
     }
 
+    checkboxChange(event) {
+        this.filter.shown = event.target.checked;
+        this.updateFilter();
+    }
+
     updateFilter() {
         this.filter = { ...this.filter, ...this.draftFilter };
         this.dispatchEvent(new CustomEvent('filterchange', { detail: this.filter }));
@@ -73,8 +79,6 @@ export default class TimelineFilter extends LightningElement {
 
     @api
     filterRecords(records) {
-        if (!Object.keys(this.filter).length || this.filterContainsAll()) return records;
-
         return records.map(this.filterGroupModels.bind(this)).filter((group) => group !== null);
     }
 
@@ -93,12 +97,16 @@ export default class TimelineFilter extends LightningElement {
 
     isModelValid(model) {
         const { record, filter } = model;
-
         return (
             (!this.isFilterable('this_user') || record.assigneeId === this.currentUser) &&
             (!this.isFilterable('checkBoxFilter') || this.filter.checkBoxFilter.includes(filter.checkBoxValue)) &&
-            (!this.isFilterable('picklistFilter1') || this.filter.picklistFilter1 === filter.picklistValue1) &&
-            (!this.isFilterable('picklistFilter2') || this.filter.picklistFilter2 === filter.picklistValue2)
+            (!this.isFilterable('picklistFilter1') ||
+                this.filter.picklistFilter1 === filter.picklistValue1 ||
+                this.filter.picklistFilter1 === 'Alle') &&
+            (!this.isFilterable('picklistFilter2') ||
+                this.filter.picklistFilter2 === filter.picklistValue2 ||
+                this.filter.picklistFilter2 === 'Alle') &&
+            (this.filter.shown || !filter.shown)
         );
     }
 
