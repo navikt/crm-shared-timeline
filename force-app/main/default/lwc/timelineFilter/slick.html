@@ -1,6 +1,7 @@
 <template>
     <div class="filter-wrapper">
         <lightning-input
+            lwc:if={showHideCheckbox}
             type="checkbox"
             label={showHideLabel}
             name="input1"

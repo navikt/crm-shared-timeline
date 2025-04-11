@@ -178,6 +178,10 @@ export default class TimelineFilter extends LightningElement {
         return this.getLabel('picklistFilter2Label');
     }
 
+    get showHideCheckbox() {
+        return this.filterProperties?.some((filter) => filter.shown);
+    }
+
     getSelectedFilter(property, defaultValue = null) {
         return this.filter[property] === undefined ? defaultValue : this.filter[property];
     }
