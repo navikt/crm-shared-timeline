@@ -1,0 +1,14 @@
+.filter-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: 1.25rem;
+}
+
+.center-padding {
+    padding-top: 1rem;
+}
+
+.minimum-width {
+    min-width: 10rem;
+}
