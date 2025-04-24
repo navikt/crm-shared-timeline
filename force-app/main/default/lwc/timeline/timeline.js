@@ -275,11 +275,11 @@ export default class Timeline extends LightningElement {
 
     loadMore() {
         this.loading = true;
-        this.amountOfMonths = this.getMonthsToLoad();
-        this.publishAmplitudeEvent('Load more (months)');
         const filterTemplate = this.template.querySelector('c-timeline-filter');
         filterTemplate.handleReset();
         this.isFiltered = false;
+        this.amountOfMonths = this.getMonthsToLoad();
+        this.publishAmplitudeEvent('Load more (months)');
     }
 
     refreshData() {
