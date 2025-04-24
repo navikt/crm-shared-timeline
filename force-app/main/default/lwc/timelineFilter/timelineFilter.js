@@ -84,7 +84,8 @@ export default class TimelineFilter extends LightningElement {
 
     @api
     filterContainsAll() {
-        return Object.values(this.filter).includes('Alle');
+        const values = Object.values(this.filter);
+        return values.includes('Alle') || values.length === 0;
     }
 
     filterGroupModels(group) {
