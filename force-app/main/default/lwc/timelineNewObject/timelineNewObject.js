@@ -4,11 +4,13 @@ import formFactorPropertyName from '@salesforce/client/formFactor';
 import * as helper from './helper';
 import getTimelineObjects from '@salesforce/apex/Timeline_Controller.getTimelineObjects';
 import newObj from '@salesforce/label/c.Timeline_New';
+import { publishToAmplitude } from 'c/amplitude';
 
 export default class TimelineNewObject extends NavigationMixin(LightningElement) {
     @api recordId;
     @api configId;
     @api isGrouped;
+    @api logEvent;
 
     @track sObjects;
     error = false;
@@ -34,6 +36,7 @@ export default class TimelineNewObject extends NavigationMixin(LightningElement)
     createRecord(event) {
         const row = this.sObjects[event.target.dataset.index];
         const override = this.sObjects[event.target.dataset.index].CreateableObject_NoOverride__c == false ? '0' : '1'; // == false to fallback to true if null
+        this.publishAmplitudeEvent('Clicked "New" button');
 
         if (formFactorPropertyName !== 'Small') {
             // PC AND TABLET
@@ -52,6 +55,12 @@ export default class TimelineNewObject extends NavigationMixin(LightningElement)
                     defaultFieldValues: helper.getFieldValues(row, this.recordId)
                 }
             });
+        }
+    }
+
+    publishAmplitudeEvent(eventType) {
+        if (this.logEvent) {
+            publishToAmplitude('Timeline', { type: eventType });
         }
     }
 
