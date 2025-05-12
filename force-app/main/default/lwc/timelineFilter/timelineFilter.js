@@ -54,6 +54,14 @@ export default class TimelineFilter extends LightningElement {
         this.publishAmplitudeEvent('Reset filtering');
     }
 
+    @api
+    handleResetFromLoadMore() {
+        this.draftFilter = {};
+        this.filter = {};
+        this.updateFilter();
+        this.publishAmplitudeEvent('Reset filtering');
+    }
+
     handleChange(e) {
         this.draftFilter[e.target.dataset.id] = e.detail.value;
         this.publishAmplitudeEvent('Changing filters');
