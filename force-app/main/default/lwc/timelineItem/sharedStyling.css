@@ -25,4 +25,5 @@ lightning-layout[data-expandable='true'] {
 /* This class is used to remove the margin from images in the timeline title */
 .img-reset {
     --lwc-spacingSmall: 0px;
+    --slds-g-spacing-3: 0.3rem;
 }
