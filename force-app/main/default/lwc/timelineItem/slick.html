@@ -6,50 +6,51 @@
                 <div class="table">
                     <div class="cell cell-left">
                         <div class="container">
-                            <lightning-icon class="cell-icon" size="medium" icon-name={row.theme.icon}>
+                            <lightning-icon
+                                class="cell-icon"
+                                size="medium"
+                                icon-name={row.theme.icon}
+                                style={slickIconColor}
+                            >
                             </lightning-icon>
                             <div class="stripe" is-last={isLast} style={timelineColor}></div>
                         </div>
                     </div>
                     <div class="cell cell-right">
-                        <div class="slds-media__body">
+                        <div class="slds-media__body" style={slickMediaBodyStyle}>
                             <c-nks-expandable-panel is-expanded={expanded} is-expandable={isExpandable}>
                                 <div slot="title">
                                     <h3>
-                                        <template if:true={row.record.headers} iterator:header={row.record.headers}>
+                                        <template if:true={headers} iterator:header={headers}>
                                             <span key={header.value.header}>
-                                                <span
-                                                    style="display: contents"
-                                                    class="slds-truncate"
-                                                    lwc:if={header.value.isString}
-                                                >
-                                                    <strong class="header-text-wrapper">
+                                                <strong>
+                                                    <span class="header-text-wrapper" lwc:if={header.value.isString}>
                                                         <lightning-formatted-rich-text
                                                             class="img-reset"
                                                             value={header.value.header}
                                                         >
                                                         </lightning-formatted-rich-text>
-                                                    </strong>
-                                                </span>
-                                                <span lwc:elseif={header.value.isDatetime}>
-                                                    <c-timeline-date
-                                                        class="date-font-hook"
-                                                        date-value-db={header.value.header}
-                                                        overdue={row.record.overdue}
-                                                        period={period}
-                                                        labels={labels}
-                                                    ></c-timeline-date>
-                                                </span>
-                                                <span lwc:elseif={header.value.isDate}>
-                                                    <c-timeline-date
-                                                        class="date-font-hook"
-                                                        date-value-db={header.value.header}
-                                                        is-date={header.value.isDate}
-                                                        overdue={row.record.overdue}
-                                                        period={period}
-                                                        labels={labels}
-                                                    ></c-timeline-date>
-                                                </span>
+                                                    </span>
+                                                    <span lwc:elseif={header.value.isDatetime}>
+                                                        <c-timeline-date
+                                                            class="date-font-hook"
+                                                            date-value-db={header.value.header}
+                                                            overdue={row.record.overdue}
+                                                            period={period}
+                                                            labels={labels}
+                                                        ></c-timeline-date>
+                                                    </span>
+                                                    <span lwc:elseif={header.value.isDate}>
+                                                        <c-timeline-date
+                                                            class="date-font-hook"
+                                                            date-value-db={header.value.header}
+                                                            is-date={header.value.isDate}
+                                                            overdue={row.record.overdue}
+                                                            period={period}
+                                                            labels={labels}
+                                                        ></c-timeline-date>
+                                                    </span>
+                                                </strong>
                                                 <div lwc:if={header.last}></div>
                                                 <div lwc:else aria-hidden="true" class="text-divider"></div>
                                             </span>
@@ -62,7 +63,7 @@
                                             {row.record.assignee}
                                         </a>
                                     </template>
-                                    <template lwc:else>
+                                    <template lwc:elseif={row.record.assignee}>
                                         <span>{row.record.assignee}</span>
                                     </template>
                                     <template lwc:if={isOverride}>
@@ -74,15 +75,15 @@
                                             value={row.record.subtitleOverride}
                                         ></lightning-formatted-rich-text>
                                     </template>
-                                    <template lwc:else>
-                                        <span>{row.record.subtitle}</span>
+                                    <template lwc:elseif={row.record.subtitle}>
+                                        <span> {row.record.subtitle} </span>
                                     </template>
                                     <template lwc:if={isRelatedUserAUser}>
                                         <a data-id={row.record.relatedUserId} onclick={openUser}>
                                             {row.record.relatedUser}
                                         </a>
                                     </template>
-                                    <template lwc:else>
+                                    <template lwc:elseif={row.record.relatedUser}>
                                         <span>{row.record.relatedUser}</span>
                                     </template>
                                 </p>

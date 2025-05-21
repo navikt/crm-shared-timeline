@@ -43,6 +43,7 @@
                 description="Show/hide filter button" default="false" />
             <property name="picklistFilter1Label" type="String" label="Label for picklist filter #1" />
             <property name="picklistFilter2Label" type="String" label="Label for picklist filter #2" />
+            <property name="showHideLabel" type="String" label="Label for show/hide checkbox" />
             <property name="hideMyActivitiesFilter" type="Boolean" label="Hide my activities filter"
                 default="false" />
             <property name="includeAmountInTitle" type="Boolean"

@@ -34,6 +34,7 @@
                     record-id={recordId}
                     config-id={configId}
                     is-grouped={isGrouped}
+                    log-event={logEvent}
                 >
                 </c-timeline-new-object>
             </div>
@@ -91,9 +92,21 @@
         <!-- *************************** LOAD MORE MONTHS *************************** -->
         <!-- ************************************************************************ -->
         <div style="border-top: 0.1em solid #dddbda" if:false={error}>
-            <div if:true={hasMoreDataToLoad} class="slds-align_absolute-center loadMoreFooter" onclick={loadMore}>
-                <button class="slds-button loadMoreBtn">{labels.loadMore}</button>
-            </div>
+            <template lwc:if={hasMoreDataToLoad}>
+                <div class="slds-align_absolute-center loadMoreFooter" onclick={loadMore}>
+                    <button class="slds-button loadMoreBtn">{labels.loadMore}</button>
+                </div>
+                <template lwc:if={isFiltered}>
+                    <div class="slds-align_absolute-center">
+                        <lightning-icon
+                            icon-name="utility:info_alt"
+                            size="small"
+                            class="slds-m-right_xx-small"
+                        ></lightning-icon>
+                        <p>Temagruppefilteret tilbakestilles ved lasting av flere henvendelser</p>
+                    </div>
+                </template>
+            </template>
             <div
                 if:false={hasMoreDataToLoad}
                 class="slds-align_absolute-center slds-text-color_weak slds-var-p-top_medium slds-var-p-bottom_xx-small"

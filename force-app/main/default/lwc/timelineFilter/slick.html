@@ -1,11 +1,22 @@
 <template>
-    <lightning-combobox
-        name={picklist1Label}
-        label={picklist1Label}
-        data-id="picklistFilter1"
-        value={selectedPicklistFilter1}
-        placeholder="Velg et alternativ"
-        options={picklistFilter1}
-        onchange={handleChange}
-    ></lightning-combobox>
+    <div class="filter-wrapper">
+        <lightning-input
+            lwc:if={showHideCheckbox}
+            type="checkbox"
+            label={showHideLabel}
+            name="input1"
+            onchange={checkboxChange}
+            class="center-padding"
+        ></lightning-input>
+        <lightning-combobox
+            name={picklist1Label}
+            label={picklist1Label}
+            data-id="picklistFilter1"
+            value={selectedPicklistFilter1}
+            placeholder="Velg et alternativ"
+            options={picklistFilter1}
+            onchange={handleChange}
+            class="minimum-width"
+        ></lightning-combobox>
+    </div>
 </template>
