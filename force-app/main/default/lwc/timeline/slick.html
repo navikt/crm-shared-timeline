@@ -1,13 +1,13 @@
 <template>
     <div class="slds-theme_default slds-is-relative">
         <div class={headerClass}>
-            <div class="slds-col slds-large-size_4-of-12 left-column">
+            <div class="slds-col slds-large-size_3-of-12 left-column">
                 <h3 class="slds-card__header-title">
                     <lightning-icon icon-name={headerIcon} size="small" class="slds-var-m-right_small"></lightning-icon>
                     {header}
                 </h3>
             </div>
-            <div class="slds-col slds-large-size_8-of-12 right-column">
+            <div class="slds-col slds-large-size_9-of-12 right-column">
                 <c-timeline-filter
                     lwc:if={filterIsActive}
                     filter-properties={filterProperties}
