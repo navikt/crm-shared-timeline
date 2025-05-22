@@ -19,12 +19,12 @@
                     <div class="cell cell-right">
                         <div class="slds-media__body" style={slickMediaBodyStyle}>
                             <c-nks-expandable-panel is-expanded={expanded} is-expandable={isExpandable}>
-                                <div slot="title">
+                                <div slot="title" class="slds-var-p-right_small">
                                     <h3>
-                                        <template if:true={headers} iterator:header={headers}>
+                                        <template lwc:if={headers} iterator:header={headers}>
                                             <span key={header.value.header}>
                                                 <strong>
-                                                    <span class="header-text-wrapper" lwc:if={header.value.isString}>
+                                                    <span lwc:if={header.value.isString} class="header-text-wrapper">
                                                         <lightning-formatted-rich-text
                                                             class="img-reset"
                                                             value={header.value.header}
