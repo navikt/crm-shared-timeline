@@ -33,3 +33,10 @@
 .clamp-override {
     white-space: revert;
 }
+
+.header-text-wrapper {
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: normal;
+    max-width: 100%;
+}
