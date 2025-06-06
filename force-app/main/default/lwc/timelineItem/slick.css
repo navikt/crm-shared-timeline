@@ -1,8 +1,8 @@
 .stripe:not([is-last='true']) {
     width: 1px;
     background-color: gray;
-    margin: 4px auto 0 auto;
-    min-height: calc(100% - 0.75rem - 4px);
+    margin: 0.1rem auto;
+    min-height: calc(100% - 0.2rem);
 }
 
 .cell-icon {
