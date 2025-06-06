@@ -1,7 +1,7 @@
 <template>
     <section class={accordionSectionClass}>
         <div class="slds-accordion__summary slds-var-p-bottom_small">
-            <h2 class="slds-accordion__summary-heading custom-header">
+            <h3 class="slds-text-heading_small custom-header">
                 <button
                     class="slds-button slds-button_reset slds-accordion__summary-action custom-button"
                     aria-expanded={isExpanded}
@@ -10,8 +10,8 @@
                     <div class="icon-container">
                         <div class="icon">
                             <svg
-                                width="32"
-                                height="32"
+                                width="24"
+                                height="24"
                                 viewBox="0 0 32 32"
                                 fill="none"
                                 xmlns="http://www.w3.org/2000/svg"
@@ -25,7 +25,7 @@
                     </div>
                     <strong> <span class="slds-accordion__summary-content">{label}</span></strong>
                 </button>
-            </h2>
+            </h3>
         </div>
         <template lwc:if={expanded}>
             <template lwc:if={hasModals}>
