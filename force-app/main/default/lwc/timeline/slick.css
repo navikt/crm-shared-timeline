@@ -1,5 +1,6 @@
 .custom-container {
     align-items: flex-start;
+    margin: 0 1.25rem;
 }
 
 .left-column {
