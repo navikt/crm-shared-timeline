@@ -22,8 +22,8 @@ lightning-layout[data-expandable='true'] {
     margin-left: -1.5em;
 }
 
-/* This class is used to remove the margin from images in the timeline title */
+/* This class is used to remove the margin from images in the timeline title and center them (formula field) */
 .img-reset {
-    --lwc-spacingSmall: 0px;
-    --slds-g-spacing-3: 0.3rem;
+    --lwc-spacingSmall: 4px; /* For slds1 - does not affect slds2 */
+    --slds-g-spacing-3: 0.3rem; /* For slds2 - does not affect slds1 */ 
 }
