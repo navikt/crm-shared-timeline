@@ -1,6 +1,6 @@
 .slds-accordion__section {
     border-bottom: 1px solid #767676;
-    margin: 0.813rem 0 1rem 0;
+    margin: 0.813rem 1.2rem 1rem 1.2rem;
     --slds-c-accordion-section-spacing-blockend: 0;
     --slds-c-accordion-section-spacing-blockstart: 0;
     --slds-c-accordion-section-spacing-inlineend: 0;
