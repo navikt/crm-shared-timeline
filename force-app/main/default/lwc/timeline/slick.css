@@ -1,15 +1,12 @@
 .custom-container {
-    align-items: flex-start;
+    align-items: center;
     margin: 0 1.25rem;
+    padding-bottom: 1rem;
 }
 
 .left-column {
-    padding-top: 4.5rem;
-    padding-bottom: 1.25rem;
-}
-
-.right-column {
-    padding-top: 1.5rem;
+    padding-top: 0.5rem;
+    padding-right: 1rem;
 }
 
 .border-bottom {
