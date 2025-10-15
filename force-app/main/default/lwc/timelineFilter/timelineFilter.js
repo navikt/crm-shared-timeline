@@ -108,7 +108,7 @@ export default class TimelineFilter extends LightningElement {
     isModelValid(model) {
         const { record, filter } = model;
         return (
-            (!this.isFilterable('this_user') || record.assigneeId === this.currentUser) &&
+            (!this.filter?.this_user || record.assigneeId === this.currentUser) &&
             (!this.isFilterable('checkBoxFilter') || this.filter.checkBoxFilter.includes(filter.checkBoxValue)) &&
             (!this.isFilterable('picklistFilter1') ||
                 this.filter.picklistFilter1 === filter.picklistValue1 ||
