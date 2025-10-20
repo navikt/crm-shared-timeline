@@ -44,7 +44,7 @@
                     >
                     </c-timeline-item>
                 </template>
-                <div if:true={showViewMore}>
+                <div lwc:if={showViewMore}>
                     <a class="slds-button slds-button_neutral viewmore-button" type="button" title={labels.viewMore} tabindex="0" onclick={viewMore}>{labels.viewMore}</a>
                 </div>
             </template>
