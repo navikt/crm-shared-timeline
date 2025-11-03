@@ -1,3 +1,7 @@
 .custom-font-color {
     color: black;
 }
+    
+.custom-font-size {
+    font-size: 0.875rem;
+}
