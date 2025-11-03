@@ -33,7 +33,6 @@
                                                     </span>
                                                     <span lwc:elseif={header.value.isDatetime}>
                                                         <c-timeline-date
-                                                            class="date-font-hook"
                                                             date-value-db={header.value.header}
                                                             overdue={row.record.overdue}
                                                             period={period}
@@ -42,7 +41,6 @@
                                                     </span>
                                                     <span lwc:elseif={header.value.isDate}>
                                                         <c-timeline-date
-                                                            class="date-font-hook"
                                                             date-value-db={header.value.header}
                                                             is-date={header.value.isDate}
                                                             overdue={row.record.overdue}
