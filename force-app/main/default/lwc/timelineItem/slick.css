@@ -25,11 +25,6 @@
     content: '|';
 }
 
-.date-font-hook {
-    --lwc-fontSize2: 1em;
-    --slds-g-color-neutral-base-30: black;
-}
-
 .clamp-override {
     white-space: revert;
 }
