@@ -27,7 +27,7 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
         this.itemLevelExpandCheck();
         if (this.row.theme.sldsTimelineItemColor != null) {
             this.timelineColor = '	background-color: #' + this.row.theme.sldsTimelineItemColor + ';';
-        }
+        }        
     }
 
     render() {
@@ -169,6 +169,13 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
         return this.isOverride && !this.expanded;
     }
 
+    get formattedSubtitleOverride() {
+        if (this.row.record.subtitleOverride && this.row.record.sObjectKind === 'Thread__c') {
+            return this.formatThreadDate(this.row.record.subtitleOverride);
+        }
+        return this.row.record.subtitleOverride;
+    }
+
     get isCustom() {
         return this.row.record.customComponent != null && this.row.record.customComponent != '';
     }
@@ -180,9 +187,9 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
     get headers() {
         if (!this.row?.record?.headers) return null;
         const headers = this.row.record.headers;
-        return headers.map((b) => {
+        return headers.map((b, index) => {
             if (!b.isString) {
-                return b;
+                return { ...b, isLast: index === headers.length - 1 };
             }
             let parser = new DOMParser();
             const doc = parser.parseFromString(b.header, 'text/html');
@@ -190,7 +197,7 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
             [...imgs].forEach((img) => {
                 img.setAttribute('aria-hidden', 'true');
             });
-            return { ...b, header: doc.body.innerHTML };
+            return { ...b, header: doc.body.innerHTML, isLast: index === headers.length - 1 };
         });
     }
 
@@ -204,5 +211,43 @@ export default class TimelineItem extends NavigationMixin(LightningElement) {
         return this.row?.record?.slickIconColor != null
             ? '--slds-c-icon-color-background: #' + this.row.record.slickIconColor
             : '';
+    }
+
+    formatThreadDate(htmlContent) {
+        try {
+            // Parse the HTML content from CRM_Conversation_Summary__c field on Thread
+            let parser = new DOMParser();
+            const doc = parser.parseFromString(htmlContent, 'text/html');
+            
+            // Find the date in the <b> tag
+            const dateElement = doc.querySelector('b');
+            if (dateElement && dateElement.textContent) {
+                const dateText = dateElement.textContent.trim();
+                
+                // Parse the date format ex: 2025-09-23 07:43:46
+                const dateMatch = dateText.match(/(\d{4})-(\d{2})-(\d{2})\s(\d{2}):(\d{2}):(\d{2})/);
+                if (dateMatch) {
+                    const dateValue = new Date(dateMatch[0]);
+                    
+                    let formattedDate;
+                    if (typeof moment !== 'undefined' && this.labels) {
+                        formattedDate = moment(dateValue)
+                            .format('L [' + this.labels.timePrefix + '] HH:mm:ss')
+                            .replaceAll('/', '.');
+                    } else {
+                        // Fallback to "kl." format
+                        const [, year, month, day, hours, minutes, seconds] = dateMatch;
+                        const timePrefix = this.labels?.timePrefix || 'kl.';
+                        formattedDate = `${day}.${month}.${year} ${timePrefix} ${hours}:${minutes}:${seconds}`;
+                    }
+                    
+                    dateElement.innerHTML = formattedDate;
+                    return doc.body.innerHTML;
+                }
+            }
+        } catch (error) {
+            console.error('Error formatting thread date:', error);
+        }
+        return htmlContent;
     }
 }
