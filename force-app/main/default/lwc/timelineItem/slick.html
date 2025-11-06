@@ -23,7 +23,16 @@
                                     <h3>
                                         <template lwc:if={headers} iterator:header={headers}>
                                             <span key={header.value.header}>
-                                                <strong>
+                                                <!-- No bold styling for the last header (journalføring status) -->
+                                                <span lwc:if={header.value.isLast} class="header-text-wrapper">
+                                                    <lightning-formatted-rich-text
+                                                        class="img-reset"
+                                                        value={header.value.header}
+                                                    >
+                                                    </lightning-formatted-rich-text>
+                                                </span>
+                                                <!-- Bold styling for all other headers -->
+                                                <strong lwc:else>
                                                     <span lwc:if={header.value.isString} class="header-text-wrapper">
                                                         <lightning-formatted-rich-text
                                                             class="img-reset"
@@ -49,7 +58,7 @@
                                                         ></c-timeline-date>
                                                     </span>
                                                 </strong>
-                                                <div lwc:if={header.last}></div>
+                                                <div lwc:if={header.value.isLast}></div>
                                                 <div lwc:else aria-hidden="true" class="text-divider"></div>
                                             </span>
                                         </template>
@@ -70,7 +79,7 @@
                                             aria-hidden="true"
                                             class="slds-line-clamp clamp-override"
                                             style={clampOverride}
-                                            value={row.record.subtitleOverride}
+                                            value={formattedSubtitleOverride}
                                         ></lightning-formatted-rich-text>
                                     </template>
                                     <template lwc:elseif={row.record.subtitle}>
