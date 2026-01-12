@@ -16,7 +16,8 @@ public with sharing class Timeline_Controller {
         Integer amountOfMonths,
         Integer amountOfMonthsToLoad,
         String configId,
-        Boolean includeSize
+        Boolean includeSize,
+        Integer amountOfRecords
     ) {
         System.debug(
             '\n' +
@@ -35,9 +36,13 @@ public with sharing class Timeline_Controller {
             false,
             configId
         );
-        Integer totalRecords = Timeline_Queries.getTotalRecords(sObjectsToQuery, recordId);
+        // Only query total records if we're not using a record limit (expensive operation)
+        Integer totalRecords = (amountOfRecords == null || amountOfRecords <= 0) 
+            ? Timeline_Queries.getTotalRecords(sObjectsToQuery, recordId) 
+            : amountOfRecords;
+        Integer effectiveLimit = amountOfRecords != null && amountOfRecords > 0 ? amountOfRecords : null;
 
-        List<Timeline_Model> activity = Timeline_Helper.getActivity(sObjectsToQuery, recordId, amountOfMonths);
+        List<Timeline_Model> activity = Timeline_Helper.getActivity(sObjectsToQuery, recordId, amountOfMonths, effectiveLimit);
         activity = Timeline_Helper.reloadUntilDataFetched(
             sObjectsToQuery,
             recordId,
@@ -46,7 +51,8 @@ public with sharing class Timeline_Controller {
             2,
             totalRecords,
             activity,
-            includeSize
+            includeSize,
+            effectiveLimit
         );
         activity = Timeline_Helper.getOwnerAndContactNames(activity);
         activity.sort();

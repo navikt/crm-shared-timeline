@@ -34,7 +34,8 @@ public with sharing class Timeline_Queries {
     public static List<String> createSoqlQueries(
         List<TimelineParent__mdt> sObjectsToQuery,
         String recordId,
-        Integer amountOfMonths
+        Integer amountOfMonths,
+        Integer recordLimit
     ) {
         Set<String> queriedSobjects = new Set<String>();
         List<String> queries = new List<String>();
@@ -47,7 +48,7 @@ public with sharing class Timeline_Queries {
                 if (String.isNotBlank(mdt.Timeline_Child__r.CreateableObject_RecordType__c)) {
                     recordTypeId = recordTypesMap.get(mdt.Timeline_Child__r.SObjectName__c + mdt.Timeline_Child__r.CreateableObject_RecordType__c);
                 }
-                queries.add(Timeline_QueriesHelper.getQuery(sObjectsToQuery, mdt, recordId, amountOfMonths, recordTypeId));
+                queries.add(Timeline_QueriesHelper.getQuery(sObjectsToQuery, mdt, recordId, amountOfMonths, recordTypeId, recordLimit));
                 queriedSobjects.add(mdt.Timeline_Child__r.SObjectName__c + mdt.SObjectRelationshipField__c + mdt.Timeline_Child__r.CreateableObject_RecordType__c);
                 recordTypeId = '';
             }

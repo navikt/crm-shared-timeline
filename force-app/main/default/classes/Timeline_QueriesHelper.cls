@@ -72,7 +72,8 @@ public with sharing class Timeline_QueriesHelper {
         TimelineParent__mdt mdt,
         String recordId,
         Integer amountOfMonths,
-        String recordTypeId
+        String recordTypeId,
+        Integer recordLimit
     ) {
         String fields = getQueryFields(sObjectsToQuery, mdt);
         String parameters = getQueryParameters(mdt, recordId, amountOfMonths, recordTypeId);
@@ -82,7 +83,8 @@ public with sharing class Timeline_QueriesHelper {
             fields,
             mdt.Timeline_Child__r.SObjectName__c,
             parameters,
-            mdt.Timeline_Child__r.SObjectDateField__c
+            mdt.Timeline_Child__r.SObjectDateField__c,
+            recordLimit
         );
     }
 
@@ -178,9 +180,10 @@ public with sharing class Timeline_QueriesHelper {
     // ------------------ buildSoqlQuery ----------------- //
     // --------------------------------------------------- //
 
-    public static String buildSoqlQuery(String fields, String sObjectType, String parameters, String orderBy) {
+    public static String buildSoqlQuery(String fields, String sObjectType, String parameters, String orderBy, Integer recordLimit) {
         Boolean hasParameter = String.isNotBlank(parameters);
         Boolean hasOrderBy = String.isNotBlank(orderBy);
+        Boolean hasLimit = recordLimit != null && recordLimit > 0;
 
         String query =
             ' SELECT ' +
@@ -188,7 +191,8 @@ public with sharing class Timeline_QueriesHelper {
             ' FROM ' +
             sObjectType +
             (hasParameter ? ' WHERE ' + parameters : '') +
-            (hasOrderBy ? ' ORDER BY ' + orderBy : '');
+            (hasOrderBy ? ' ORDER BY ' + orderBy : '') +
+            (hasLimit ? ' LIMIT ' + recordLimit : '');
 
         return query;
     }

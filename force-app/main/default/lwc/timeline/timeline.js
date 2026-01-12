@@ -96,7 +96,8 @@ export default class Timeline extends LightningElement {
         amountOfMonths: '$amountOfMonths',
         amountOfMonthsToLoad: '$amountOfMonthsToLoad',
         configId: '$configId',
-        includeSize: '$includeAmountInTitle'
+        includeSize: '$includeAmountInTitle',
+        amountOfRecords: '$amountOfRecords'
     })
     handleTimelineData(result) {
         this.deWireResult = result;
@@ -281,7 +282,9 @@ export default class Timeline extends LightningElement {
         filterTemplate.handleResetFromLoadMore();
         this.isFiltered = false;
         this.amountOfMonths = this.getMonthsToLoad();
-        this.publishAmplitudeEvent('Load more (months)');
+        // Increase record limit to actually load more records
+        this.amountOfRecords = this.amountOfRecords + this.amountOfRecordsToLoad;
+        //this.publishAmplitudeEvent('Load more (months)');
     }
 
     refreshData() {
@@ -292,7 +295,7 @@ export default class Timeline extends LightningElement {
                 this.loading = false;
                 if (this.deWireResult?.data) {
                     this.setData(this.deWireResult.data);
-                    this.publishAmplitudeEvent('Refresh list');
+                    //this.publishAmplitudeEvent('Refresh list');
                 }
             })
             .catch((error) => this.handleError('Error refreshing timeline data', error));
@@ -301,7 +304,7 @@ export default class Timeline extends LightningElement {
     collapseAccordions() {
         this.openAccordionSections = this.collapsed ? this.allSections : [];
         this.collapsed = !this.collapsed;
-        this.publishAmplitudeEvent('Collapse/open accordions');
+        //this.publishAmplitudeEvent('Collapse/open accordions');
     }
 
     handleSectionToggle(event) {
@@ -316,7 +319,7 @@ export default class Timeline extends LightningElement {
             this.collapseText = this.labels.collapse;
             this.collapsed = false;
         }
-        this.publishAmplitudeEvent('Toggle expand section');
+        //this.publishAmplitudeEvent('Toggle expand section');
     }
 
     handleFilter(e) {
