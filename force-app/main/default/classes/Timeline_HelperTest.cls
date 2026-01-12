@@ -36,7 +36,7 @@ private without sharing class Timeline_HelperTest {
         List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(parentSObjectType, false, null);
 
         Test.StartTest();
-        List<Timeline_Model> actual = Timeline_Helper.getActivity(sObjectsToQuery, recordId, 3, null, null);
+        List<Timeline_Model> actual = Timeline_Helper.getActivity(sObjectsToQuery, recordId, 3, null);
         Test.StopTest();
 
         System.assertEquals(2, actual.size(), 'two tasks associated with account');
@@ -47,7 +47,7 @@ private without sharing class Timeline_HelperTest {
         Id recordId = [SELECT Id FROM Account WHERE NAME = 'test' LIMIT 1].Id;
         String parentSObjectType = Timeline_Helper.getSOjectTypeFromRecordId(recordId);
         List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(parentSObjectType, false, null);
-        List<Timeline_Model> models = Timeline_Helper.getActivity(sObjectsToQuery, recordId, 3, null, null);
+        List<Timeline_Model> models = Timeline_Helper.getActivity(sObjectsToQuery, recordId, 3, null);
 
         Test.StartTest();
         Timeline_ModelList actual = Timeline_Helper.getUpcomingActivity(models);
@@ -108,7 +108,8 @@ private without sharing class Timeline_HelperTest {
             2,
             totalRecords,
             activity,
-            true
+            true,
+            null
         );
         Test.StopTest();
 
