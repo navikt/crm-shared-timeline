@@ -191,7 +191,7 @@ public with sharing class Timeline_QueriesHelper {
             ' FROM ' +
             sObjectType +
             (hasParameter ? ' WHERE ' + parameters : '') +
-            (hasOrderBy ? ' ORDER BY ' + orderBy : '') +
+            (hasOrderBy ? ' ORDER BY ' + orderBy + ' DESC' : '') +
             (hasLimit ? ' LIMIT ' + recordLimit : '');
 
         return query;
