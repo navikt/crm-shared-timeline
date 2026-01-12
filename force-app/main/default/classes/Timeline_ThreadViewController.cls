@@ -20,7 +20,9 @@ public with sharing class Timeline_ThreadViewController {
                     //Params
                     'CRM_Thread__c = :threadId',
                     //Order
-                    'CRM_Sent_date__c ASC'
+                    'CRM_Sent_date__c ASC',
+                    //RecordLimit
+                    null
                 )
             );
         } catch (Exception e) {

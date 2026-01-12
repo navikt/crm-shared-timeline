@@ -1,15 +1,4 @@
-/**
- * @description       :
- * @author            : mamikals
- * @group             :
- * @last modified on  : 01-03-2023
- * @last modified by  : mamikals
- **/
 public with sharing class Timeline_Controller {
-    // ------------------------------------------------------------- //
-    // ---------------------- getTotalRecords ---------------------- //
-    // ------------------------------------------------------------- //
-
     @AuraEnabled(cacheable=true)
     public static List<Timeline_ModelList> getTimelineData(
         String recordId,
@@ -19,13 +8,6 @@ public with sharing class Timeline_Controller {
         Boolean includeSize,
         Integer amountOfRecords
     ) {
-        System.debug(
-            '\n' +
-            '------------------------------------------\n' +
-            '----------getTimelineData---------\n' +
-            '------------------------------------------'
-        );
-
         if (recordId == null) {
             throw new AuraException('Error. Invalid record ID.');
         }
@@ -66,19 +48,8 @@ public with sharing class Timeline_Controller {
         return data;
     }
 
-    // ------------------------------------------------------------- //
-    // -------------------- getTimelineObjects --------------------- //
-    // ------------------------------------------------------------- //
-
     @AuraEnabled(cacheable=true)
     public static List<TimelineParent__mdt> getTimelineObjects(String recordId, String configId) {
-        System.debug(
-            '\n' +
-            '------------------------------------------\n' +
-            '------------getTimelineObjects------------\n' +
-            '------------------------------------------'
-        );
-
         if (recordId == null) {
             throw new AuraException('Error. Invalid record ID.');
         }
@@ -94,19 +65,8 @@ public with sharing class Timeline_Controller {
         return sObjectsToQuery;
     }
 
-    // ------------------------------------------------------------- //
-    // ---------------------- getTotalRecords ---------------------- //
-    // ------------------------------------------------------------- //
-
     @AuraEnabled(cacheable=true)
     public static Integer getTotalRecords(String recordId, String configId) {
-        System.debug(
-            '\n' +
-            '------------------------------------------\n' +
-            '--------------getTotalRecords-------------\n' +
-            '------------------------------------------'
-        );
-
         if (recordId == null) {
             throw new AuraException('Error. Invalid record ID.');
         }

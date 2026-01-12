@@ -31,7 +31,7 @@ private without sharing class Timeline_QueriesTest {
         Id recordId = Timeline_TestDataFactory.createAccount('test').Id;
 
         Test.StartTest();
-        List<String> queries = Timeline_Queries.createSoqlQueries(sObjectsToQuery, recordId, 3);
+        List<String> queries = Timeline_Queries.createSoqlQueries(sObjectsToQuery, recordId, 3, null);
         Test.StopTest();
 
         System.assertEquals(
@@ -77,7 +77,7 @@ private without sharing class Timeline_QueriesTest {
 
         String parentSObjectType = Timeline_Helper.getSOjectTypeFromRecordId(acc.Id);
         List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(parentSObjectType, false, null);
-        List<String> queries = Timeline_Queries.createSoqlQueries(sObjectsToQuery, acc.Id, 3);
+        List<String> queries = Timeline_Queries.createSoqlQueries(sObjectsToQuery, acc.Id, 3, null);
 
         Test.StartTest();
         List<SObject> sObjects = Timeline_Queries.getSObjectsFromQueries(queries);
