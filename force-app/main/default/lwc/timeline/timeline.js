@@ -46,7 +46,7 @@ export default class Timeline extends LightningElement {
     data;
     deWireResult;
     recordsLoaded = 0;
-    maxRecords = 0;
+    allRecordsLoaded = false;
     openAccordionSections = [labels.overdue, labels.upcoming];
     allSections = [];
     labels = labels;
@@ -161,7 +161,7 @@ export default class Timeline extends LightningElement {
         }
         this.setupAccordions(this.data);
         this.countRecordsLoaded(this.data);
-        this.fetchTotalRecords();
+        //this.fetchTotalRecords();
     }
 
     setParams(data) {
@@ -241,15 +241,19 @@ export default class Timeline extends LightningElement {
                 recordsLoaded += elem.models.length;
             }
         });
+        
+        // Track previous count to detect when no more records are available
+        const previousRecordsLoaded = this.recordsLoaded;
         this.recordsLoaded = recordsLoaded;
+
+        if (previousRecordsLoaded > 0 && recordsLoaded === previousRecordsLoaded) {
+            this.allRecordsLoaded = true;
+        }
     }
 
     fetchTotalRecords() {
+        // Not currently needed with LIMIT-based approach, but kept for potential future use
         getTotalRecords({ recordId: this.parentRecordId, configId: this.configId })
-            .then((result) => {
-                this.maxRecords = result;
-            })
-            .catch((error) => this.handleError('Error fetching total records', error));
     }
 
     getMonthsToLoad() {
@@ -362,7 +366,7 @@ export default class Timeline extends LightningElement {
     }
 
     get hasMoreDataToLoad() {
-        return this.recordsLoaded < this.maxRecords;
+        return !this.allRecordsLoaded;
     }
 
     get showCreateRecords() {
