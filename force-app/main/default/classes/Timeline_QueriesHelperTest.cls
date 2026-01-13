@@ -50,13 +50,13 @@ public without sharing class Timeline_QueriesHelperTest {
         Id recordId = Timeline_TestDataFactory.createAccount('test').Id;
 
         Test.StartTest();
-        String results = Timeline_QueriesHelper.getQuery(sObjectsToQuery, sObjectsToQuery[0], recordId, 5, '');
+        String results = Timeline_QueriesHelper.getQuery(sObjectsToQuery, sObjectsToQuery[0], recordId, 5, '', null);
         Test.StopTest();
 
         String expectedEvent =
             ' SELECT Id,ActivityDate,Subject,OwnerId,WhoId,ActivityDateTime,IsAllDayEvent,DurationInMinutes FROM Event WHERE WhatId = \'' +
             recordId +
-            '\' AND (ActivityDate = LAST_N_MONTHS:4 OR ActivityDate = THIS_MONTH OR ActivityDate > TODAY) ORDER BY ActivityDate';
+            '\' AND (ActivityDate = LAST_N_MONTHS:4 OR ActivityDate = THIS_MONTH OR ActivityDate > TODAY) ORDER BY ActivityDate DESC';
         System.assertEquals(expectedEvent, results, 'should get the full soql query');
     }
 
@@ -66,13 +66,13 @@ public without sharing class Timeline_QueriesHelperTest {
         Id recordId = Timeline_TestDataFactory.createAccount('test').Id;
 
         Test.StartTest();
-        String results = Timeline_QueriesHelper.getQuery(sObjectsToQuery, sObjectsToQuery[1], recordId, 5, '');
+        String results = Timeline_QueriesHelper.getQuery(sObjectsToQuery, sObjectsToQuery[1], recordId, 5, '', null);
         Test.StopTest();
 
         String expected =
             ' SELECT Id,ActivityDate,Subject,OwnerId,WhoId,Type,Status,CreatedDate FROM Task WHERE WhatId = \'' +
             recordId +
-            '\' AND TaskSubType != \'Email\' AND ( (ActivityDate = LAST_N_MONTHS:4 OR ActivityDate = THIS_MONTH OR ActivityDate > TODAY) OR (CreatedDate <= TODAY AND ActivityDate = null) ) ORDER BY ActivityDate';
+            '\' AND TaskSubType != \'Email\' AND ( (ActivityDate = LAST_N_MONTHS:4 OR ActivityDate = THIS_MONTH OR ActivityDate > TODAY) OR (CreatedDate <= TODAY AND ActivityDate = null) ) ORDER BY ActivityDate DESC';
         System.assertEquals(expected, results, 'the task query should be correctly seen');
     }
 
@@ -149,11 +149,11 @@ public without sharing class Timeline_QueriesHelperTest {
     @isTest
     private static void testBuildSoqlQuery() {
         Test.StartTest();
-        String results = Timeline_QueriesHelper.buildSoqlQuery('Count(Id), Id', 'Account', 'Id != null', 'Id');
+        String results = Timeline_QueriesHelper.buildSoqlQuery('Count(Id), Id', 'Account', 'Id != null', 'Id', null);
         Test.StopTest();
 
         System.assertEquals(
-            ' SELECT Count(Id), Id FROM Account WHERE Id != null ORDER BY Id',
+            ' SELECT Count(Id), Id FROM Account WHERE Id != null ORDER BY Id DESC',
             results,
             'the output soql query should match the expected output'
         );
@@ -162,7 +162,7 @@ public without sharing class Timeline_QueriesHelperTest {
     @isTest
     private static void testBuildSoqlQuery_nullOrderBy() {
         Test.StartTest();
-        String results = Timeline_QueriesHelper.buildSoqlQuery('Count(Id), Id', 'Account', 'Id != null', null);
+        String results = Timeline_QueriesHelper.buildSoqlQuery('Count(Id), Id', 'Account', 'Id != null', null, null);
         Test.StopTest();
 
         System.assertEquals(
@@ -175,7 +175,7 @@ public without sharing class Timeline_QueriesHelperTest {
     @isTest
     private static void testBuildSoqlQuery_emptyOrderBy() {
         Test.StartTest();
-        String results = Timeline_QueriesHelper.buildSoqlQuery('Count(Id), Id', 'Account', 'Id != null', '');
+        String results = Timeline_QueriesHelper.buildSoqlQuery('Count(Id), Id', 'Account', 'Id != null', '', null);
         Test.StopTest();
 
         System.assertEquals(
@@ -188,11 +188,11 @@ public without sharing class Timeline_QueriesHelperTest {
     @isTest
     private static void testBuildSoqlQuery_nullParameter() {
         Test.StartTest();
-        String results = Timeline_QueriesHelper.buildSoqlQuery('Count(Id), Id', 'Account', null, 'Id');
+        String results = Timeline_QueriesHelper.buildSoqlQuery('Count(Id), Id', 'Account', null, 'Id', null);
         Test.StopTest();
 
         System.assertEquals(
-            ' SELECT Count(Id), Id FROM Account ORDER BY Id',
+            ' SELECT Count(Id), Id FROM Account ORDER BY Id DESC',
             results,
             'the output soql query should match the expected output'
         );
@@ -201,11 +201,11 @@ public without sharing class Timeline_QueriesHelperTest {
     @isTest
     private static void testBuildSoqlQuery_emptyParameter() {
         Test.StartTest();
-        String results = Timeline_QueriesHelper.buildSoqlQuery('Count(Id), Id', 'Account', '', 'Id');
+        String results = Timeline_QueriesHelper.buildSoqlQuery('Count(Id), Id', 'Account', '', 'Id', null);
         Test.StopTest();
 
         System.assertEquals(
-            ' SELECT Count(Id), Id FROM Account ORDER BY Id',
+            ' SELECT Count(Id), Id FROM Account ORDER BY Id DESC',
             results,
             'the output soql query should match the expected output'
         );

@@ -46,9 +46,10 @@ public with sharing class Timeline_Helper {
     public static List<Timeline_Model> getActivity(
         List<TimelineParent__mdt> sObjectsToQuery,
         String recordId,
-        Integer amountOfMonths
+        Integer amountOfMonths,
+        Integer recordLimit
     ) {
-        List<String> query = Timeline_Queries.createSoqlQueries(sObjectsToQuery, recordId, amountOfMonths);
+        List<String> query = Timeline_Queries.createSoqlQueries(sObjectsToQuery, recordId, amountOfMonths, recordLimit);
         List<SObject> sObjects = Timeline_Queries.getSObjectsFromQueries(query);
         List<Timeline_Model> data = createTimelineData(sObjectsToQuery, sObjects);
 
@@ -133,7 +134,8 @@ public with sharing class Timeline_Helper {
         Integer iteration,
         Integer totalRecords,
         List<Timeline_Model> activity,
-        Boolean includeSize
+        Boolean includeSize,
+        Integer recordLimit
     ) {
         activity.sort();
 
@@ -147,6 +149,7 @@ public with sharing class Timeline_Helper {
         Boolean allRecordsLoaded = currentAmount >= totalRecords;
         Boolean moreRecordsToQuery = activityDivided.size() <= amountOfMonths;
         Boolean queryLimitsWillNotExceed = totalQueryAmount < maxQueriesLeft;
+        Boolean recordLimitReached = recordLimit != null && recordLimit > 0 && currentAmount >= recordLimit;
 
         // 2^6 = 5,33 years, which is probably not needed to query, but allowed
         // 2^7 = 10,66 years, which is NOT needed to query, thus, return
@@ -154,8 +157,8 @@ public with sharing class Timeline_Helper {
             return activity;
         }
 
-        // if all records found, return
-        if (allRecordsLoaded) {
+        // if all records found or record limit reached, return
+        if (allRecordsLoaded || recordLimitReached) {
             return activity;
         }
 
@@ -163,7 +166,7 @@ public with sharing class Timeline_Helper {
         if (moreRecordsToQuery && queryLimitsWillNotExceed) {
             Integer newAmount = getAmountToLoad(amountOfMonthsToLoad, iteration);
 
-            List<Timeline_Model> newActivities = Timeline_Helper.getActivity(sObjectsToQuery, recordId, newAmount);
+            List<Timeline_Model> newActivities = Timeline_Helper.getActivity(sObjectsToQuery, recordId, newAmount, recordLimit);
 
             return reloadUntilDataFetched(
                 sObjectsToQuery,
@@ -173,7 +176,8 @@ public with sharing class Timeline_Helper {
                 iteration + 1,
                 totalRecords,
                 newActivities,
-                includeSize
+                includeSize,
+                recordLimit
             );
         }
 

@@ -17,7 +17,7 @@ private class Timeline_ModelTest {
         insert ta2;
 
         List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery('Account', true, null);
-        List<String> query = Timeline_Queries.createSoqlQueries(sObjectsToQuery, acc.Id, 8);
+        List<String> query = Timeline_Queries.createSoqlQueries(sObjectsToQuery, acc.Id, 8, null);
         List<SObject> sObjects = Timeline_Queries.getSObjectsFromQueries(query);
         List<Timeline_Model> data = Timeline_Helper.createTimelineData(sObjectsToQuery, sObjects);
 
@@ -47,7 +47,7 @@ private class Timeline_ModelTest {
         insert ta2;
 
         List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery('Account', true, null);
-        List<String> query = Timeline_Queries.createSoqlQueries(sObjectsToQuery, acc.Id, 5);
+        List<String> query = Timeline_Queries.createSoqlQueries(sObjectsToQuery, acc.Id, 5, null);
         List<SObject> sObjects = Timeline_Queries.getSObjectsFromQueries(query);
         List<Timeline_Model> data = Timeline_Helper.createTimelineData(sObjectsToQuery, sObjects);
 

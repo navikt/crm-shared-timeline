@@ -31,7 +31,7 @@ private without sharing class Timeline_QueriesTest {
         Id recordId = Timeline_TestDataFactory.createAccount('test').Id;
 
         Test.StartTest();
-        List<String> queries = Timeline_Queries.createSoqlQueries(sObjectsToQuery, recordId, 3);
+        List<String> queries = Timeline_Queries.createSoqlQueries(sObjectsToQuery, recordId, 3, null);
         Test.StopTest();
 
         System.assertEquals(
@@ -46,12 +46,12 @@ private without sharing class Timeline_QueriesTest {
             String expectedEvent =
                 ' SELECT Id,ActivityDate,Subject,OwnerId,WhoId,ActivityDateTime,IsAllDayEvent,DurationInMinutes FROM Event WHERE WhatId = \'' +
                 recordId +
-                '\' AND (ActivityDate = LAST_N_MONTHS:2 OR ActivityDate = THIS_MONTH OR ActivityDate > TODAY) ORDER BY ActivityDate';
+                '\' AND (ActivityDate = LAST_N_MONTHS:2 OR ActivityDate = THIS_MONTH OR ActivityDate > TODAY) ORDER BY ActivityDate DESC';
 
             String expectedTask =
                 ' SELECT Id,ActivityDate,Subject,OwnerId,WhoId,Type,Status,CreatedDate FROM Task WHERE WhatId = \'' +
                 recordId +
-                '\' AND TaskSubType != \'Email\' AND ( (ActivityDate = LAST_N_MONTHS:2 OR ActivityDate = THIS_MONTH OR ActivityDate > TODAY) OR (CreatedDate <= TODAY AND ActivityDate = null) ) ORDER BY ActivityDate';
+                '\' AND TaskSubType != \'Email\' AND ( (ActivityDate = LAST_N_MONTHS:2 OR ActivityDate = THIS_MONTH OR ActivityDate > TODAY) OR (CreatedDate <= TODAY AND ActivityDate = null) ) ORDER BY ActivityDate DESC';
 
             for (String query : queries) {
                 if (query.contains('FROM Event')) {
@@ -77,7 +77,7 @@ private without sharing class Timeline_QueriesTest {
 
         String parentSObjectType = Timeline_Helper.getSOjectTypeFromRecordId(acc.Id);
         List<TimelineParent__mdt> sObjectsToQuery = Timeline_Queries.getSObjectsToQuery(parentSObjectType, false, null);
-        List<String> queries = Timeline_Queries.createSoqlQueries(sObjectsToQuery, acc.Id, 3);
+        List<String> queries = Timeline_Queries.createSoqlQueries(sObjectsToQuery, acc.Id, 3, null);
 
         Test.StartTest();
         List<SObject> sObjects = Timeline_Queries.getSObjectsFromQueries(queries);

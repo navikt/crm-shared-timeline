@@ -29,6 +29,7 @@ export default class Timeline extends LightningElement {
     @api amountOfRecords = 3;
     @api amountOfRecordsToLoad = 3;
     @api amountOfRecordsToOpen;
+    @api initialQueryLimit = 10;
     @api configId = '';
     @api buttonIsHidden = false;
     @api customEmptySubtitle = '';
@@ -45,7 +46,7 @@ export default class Timeline extends LightningElement {
     data;
     deWireResult;
     recordsLoaded = 0;
-    maxRecords = 0;
+    allRecordsLoaded = false;
     openAccordionSections = [labels.overdue, labels.upcoming];
     allSections = [];
     labels = labels;
@@ -64,6 +65,7 @@ export default class Timeline extends LightningElement {
     isRendered = false;
     masterData;
     isFiltered = false;
+    currentQueryLimit; // Current SOQL LIMIT (grows with Load More)
 
     render() {
         return this.design === 'Slick' ? slickTemplate : defaultTemplate;
@@ -72,6 +74,7 @@ export default class Timeline extends LightningElement {
     connectedCallback() {
         this.initializeRecordWireFields();
         this.initializeHeader();
+        this.currentQueryLimit = this.initialQueryLimit; // Initialize query limit
     }
 
     renderedCallback() {
@@ -96,7 +99,8 @@ export default class Timeline extends LightningElement {
         amountOfMonths: '$amountOfMonths',
         amountOfMonthsToLoad: '$amountOfMonthsToLoad',
         configId: '$configId',
-        includeSize: '$includeAmountInTitle'
+        includeSize: '$includeAmountInTitle',
+        amountOfRecords: '$currentQueryLimit'
     })
     handleTimelineData(result) {
         this.deWireResult = result;
@@ -157,7 +161,7 @@ export default class Timeline extends LightningElement {
         }
         this.setupAccordions(this.data);
         this.countRecordsLoaded(this.data);
-        this.fetchTotalRecords();
+        //this.fetchTotalRecords();
     }
 
     setParams(data) {
@@ -237,15 +241,19 @@ export default class Timeline extends LightningElement {
                 recordsLoaded += elem.models.length;
             }
         });
+        
+        // Track previous count to detect when no more records are available
+        const previousRecordsLoaded = this.recordsLoaded;
         this.recordsLoaded = recordsLoaded;
+
+        if (previousRecordsLoaded > 0 && recordsLoaded === previousRecordsLoaded) {
+            this.allRecordsLoaded = true;
+        }
     }
 
     fetchTotalRecords() {
+        // Not currently needed with LIMIT-based approach, but kept for potential future use
         getTotalRecords({ recordId: this.parentRecordId, configId: this.configId })
-            .then((result) => {
-                this.maxRecords = result;
-            })
-            .catch((error) => this.handleError('Error fetching total records', error));
     }
 
     getMonthsToLoad() {
@@ -278,10 +286,14 @@ export default class Timeline extends LightningElement {
     loadMore() {
         this.loading = true;
         const filterTemplate = this.template.querySelector('c-timeline-filter');
-        filterTemplate.handleResetFromLoadMore();
+        if (filterTemplate) {
+            filterTemplate.handleResetFromLoadMore();
+        }
         this.isFiltered = false;
         this.amountOfMonths = this.getMonthsToLoad();
-        this.publishAmplitudeEvent('Load more (months)');
+        // Increase query limit to actually load more records
+        this.currentQueryLimit = this.currentQueryLimit + this.amountOfRecordsToLoad;
+        //this.publishAmplitudeEvent('Load more (months)');
     }
 
     refreshData() {
@@ -292,7 +304,7 @@ export default class Timeline extends LightningElement {
                 this.loading = false;
                 if (this.deWireResult?.data) {
                     this.setData(this.deWireResult.data);
-                    this.publishAmplitudeEvent('Refresh list');
+                    //this.publishAmplitudeEvent('Refresh list');
                 }
             })
             .catch((error) => this.handleError('Error refreshing timeline data', error));
@@ -301,7 +313,7 @@ export default class Timeline extends LightningElement {
     collapseAccordions() {
         this.openAccordionSections = this.collapsed ? this.allSections : [];
         this.collapsed = !this.collapsed;
-        this.publishAmplitudeEvent('Collapse/open accordions');
+        //this.publishAmplitudeEvent('Collapse/open accordions');
     }
 
     handleSectionToggle(event) {
@@ -316,7 +328,7 @@ export default class Timeline extends LightningElement {
             this.collapseText = this.labels.collapse;
             this.collapsed = false;
         }
-        this.publishAmplitudeEvent('Toggle expand section');
+        //this.publishAmplitudeEvent('Toggle expand section');
     }
 
     handleFilter(e) {
@@ -356,7 +368,7 @@ export default class Timeline extends LightningElement {
     }
 
     get hasMoreDataToLoad() {
-        return this.recordsLoaded < this.maxRecords;
+        return !this.allRecordsLoaded;
     }
 
     get showCreateRecords() {

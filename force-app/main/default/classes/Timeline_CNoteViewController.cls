@@ -16,6 +16,8 @@ public with sharing class Timeline_CNoteViewController {
                     //Params
                     'Id = :recordId',
                     //Order
+                    null,
+                    //RecordLimit
                     null
                 )
             );

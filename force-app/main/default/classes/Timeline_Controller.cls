@@ -1,30 +1,13 @@
-/**
- * @description       :
- * @author            : mamikals
- * @group             :
- * @last modified on  : 01-03-2023
- * @last modified by  : mamikals
- **/
 public with sharing class Timeline_Controller {
-    // ------------------------------------------------------------- //
-    // ---------------------- getTotalRecords ---------------------- //
-    // ------------------------------------------------------------- //
-
     @AuraEnabled(cacheable=true)
     public static List<Timeline_ModelList> getTimelineData(
         String recordId,
         Integer amountOfMonths,
         Integer amountOfMonthsToLoad,
         String configId,
-        Boolean includeSize
+        Boolean includeSize,
+        Integer amountOfRecords
     ) {
-        System.debug(
-            '\n' +
-            '------------------------------------------\n' +
-            '----------getTimelineData---------\n' +
-            '------------------------------------------'
-        );
-
         if (recordId == null) {
             throw new AuraException('Error. Invalid record ID.');
         }
@@ -35,9 +18,13 @@ public with sharing class Timeline_Controller {
             false,
             configId
         );
-        Integer totalRecords = Timeline_Queries.getTotalRecords(sObjectsToQuery, recordId);
+        // Only query total records if we're not using a record limit (expensive operation)
+        Integer totalRecords = (amountOfRecords == null || amountOfRecords <= 0) 
+            ? Timeline_Queries.getTotalRecords(sObjectsToQuery, recordId) 
+            : amountOfRecords;
+        Integer effectiveLimit = amountOfRecords != null && amountOfRecords > 0 ? amountOfRecords : null;
 
-        List<Timeline_Model> activity = Timeline_Helper.getActivity(sObjectsToQuery, recordId, amountOfMonths);
+        List<Timeline_Model> activity = Timeline_Helper.getActivity(sObjectsToQuery, recordId, amountOfMonths, effectiveLimit);
         activity = Timeline_Helper.reloadUntilDataFetched(
             sObjectsToQuery,
             recordId,
@@ -46,7 +33,8 @@ public with sharing class Timeline_Controller {
             2,
             totalRecords,
             activity,
-            includeSize
+            includeSize,
+            effectiveLimit
         );
         activity = Timeline_Helper.getOwnerAndContactNames(activity);
         activity.sort();
@@ -60,19 +48,8 @@ public with sharing class Timeline_Controller {
         return data;
     }
 
-    // ------------------------------------------------------------- //
-    // -------------------- getTimelineObjects --------------------- //
-    // ------------------------------------------------------------- //
-
     @AuraEnabled(cacheable=true)
     public static List<TimelineParent__mdt> getTimelineObjects(String recordId, String configId) {
-        System.debug(
-            '\n' +
-            '------------------------------------------\n' +
-            '------------getTimelineObjects------------\n' +
-            '------------------------------------------'
-        );
-
         if (recordId == null) {
             throw new AuraException('Error. Invalid record ID.');
         }
@@ -88,19 +65,8 @@ public with sharing class Timeline_Controller {
         return sObjectsToQuery;
     }
 
-    // ------------------------------------------------------------- //
-    // ---------------------- getTotalRecords ---------------------- //
-    // ------------------------------------------------------------- //
-
     @AuraEnabled(cacheable=true)
     public static Integer getTotalRecords(String recordId, String configId) {
-        System.debug(
-            '\n' +
-            '------------------------------------------\n' +
-            '--------------getTotalRecords-------------\n' +
-            '------------------------------------------'
-        );
-
         if (recordId == null) {
             throw new AuraException('Error. Invalid record ID.');
         }
