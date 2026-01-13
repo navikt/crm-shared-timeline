@@ -4,7 +4,7 @@
             "path": "force-app",
             "package": "crm-shared-timeline",
             "versionName": "ver 0.1",
-            "versionNumber": "1.41.0.NEXT",
+            "versionNumber": "1.42.0.NEXT",
             "default": true,
             "dependencies": [
                 {
