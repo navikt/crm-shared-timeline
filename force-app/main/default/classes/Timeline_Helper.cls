@@ -162,11 +162,6 @@ public with sharing class Timeline_Helper {
             return activity;
         }
 
-        // if a record limit is set, don't try to load more months - just return what we have
-        if (recordLimit != null && recordLimit > 0) {
-            return activity;
-        }
-
         // if there are more months to query, and query limits will not be exceeded
         if (moreRecordsToQuery && queryLimitsWillNotExceed) {
             Integer newAmount = getAmountToLoad(amountOfMonthsToLoad, iteration);
