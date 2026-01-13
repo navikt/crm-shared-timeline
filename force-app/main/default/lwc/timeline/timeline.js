@@ -286,7 +286,9 @@ export default class Timeline extends LightningElement {
     loadMore() {
         this.loading = true;
         const filterTemplate = this.template.querySelector('c-timeline-filter');
-        filterTemplate.handleResetFromLoadMore();
+        if (filterTemplate) {
+            filterTemplate.handleResetFromLoadMore();
+        }
         this.isFiltered = false;
         this.amountOfMonths = this.getMonthsToLoad();
         // Increase query limit to actually load more records
