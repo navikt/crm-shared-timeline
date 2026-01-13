@@ -32,12 +32,16 @@
             <property name="amountOfMonthsToOpen" type="Integer" label="No. of Months to Open"
                 description="Amout of months to open on first load (excluding upcoming and overdue)" />
             <property name="amountOfRecords" type="Integer" label="Initial Record Amount"
-                description="Number of records to initialy show" min="1" />
+                description="Number of records to initially show" min="1" />
             <property name="amountOfRecordsToLoad" type="Integer" label="No. of Records to Load"
-                description="Amount of record to load when clicking 'See More' and 'Load more'"
+                description="Amount of records to load when clicking 'See More' and 'Load more'"
                 min="1" />
             <property name="amountOfRecordsToOpen" type="Integer" label="No. of Records to Open"
-                description="Amout of records to open on first load" />
+                description="Amount of records to open on first load" />
+            <property name="initialQueryLimit" type="Integer"
+                label="SOQL Limit on First Load"
+                min="1"
+                description="SOQL limit on first load of records, incremented by 'No. of Records to Load'" />
             <property name="buttonIsHidden" type="Boolean" label="Hide New Button"
                 description="Show/Hide New Button" default="false" />
             <property name="filterIsActive" type="Boolean" label="Show filter button"

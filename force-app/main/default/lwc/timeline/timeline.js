@@ -29,6 +29,7 @@ export default class Timeline extends LightningElement {
     @api amountOfRecords = 3;
     @api amountOfRecordsToLoad = 3;
     @api amountOfRecordsToOpen;
+    @api initialQueryLimit = 10;
     @api configId = '';
     @api buttonIsHidden = false;
     @api customEmptySubtitle = '';
@@ -64,6 +65,7 @@ export default class Timeline extends LightningElement {
     isRendered = false;
     masterData;
     isFiltered = false;
+    currentQueryLimit; // Current SOQL LIMIT (grows with Load More)
 
     render() {
         return this.design === 'Slick' ? slickTemplate : defaultTemplate;
@@ -72,6 +74,7 @@ export default class Timeline extends LightningElement {
     connectedCallback() {
         this.initializeRecordWireFields();
         this.initializeHeader();
+        this.currentQueryLimit = this.initialQueryLimit; // Initialize query limit
     }
 
     renderedCallback() {
@@ -97,7 +100,7 @@ export default class Timeline extends LightningElement {
         amountOfMonthsToLoad: '$amountOfMonthsToLoad',
         configId: '$configId',
         includeSize: '$includeAmountInTitle',
-        amountOfRecords: '$amountOfRecords'
+        amountOfRecords: '$currentQueryLimit'
     })
     handleTimelineData(result) {
         this.deWireResult = result;
@@ -282,8 +285,8 @@ export default class Timeline extends LightningElement {
         filterTemplate.handleResetFromLoadMore();
         this.isFiltered = false;
         this.amountOfMonths = this.getMonthsToLoad();
-        // Increase record limit to actually load more records
-        this.amountOfRecords = this.amountOfRecords + this.amountOfRecordsToLoad;
+        // Increase query limit to actually load more records
+        this.currentQueryLimit = this.currentQueryLimit + this.amountOfRecordsToLoad;
         //this.publishAmplitudeEvent('Load more (months)');
     }
 
