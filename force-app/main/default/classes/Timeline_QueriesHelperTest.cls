@@ -56,7 +56,7 @@ public without sharing class Timeline_QueriesHelperTest {
         String expectedEvent =
             ' SELECT Id,ActivityDate,Subject,OwnerId,WhoId,ActivityDateTime,IsAllDayEvent,DurationInMinutes FROM Event WHERE WhatId = \'' +
             recordId +
-            '\' AND (ActivityDate = LAST_N_MONTHS:4 OR ActivityDate = THIS_MONTH OR ActivityDate > TODAY) ORDER BY ActivityDate';
+            '\' AND (ActivityDate = LAST_N_MONTHS:4 OR ActivityDate = THIS_MONTH OR ActivityDate > TODAY) ORDER BY ActivityDate DESC';
         System.assertEquals(expectedEvent, results, 'should get the full soql query');
     }
 
@@ -72,7 +72,7 @@ public without sharing class Timeline_QueriesHelperTest {
         String expected =
             ' SELECT Id,ActivityDate,Subject,OwnerId,WhoId,Type,Status,CreatedDate FROM Task WHERE WhatId = \'' +
             recordId +
-            '\' AND TaskSubType != \'Email\' AND ( (ActivityDate = LAST_N_MONTHS:4 OR ActivityDate = THIS_MONTH OR ActivityDate > TODAY) OR (CreatedDate <= TODAY AND ActivityDate = null) ) ORDER BY ActivityDate';
+            '\' AND TaskSubType != \'Email\' AND ( (ActivityDate = LAST_N_MONTHS:4 OR ActivityDate = THIS_MONTH OR ActivityDate > TODAY) OR (CreatedDate <= TODAY AND ActivityDate = null) ) ORDER BY ActivityDate DESC';
         System.assertEquals(expected, results, 'the task query should be correctly seen');
     }
 
@@ -153,7 +153,7 @@ public without sharing class Timeline_QueriesHelperTest {
         Test.StopTest();
 
         System.assertEquals(
-            ' SELECT Count(Id), Id FROM Account WHERE Id != null ORDER BY Id',
+            ' SELECT Count(Id), Id FROM Account WHERE Id != null ORDER BY Id DESC',
             results,
             'the output soql query should match the expected output'
         );
@@ -192,7 +192,7 @@ public without sharing class Timeline_QueriesHelperTest {
         Test.StopTest();
 
         System.assertEquals(
-            ' SELECT Count(Id), Id FROM Account ORDER BY Id',
+            ' SELECT Count(Id), Id FROM Account ORDER BY Id DESC',
             results,
             'the output soql query should match the expected output'
         );
@@ -205,7 +205,7 @@ public without sharing class Timeline_QueriesHelperTest {
         Test.StopTest();
 
         System.assertEquals(
-            ' SELECT Count(Id), Id FROM Account ORDER BY Id',
+            ' SELECT Count(Id), Id FROM Account ORDER BY Id DESC',
             results,
             'the output soql query should match the expected output'
         );
