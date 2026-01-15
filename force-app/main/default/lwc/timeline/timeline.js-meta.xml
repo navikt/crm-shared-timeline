@@ -39,9 +39,9 @@
                 description="Number of records to load when clicking 'See More' and 'Load more'"
                 min="1" />
             <property name="initialQueryLimit" type="Integer"
-                label="SOQL limit of query."
-                min="1"
-                description="SOQL limit on first load of records. Default 10. Incremented by 'No. of Records to Load'" />
+                label="SOQL limit of query on first load"
+                min="1" max="50"
+                description="SOQL limit on first load of records. Default 5. Incremented by 'No. of Records to Load'" />
             <property name="buttonIsHidden" type="Boolean" label="Hide New Button"
                 description="Show/Hide New Button" default="false" />
             <property name="filterIsActive" type="Boolean" label="Show filter button"

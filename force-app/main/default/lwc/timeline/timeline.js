@@ -29,7 +29,7 @@ export default class Timeline extends LightningElement {
     @api amountOfRecords = 3;
     @api amountOfRecordsToLoad = 3;
     @api amountOfRecordsToOpen;
-    @api initialQueryLimit = 10;
+    @api initialQueryLimit = 5;
     @api configId = '';
     @api buttonIsHidden = false;
     @api customEmptySubtitle = '';
@@ -258,6 +258,11 @@ export default class Timeline extends LightningElement {
 
     getMonthsToLoad() {
         let today = new Date();
+        
+        if (!this.data?.length) {
+            return this.amountOfMonths + this.amountOfMonthsToLoad;
+        }
+        
         let lastRecordDate = new Date(this.data[this.data.length - 1].models[0].record.dateValueDb);
 
         let months = (today.getFullYear() - lastRecordDate.getFullYear()) * 12;
