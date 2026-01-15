@@ -43,6 +43,7 @@ export default class Timeline extends LightningElement {
     @api hideMyActivitiesFilter = false;
     @api includeAmountInTitle = false;
 
+    MAX_QUERY_LIMIT = 50; // Maximum allowed query limit to prevent performance issues
     data;
     deWireResult;
     recordsLoaded = 0;
@@ -74,7 +75,7 @@ export default class Timeline extends LightningElement {
     connectedCallback() {
         this.initializeRecordWireFields();
         this.initializeHeader();
-        this.currentQueryLimit = this.initialQueryLimit; // Initialize query limit
+        this.currentQueryLimit = Math.min(this.initialQueryLimit, this.MAX_QUERY_LIMIT);
     }
 
     renderedCallback() {
