@@ -51,7 +51,7 @@ private without sharing class Timeline_QueriesTest {
             String expectedTask =
                 ' SELECT Id,ActivityDate,Subject,OwnerId,WhoId,Type,Status,CreatedDate FROM Task WHERE WhatId = \'' +
                 recordId +
-                '\' AND TaskSubType != \'Email\' AND ( (ActivityDate = LAST_N_MONTHS:2 OR ActivityDate = THIS_MONTH OR ActivityDate > TODAY) OR (CreatedDate <= TODAY AND ActivityDate = null) ) ORDER BY ActivityDate DESC';
+                '\' AND TaskSubType != \'Email\' AND ( (ActivityDate = LAST_N_MONTHS:2 OR ActivityDate = THIS_MONTH OR ActivityDate > TODAY) OR ((CreatedDate = LAST_N_MONTHS:2 OR CreatedDate = THIS_MONTH) AND ActivityDate = null) ) ORDER BY ActivityDate DESC';
 
             for (String query : queries) {
                 if (query.contains('FROM Event')) {
