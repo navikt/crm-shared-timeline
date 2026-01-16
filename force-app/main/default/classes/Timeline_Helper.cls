@@ -430,13 +430,23 @@ public with sharing class Timeline_Helper {
         return String.valueOf(i.getSobjectType());
     }
 
+    private static Map<String, Id> recordTypeCache;
+
     public static Map<String, Id> getRecordTypes(List<TimelineParent__mdt> data) {
+        if (recordTypeCache != null) {
+            return recordTypeCache;
+        }
+
         Set<String> recordTypeNames = new Set<String>();
 
         for (TimelineParent__mdt mdt : data) {
             if (mdt.Timeline_Child__r.CreateableObject_RecordType__c != null) {
                 recordTypeNames.add(mdt.Timeline_Child__r.CreateableObject_RecordType__c);
             }
+        }
+
+        if (recordTypeNames.isEmpty()) {
+            return new Map<String, Id>();
         }
 
         List<RecordType> recordTypes = [
@@ -449,6 +459,7 @@ public with sharing class Timeline_Helper {
             recordTypeMap.put(rt.SobjectType + rt.DeveloperName, rt.Id);
         }
 
-        return recordTypeMap;
+        recordTypeCache = recordTypeMap;
+        return recordTypeCache;
     }
 }
