@@ -44,6 +44,7 @@ export default class Timeline extends LightningElement {
     @api includeAmountInTitle = false;
 
     MAX_QUERY_LIMIT = 50; // Maximum allowed query limit to prevent performance issues
+    MAX_RECORDS_PER_LOAD = 50; // Maximum records to load per "Load More" click
     data;
     deWireResult;
     recordsLoaded = 0;
@@ -298,7 +299,8 @@ export default class Timeline extends LightningElement {
         this.isFiltered = false;
         this.amountOfMonths = this.getMonthsToLoad();
         // Increase query limit to actually load more records
-        this.currentQueryLimit = this.currentQueryLimit + this.amountOfRecordsToLoad;
+        const increment = Math.min(this.amountOfRecordsToLoad, this.MAX_RECORDS_PER_LOAD);
+        this.currentQueryLimit = this.currentQueryLimit + increment;
         //this.publishAmplitudeEvent('Load more (months)');
     }
 

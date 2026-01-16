@@ -36,7 +36,7 @@
             <property name="amountOfRecordsToOpen" type="Integer" label="No. of Records to Expand"
                 description="Number of shown records to expand on render" />
             <property name="amountOfRecordsToLoad" type="Integer" label="No. of Records to Load"
-                description="Number of records to load when clicking 'See More' and 'Load more'"
+                description="Number of records to load when clicking 'See More' and 'Load more'. Max 50."
                 min="1" />
             <property name="initialQueryLimit" type="Integer"
                 label="SOQL limit of query on first load"
