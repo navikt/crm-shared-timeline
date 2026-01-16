@@ -226,8 +226,15 @@ public with sharing class Timeline_QueriesHelper {
         // if ActivityDate is used in the config, some tasks may be missing as the field is optional
         if (mdt.Timeline_Child__r.SObjectDateField__c == 'ActivityDate') {
             // query CreatedDate too (in addition to ActivityDate)
+            // Limit to same month range to avoid scanning all historical null-date tasks
             parameters += ' OR ';
-            parameters += '(CreatedDate <= TODAY' + ' AND ' + dateField + ' = null)';
+            parameters +=
+                '((CreatedDate = LAST_N_MONTHS:' +
+                (amountOfMonths - 1) +
+                ' OR CreatedDate = THIS_MONTH)' +
+                ' AND ' +
+                dateField +
+                ' = null)';
         }
 
         return parameters + ' )';

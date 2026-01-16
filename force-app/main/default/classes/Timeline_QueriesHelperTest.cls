@@ -72,7 +72,7 @@ public without sharing class Timeline_QueriesHelperTest {
         String expected =
             ' SELECT Id,ActivityDate,Subject,OwnerId,WhoId,Type,Status,CreatedDate FROM Task WHERE WhatId = \'' +
             recordId +
-            '\' AND TaskSubType != \'Email\' AND ( (ActivityDate = LAST_N_MONTHS:4 OR ActivityDate = THIS_MONTH OR ActivityDate > TODAY) OR (CreatedDate <= TODAY AND ActivityDate = null) ) ORDER BY ActivityDate DESC';
+            '\' AND TaskSubType != \'Email\' AND ( (ActivityDate = LAST_N_MONTHS:4 OR ActivityDate = THIS_MONTH OR ActivityDate > TODAY) OR ((CreatedDate = LAST_N_MONTHS:4 OR CreatedDate = THIS_MONTH) AND ActivityDate = null) ) ORDER BY ActivityDate DESC';
         System.assertEquals(expected, results, 'the task query should be correctly seen');
     }
 
@@ -138,7 +138,7 @@ public without sharing class Timeline_QueriesHelperTest {
         String expected =
             'WhatId = \'' +
             recordId +
-            '\' AND TaskSubType != \'Email\' AND ( (ActivityDate = LAST_N_MONTHS:4 OR ActivityDate = THIS_MONTH OR ActivityDate > TODAY) OR (CreatedDate <= TODAY AND ActivityDate = null) )';
+            '\' AND TaskSubType != \'Email\' AND ( (ActivityDate = LAST_N_MONTHS:4 OR ActivityDate = THIS_MONTH OR ActivityDate > TODAY) OR ((CreatedDate = LAST_N_MONTHS:4 OR CreatedDate = THIS_MONTH) AND ActivityDate = null) )';
         System.assertEquals(expected, results, 'the task query should be correctly seen');
     }
 
@@ -223,7 +223,7 @@ public without sharing class Timeline_QueriesHelperTest {
         String results = Timeline_QueriesHelper.addTaskParameters(mdt, 5);
         Test.StopTest();
 
-        String expected = 'TaskSubType != \'Email\' AND ( (ActivityDate = LAST_N_MONTHS:4 OR ActivityDate = THIS_MONTH OR ActivityDate > TODAY) OR (CreatedDate <= TODAY AND ActivityDate = null) )';
+        String expected = 'TaskSubType != \'Email\' AND ( (ActivityDate = LAST_N_MONTHS:4 OR ActivityDate = THIS_MONTH OR ActivityDate > TODAY) OR ((CreatedDate = LAST_N_MONTHS:4 OR CreatedDate = THIS_MONTH) AND ActivityDate = null) )';
         System.assertEquals(expected, results, 'the task query should be correctly seen');
     }
 

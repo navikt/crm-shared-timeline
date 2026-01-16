@@ -29,7 +29,7 @@ export default class Timeline extends LightningElement {
     @api amountOfRecords = 3;
     @api amountOfRecordsToLoad = 3;
     @api amountOfRecordsToOpen;
-    @api initialQueryLimit = 10;
+    @api initialQueryLimit = 5;
     @api configId = '';
     @api buttonIsHidden = false;
     @api customEmptySubtitle = '';
@@ -43,6 +43,8 @@ export default class Timeline extends LightningElement {
     @api hideMyActivitiesFilter = false;
     @api includeAmountInTitle = false;
 
+    MAX_QUERY_LIMIT = 50; // Maximum allowed query limit to prevent performance issues
+    MAX_RECORDS_PER_LOAD = 50; // Maximum records to load per "Load More" click
     data;
     deWireResult;
     recordsLoaded = 0;
@@ -74,7 +76,7 @@ export default class Timeline extends LightningElement {
     connectedCallback() {
         this.initializeRecordWireFields();
         this.initializeHeader();
-        this.currentQueryLimit = this.initialQueryLimit; // Initialize query limit
+        this.currentQueryLimit = Math.min(this.initialQueryLimit, this.MAX_QUERY_LIMIT);
     }
 
     renderedCallback() {
@@ -258,6 +260,11 @@ export default class Timeline extends LightningElement {
 
     getMonthsToLoad() {
         let today = new Date();
+        
+        if (!this.data?.length) {
+            return this.amountOfMonths + this.amountOfMonthsToLoad;
+        }
+        
         let lastRecordDate = new Date(this.data[this.data.length - 1].models[0].record.dateValueDb);
 
         let months = (today.getFullYear() - lastRecordDate.getFullYear()) * 12;
@@ -292,7 +299,8 @@ export default class Timeline extends LightningElement {
         this.isFiltered = false;
         this.amountOfMonths = this.getMonthsToLoad();
         // Increase query limit to actually load more records
-        this.currentQueryLimit = this.currentQueryLimit + this.amountOfRecordsToLoad;
+        const increment = Math.min(this.amountOfRecordsToLoad, this.MAX_RECORDS_PER_LOAD);
+        this.currentQueryLimit = this.currentQueryLimit + increment;
         //this.publishAmplitudeEvent('Load more (months)');
     }
 
