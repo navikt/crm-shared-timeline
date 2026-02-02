@@ -50,13 +50,10 @@ public with sharing class Timeline_Queries {
     }
 
     public static List<SObject> getSObjectsFromQueries(List<String> queries) {
-        List<SObject> sObjects = new List<SObject>();
         Map<Id, SObject> uniqueSObjects = new Map<Id, SObject>();
 
         for (String query : queries) {
-            List<SObject> sObjs = Database.query(query);
-            sObjects.addAll(sObjs);
-            for (SObject sObj : sObjs) {
+            for (SObject sObj : Database.query(query)) {
                 // Added to remove duplicates
                 uniqueSObjects.put(sObj.Id, sObj);
             }
