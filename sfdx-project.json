@@ -12,6 +12,10 @@
                     "versionNumber": "0.3.0.LATEST"
                 },
                 {
+                    "package": "platform-data-model",
+                    "versionNumber": "0.1.34.LATEST"
+                },
+                {
                     "package": "crm-platform-base",
                     "versionNumber": "0.198.0.LATEST"
                 },
@@ -23,10 +27,7 @@
                     "package": "record-type-cache",
                     "versionNumber": "0.1.1.LATEST"
                 },
-                {
-                    "package": "platform-data-model",
-                    "versionNumber": "0.1.34.LATEST"
-                }
+                
             ]
         }
     ],
