@@ -40,5 +40,9 @@
         "crm-platform-base": "0Ho2o0000008ORmCAM",
         "crm-platform-reporting": "0Ho2o0000008OSfCAM",
         "record-type-cache": "0HoQC000000063p0AA"
+    },
+    "packageKeyConfig": {
+        "platform-data-model": false,
+        "record-type-cache": false
     }
 }
