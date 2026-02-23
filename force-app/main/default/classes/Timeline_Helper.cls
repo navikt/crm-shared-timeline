@@ -449,14 +449,22 @@ public with sharing class Timeline_Helper {
             return new Map<String, Id>();
         }
 
-        List<RecordType> recordTypes = [
-            SELECT Id, Name, DeveloperName, SobjectType
-            FROM RecordType
-            WHERE DeveloperName IN :recordTypeNames
-        ];
+        List<RecordType> recordTypes = null;
+        try {
+            List<RecordType> recordTypes = RecordTypeCache.getRecordTypes(recordTypeNames);
+        } catch (Exception e) {
+            System.debug('Record Type Cache not found, fetching record types directly from database');
+            List<RecordType> recordTypes = [
+                SELECT Id, Name, DeveloperName, SobjectType
+                FROM RecordType
+                WHERE DeveloperName IN :recordTypeNames
+            ];
+        }
         Map<String, Id> recordTypeMap = new Map<String, Id>();
         for (RecordType rt : recordTypes) {
-            recordTypeMap.put(rt.SobjectType + rt.DeveloperName, rt.Id);
+            if(rt.DeveloperName != null && recordTypeNames.contains(rt.DeveloperName)) {
+                recordTypeMap.put(rt.SobjectType + rt.DeveloperName, rt.Id);
+            }
         }
 
         recordTypeCache = recordTypeMap;
