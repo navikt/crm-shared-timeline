@@ -451,10 +451,10 @@ public with sharing class Timeline_Helper {
 
         List<RecordType> recordTypes = null;
         try {
-            List<RecordType> recordTypes = RecordTypeCache.getRecordTypes(recordTypeNames);
+            recordTypes = RecordTypeCache.getRecordTypes(recordTypeNames);
         } catch (Exception e) {
-            System.debug('Record Type Cache not found, fetching record types directly from database');
-            List<RecordType> recordTypes = [
+            new LoggerUtility('Timeline_Helper').errorAndPublish('Failed to get record types from cache, querying directly. Error: ' + e.getMessage());
+            recordTypes = [
                 SELECT Id, Name, DeveloperName, SobjectType
                 FROM RecordType
                 WHERE DeveloperName IN :recordTypeNames
