@@ -83,7 +83,6 @@ export default class NksTimeline extends LightningElement {
         this.deWireResult = result;
         const { data, error } = result;
         if (data) {
-            console.log(JSON.stringify(data));
             this.processTimelineData(data);
         } else if (error) {
             this.handleError('Error fetching timeline data', error);
