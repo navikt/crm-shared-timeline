@@ -430,15 +430,17 @@ public with sharing class Timeline_Helper {
         return String.valueOf(i.getSobjectType());
     }
 
-    private static Map<String, Id> recordTypeCache;
+    private static Map<String, Id> recordTypeMap;
 
     public static Map<String, Id> getRecordTypes(List<TimelineParent__mdt> data) {
         List<RecordType> recordTypes = null;
         Set<String> recordTypeNames = new Set<String>();
         
-        if (recordTypeCache != null) {
-            return recordTypeCache;
+        if (recordTypeMap != null) {
+            return recordTypeMap;
         }
+
+        recordTypeMap = new Map<String, Id>();
 
 
         for (TimelineParent__mdt mdt : data) {
@@ -461,14 +463,12 @@ public with sharing class Timeline_Helper {
                 WHERE DeveloperName IN :recordTypeNames
             ];
         }
-        Map<String, Id> recordTypeMap = new Map<String, Id>();
+        
         for (RecordType rt : recordTypes) {
             if(rt.DeveloperName != null && recordTypeNames.contains(rt.DeveloperName)) {
                 recordTypeMap.put(rt.SobjectType + rt.DeveloperName, rt.Id);
             }
         }
-
-        recordTypeCache = recordTypeMap;
-        return recordTypeCache;
+        return recordTypeMap;
     }
 }
