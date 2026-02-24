@@ -61,6 +61,9 @@
     },
     "packageKeyConfig": {
         "platform-data-model": false,
+        "custom-metadata-dao": false,
+        "custom-permission-helper": false,
+        "feature-toggle": false,
         "record-type-cache": false
     }
 }
