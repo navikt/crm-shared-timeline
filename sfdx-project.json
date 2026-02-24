@@ -16,6 +16,21 @@
                     "versionNumber": "0.1.34.LATEST"
                 },
                 {
+                    "package": "custom-metadata-dao",
+                    "versionNumber": "0.1.33.LATEST",
+                    "branch": ""
+                },
+                {
+                    "package": "custom-permission-helper",
+                    "versionNumber": "0.1.33.LATEST",
+                    "branch": ""
+                },
+                {
+                    "package": "feature-toggle",
+                    "versionNumber": "0.1.34.LATEST",
+                    "branch": ""
+                },
+                {
                     "package": "crm-platform-base",
                     "versionNumber": "0.299.0.LATEST"
                 },
@@ -37,6 +52,9 @@
         "crm-shared-timeline": "0Ho2o000000fxXBCAY",
         "crm-thread-view": "0Ho7U000000000zSAA",
         "platform-data-model": "0HoKB00000000010AA",
+        "custom-metadata-dao": "0HoKB000000000B0AQ",
+        "custom-permission-helper": "0HoKB000000000f0AA",
+        "feature-toggle": "0HoKB000000000V0AQ",
         "crm-platform-base": "0Ho2o0000008ORmCAM",
         "crm-platform-reporting": "0Ho2o0000008OSfCAM",
         "record-type-cache": "0HoQC000000063p0AA"
