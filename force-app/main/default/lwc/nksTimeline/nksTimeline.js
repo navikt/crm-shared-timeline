@@ -8,6 +8,8 @@ import labels from './labels';
 
 export default class NksTimeline extends LightningElement {
     @api headerIcon = 'custom:custom18';
+    @api headerTitleNorwegian;
+    @api headerTitleEnglish;
     @api objectApiName;
     @api recordId;
     @api timelineParentField = 'Id';
@@ -25,7 +27,6 @@ export default class NksTimeline extends LightningElement {
     @api picklistFilter1Label;
     @api picklistFilter2Label;
     @api showHideLabel;
-    @api hideMyActivitiesFilter = false;
     @api includeAmountInTitle = false;
 
     MAX_QUERY_LIMIT = 30; // Maximum allowed query limit to prevent performance issues
@@ -56,6 +57,7 @@ export default class NksTimeline extends LightningElement {
     connectedCallback() {
         this.currentQueryLimit = Math.min(this.initialQueryLimit, this.MAX_QUERY_LIMIT);
         this.loadMomentJs();
+        this.initializeHeader();
     }
 
     @wire(getRecord, { recordId: '$recordId', fields: '$recordFields' })
@@ -90,6 +92,15 @@ export default class NksTimeline extends LightningElement {
         loadScript(this, MOMENT_JS)
             .then(() => moment.locale(this.labels.MomentJsLanguage))
             .catch((error) => this.handleError('Error loading Moment.js', error));
+    }
+
+    initializeHeader() {
+        this.header =
+            LANG === 'no' && this.headerTitleNorwegian
+                ? this.headerTitleNorwegian
+                : LANG === 'en-US' && this.headerTitleEnglish
+                  ? this.headerTitleEnglish
+                  : this.labels.activities;
     }
 
     processTimelineData(data) {

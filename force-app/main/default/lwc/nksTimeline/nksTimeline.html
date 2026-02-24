@@ -3,7 +3,11 @@
         <div class={headerClass}>
             <div class="slds-col slds-large-size_3-of-12 left-column">
                 <h3 class="slds-card__header-title">
-                    <lightning-icon icon-name={headerIcon} size="small" class="slds-var-m-right_medium"></lightning-icon>
+                    <lightning-icon
+                        icon-name={headerIcon}
+                        size="small"
+                        class="slds-var-m-right_medium"
+                    ></lightning-icon>
                     {header}
                 </h3>
             </div>
@@ -15,7 +19,7 @@
                     picklist-filter-1-label={picklistFilter1Label}
                     picklist-filter-2-label={picklistFilter2Label}
                     show-hide-label={showHideLabel}
-                    hide-my-activities-filter={hideMyActivitiesFilter}
+                    hide-my-activities-filter="true"
                     onfilterchange={handleFilter}
                     log-event={logEvent}
                     design="Slick"
