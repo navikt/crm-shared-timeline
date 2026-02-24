@@ -9,7 +9,8 @@ public with sharing class NKS_TimelineController {
         Integer effectiveLimit = recordLimit != null && recordLimit > 0 ? recordLimit : 50;
 
         String threadQuery =
-            'SELECT Id, Name, CreatedDate, CRM_Latest_Message_Datetime__c, CRM_Journal_Status_Formula__c, CRM_Thread_Type__c, CRM_Conversation_Summary__c, CRM_Timeline_Icon__c, STO_Timeline_Name__c, CRM_Timeline_Status__c, CRM_Journal_Status_Formula_Icons__c, CRM_Theme_Group_Name__c ' +
+            'SELECT Id, Name, CreatedDate, CRM_Latest_Message_Datetime__c, CRM_Journal_Status_Formula__c, CRM_Thread_Type__c, ' +
+            'CRM_Conversation_Summary__c, CRM_Timeline_Icon__c, STO_Timeline_Name__c, CRM_Timeline_Status__c, CRM_Journal_Status_Formula_Icons__c, CRM_Theme_Group_Name__c ' +
             'FROM Thread__c ' +
             'WHERE CRM_Account__c = :recordId ' +
             'ORDER BY CRM_Latest_Message_Datetime__c DESC NULLS LAST ' +
