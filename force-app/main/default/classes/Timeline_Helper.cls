@@ -433,11 +433,13 @@ public with sharing class Timeline_Helper {
     private static Map<String, Id> recordTypeCache;
 
     public static Map<String, Id> getRecordTypes(List<TimelineParent__mdt> data) {
+        List<RecordType> recordTypes = null;
+        Set<String> recordTypeNames = new Set<String>();
+        
         if (recordTypeCache != null) {
             return recordTypeCache;
         }
 
-        Set<String> recordTypeNames = new Set<String>();
 
         for (TimelineParent__mdt mdt : data) {
             if (mdt.Timeline_Child__r.CreateableObject_RecordType__c != null) {
@@ -449,9 +451,8 @@ public with sharing class Timeline_Helper {
             return new Map<String, Id>();
         }
 
-        List<RecordType> recordTypes = null;
         try {
-            recordTypes = RecordTypeCache.getRecordTypes(recordTypeNames);
+            recordTypes = RecordTypeCache.getAllRecordTypes();
         } catch (Exception e) {
             new LoggerUtility('Timeline_Helper').errorAndPublish('Failed to get record types from cache, querying directly. Error: ' + e.getMessage());
             recordTypes = [
