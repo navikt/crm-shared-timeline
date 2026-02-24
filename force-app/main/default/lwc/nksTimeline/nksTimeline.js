@@ -28,8 +28,8 @@ export default class NksTimeline extends LightningElement {
     @api hideMyActivitiesFilter = false;
     @api includeAmountInTitle = false;
 
-    MAX_QUERY_LIMIT = 50; // Maximum allowed query limit to prevent performance issues
-    MAX_RECORDS_PER_LOAD = 50; // Maximum records to load per "Load More" click
+    MAX_QUERY_LIMIT = 30; // Maximum allowed query limit to prevent performance issues
+    MAX_RECORDS_PER_LOAD = 30; // Maximum records to load per "Load More" click
     data;
     deWireResult;
     recordsLoaded = 0;
@@ -199,6 +199,8 @@ export default class NksTimeline extends LightningElement {
         this.loading = true;
         this.allRecordsLoaded = false;
         this.isFiltered = false;
+        const filterTemplate = this.template.querySelector('c-timeline-filter');
+        if (filterTemplate) filterTemplate.handleResetFromLoadMore();
         this.amountOfMonths = this.amountOfMonths + this.amountOfMonthsToLoad;
         const increment = Math.min(this.amountOfRecordsToLoad, this.MAX_RECORDS_PER_LOAD);
         this.currentQueryLimit = this.currentQueryLimit + increment;
@@ -249,7 +251,7 @@ export default class NksTimeline extends LightningElement {
         this.data = filterTemplate.filterRecords(filteredData);
         this.isFiltered = !filterTemplate.filterContainsAll();
 
-        this.countRecordsLoaded(this.data);
+        this.allSections = this.data.map((group) => group.id);
         this.resetAccordions();
     }
 
