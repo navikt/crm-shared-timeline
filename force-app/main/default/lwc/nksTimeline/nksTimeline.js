@@ -83,6 +83,7 @@ export default class NksTimeline extends LightningElement {
         this.deWireResult = result;
         const { data, error } = result;
         if (data) {
+            console.log(JSON.stringify(data));
             this.processTimelineData(data);
         } else if (error) {
             this.handleError('Error fetching timeline data', error);
@@ -115,7 +116,8 @@ export default class NksTimeline extends LightningElement {
         }
 
         this.setupAccordions(this.data);
-        this.countRecordsLoaded(this.data);
+        this.updateAllSections(this.data);
+        this.countRecordsLoaded();
     }
 
     setParams(data) {
@@ -168,23 +170,26 @@ export default class NksTimeline extends LightningElement {
         });
     }
 
-    countRecordsLoaded(data) {
-        let recordsLoaded = 0;
-        this.allSections = [];
-        data.forEach((record) => {
-            this.allSections.push(record.id);
+    // Sync allSections with the currently visible month group IDs so collapseAccordions()
+    // can expand all sections by setting openAccordionSections = allSections.
+    updateAllSections(data) {
+        this.allSections = data.map((record) => record.id);
+    }
+
+    countRecordsLoaded() {
+        let totalRecords = 0;
+        this.masterData.forEach((record) => {
             if (record.models) {
-                recordsLoaded += record.models.length;
+                totalRecords += record.models.length;
             }
         });
 
-        // Track previous count to detect when no more records are available
         const previousRecordsLoaded = this.recordsLoaded;
-        this.recordsLoaded = recordsLoaded;
+        this.recordsLoaded = totalRecords;
 
         if (
-            (previousRecordsLoaded > 0 && recordsLoaded === previousRecordsLoaded) ||
-            recordsLoaded < this.currentQueryLimit
+            (previousRecordsLoaded > 0 && totalRecords === previousRecordsLoaded) ||
+            totalRecords < this.currentQueryLimit
         ) {
             this.allRecordsLoaded = true;
         }
@@ -263,7 +268,7 @@ export default class NksTimeline extends LightningElement {
         this.data = filterTemplate.filterRecords(filteredData);
         this.isFiltered = !filterTemplate.filterContainsAll();
 
-        this.allSections = this.data.map((group) => group.id);
+        this.updateAllSections(this.data);
         this.resetAccordions();
     }
 
