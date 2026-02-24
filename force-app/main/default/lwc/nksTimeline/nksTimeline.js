@@ -2,6 +2,7 @@ import { LightningElement, api, wire } from 'lwc';
 import { loadScript } from 'lightning/platformResourceLoader';
 import { refreshApex } from '@salesforce/apex';
 import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
+import LANG from '@salesforce/i18n/lang';
 import MOMENT_JS from '@salesforce/resourceUrl/moment';
 import getRecords from '@salesforce/apex/NKS_TimelineController.getRecords';
 import labels from './labels';
