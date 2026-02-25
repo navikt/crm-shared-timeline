@@ -4,6 +4,44 @@ private class NKS_TimelineControllerTest {
     static void setupData() {
         Account acc = new Account(Name = 'Test Account');
         insert acc;
+
+        Thread__c thread1 = new Thread__c(
+            CRM_Account__c = acc.Id,
+            CRM_Latest_Message_Datetime__c = Datetime.now().addDays(-1),
+            CRM_Conversation_Summary__c = 'Summary 1'
+        );
+        Thread__c thread2 = new Thread__c(
+            CRM_Account__c = acc.Id,
+            CRM_Latest_Message_Datetime__c = Datetime.now().addMonths(-2),
+            CRM_Conversation_Summary__c = 'Summary 2'
+        );
+        insert new List<Thread__c>{ thread1, thread2 };
+
+        Conversation_Note__c note1 = new Conversation_Note__c(
+            CRM_Account__c = acc.Id,
+            CRM_Date_Time_Registered__c = Datetime.now().addDays(-3),
+            CRM_Conversation_Note__c = 'Note content 1'
+        );
+        Conversation_Note__c note2 = new Conversation_Note__c(
+            CRM_Account__c = acc.Id,
+            CRM_Date_Time_Registered__c = Datetime.now().addMonths(-3),
+            CRM_Conversation_Note__c = 'Note content 2'
+        );
+        insert new List<Conversation_Note__c>{ note1, note2 };
+
+        Case case1 = new Case(AccountId = acc.Id, Subject = 'Test Case 1');
+        Case case2 = new Case(AccountId = acc.Id, Subject = 'Test Case 2');
+        insert new List<Case>{ case1, case2 };
+
+        NKS_Call_Log__c log1 = new NKS_Call_Log__c(
+            NKS_Case__c = case1.Id,
+            NKS_Call_Time__c = Datetime.now().addDays(-5)
+        );
+        NKS_Call_Log__c log2 = new NKS_Call_Log__c(
+            NKS_Case__c = case2.Id,
+            NKS_Call_Time__c = Datetime.now().addMonths(-4)
+        );
+        insert new List<NKS_Call_Log__c>{ log1, log2 };
     }
 
     @isTest
@@ -27,6 +65,7 @@ private class NKS_TimelineControllerTest {
         Test.stopTest();
 
         Assert.isNotNull(result, 'Result should not be null with null limit');
+        Assert.isTrue(result.size() > 0, 'Should return results using default limit');
     }
 
     @isTest
@@ -38,6 +77,7 @@ private class NKS_TimelineControllerTest {
         Test.stopTest();
 
         Assert.isNotNull(result, 'Result should not be null with zero limit (uses default)');
+        Assert.isTrue(result.size() > 0, 'Should return results using default limit when zero passed');
     }
 
     @isTest
@@ -49,13 +89,21 @@ private class NKS_TimelineControllerTest {
         Test.stopTest();
 
         Assert.isNotNull(result, 'Result should not be null');
+        Assert.isTrue(result.size() > 0, 'Expected at least one timeline group');
 
+        Integer totalModels = 0;
         for (NKS_TimelineController.TimelineGroup grp : result) {
             Assert.isNotNull(grp.id, 'Group id should not be null');
             Assert.isNotNull(grp.name, 'Group name should not be null');
             Assert.isNotNull(grp.models, 'Group models should not be null');
             Assert.areEqual(grp.models.size(), grp.size, 'Group size should match models count');
+            totalModels += grp.size;
         }
+        Assert.areEqual(
+            6,
+            totalModels,
+            'Expected 6 total records across all groups (2 threads + 2 notes + 2 call logs)'
+        );
     }
 
     @isTest
