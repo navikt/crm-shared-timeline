@@ -4,7 +4,7 @@ import LANG from '@salesforce/i18n/lang';
 import SAVE_LABEL from '@salesforce/label/c.Timeline_Save';
 import RESET_LABEL from '@salesforce/label/c.Timeline_Reset';
 import CANCEL_LABEL from '@salesforce/label/c.Timeline_Cancel';
-import { publishToAmplitude } from 'c/amplitude';
+//import { publishToAmplitude } from 'c/amplitude';
 import defaultTemplate from './timelineFilter.html';
 import slickTemplate from './slick.html';
 
@@ -30,19 +30,19 @@ export default class TimelineFilter extends LightningElement {
 
     toggle() {
         this.isActive = !this.isActive;
-        if (this.isActive) this.publishAmplitudeEvent('Click on filter button');
+        //if (this.isActive) this.publishAmplitudeEvent('Click on filter button');
     }
 
     handleSave() {
         this.updateFilter();
         this.toggle();
-        this.publishAmplitudeEvent('Save filter changes');
+        //this.publishAmplitudeEvent('Save filter changes');
     }
 
     handleCancel() {
         this.draftFilter = {};
         this.toggle();
-        this.publishAmplitudeEvent('Cancel filtering');
+        //this.publishAmplitudeEvent('Cancel filtering');
     }
 
     @api
@@ -51,7 +51,7 @@ export default class TimelineFilter extends LightningElement {
         this.filter = {};
         this.updateFilter();
         this.toggle();
-        this.publishAmplitudeEvent('Reset filtering');
+        //this.publishAmplitudeEvent('Reset filtering');
     }
 
     @api
@@ -59,12 +59,32 @@ export default class TimelineFilter extends LightningElement {
         this.draftFilter = {};
         this.filter = {};
         this.updateFilter();
-        this.publishAmplitudeEvent('Reset filtering');
+        //this.publishAmplitudeEvent('Reset filtering');
+    }
+
+    @api
+    resetPicklistFilters() {
+        // Resets only picklist/checkbox filters, preserving the call log shown state
+        this.filter = { shown: this.filter.shown };
+        this.draftFilter = {};
+        this.updateFilter();
+        //this.publishAmplitudeEvent('Reset filtering');
+    }
+
+    @api
+    get isPicklistFilterActive() {
+        const { picklistFilter1, picklistFilter2, checkBoxFilter, this_user } = this.filter;
+        return (
+            (picklistFilter1 != null && picklistFilter1 !== 'Alle') ||
+            (picklistFilter2 != null && picklistFilter2 !== 'Alle') ||
+            checkBoxFilter != null ||
+            this_user != null
+        );
     }
 
     handleChange(e) {
         this.draftFilter[e.target.dataset.id] = e.detail.value;
-        this.publishAmplitudeEvent('Changing filters');
+        //this.publishAmplitudeEvent('Changing filters');
         if (this.design === 'Slick') this.updateFilter();
     }
 
