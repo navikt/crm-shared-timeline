@@ -430,14 +430,18 @@ public with sharing class Timeline_Helper {
         return String.valueOf(i.getSobjectType());
     }
 
-    private static Map<String, Id> recordTypeCache;
+    private static Map<String, Id> recordTypeMap;
 
     public static Map<String, Id> getRecordTypes(List<TimelineParent__mdt> data) {
-        if (recordTypeCache != null) {
-            return recordTypeCache;
+        List<RecordType> recordTypes = null;
+        Set<String> recordTypeNames = new Set<String>();
+        
+        if (recordTypeMap != null) {
+            return recordTypeMap;
         }
 
-        Set<String> recordTypeNames = new Set<String>();
+        recordTypeMap = new Map<String, Id>();
+
 
         for (TimelineParent__mdt mdt : data) {
             if (mdt.Timeline_Child__r.CreateableObject_RecordType__c != null) {
@@ -449,17 +453,22 @@ public with sharing class Timeline_Helper {
             return new Map<String, Id>();
         }
 
-        List<RecordType> recordTypes = [
-            SELECT Id, Name, DeveloperName, SobjectType
-            FROM RecordType
-            WHERE DeveloperName IN :recordTypeNames
-        ];
-        Map<String, Id> recordTypeMap = new Map<String, Id>();
-        for (RecordType rt : recordTypes) {
-            recordTypeMap.put(rt.SobjectType + rt.DeveloperName, rt.Id);
+        try {
+            recordTypes = RecordTypeCache.getAllRecordTypes();
+        } catch (Exception e) {
+            new LoggerUtility('Timeline_Helper').errorAndPublish('Failed to get record types from cache, querying directly. Error: ' + e.getMessage());
+            recordTypes = [
+                SELECT Id, Name, DeveloperName, SobjectType
+                FROM RecordType
+                WHERE DeveloperName IN :recordTypeNames
+            ];
         }
-
-        recordTypeCache = recordTypeMap;
-        return recordTypeCache;
+        
+        for (RecordType rt : recordTypes) {
+            if(rt.DeveloperName != null && recordTypeNames.contains(rt.DeveloperName)) {
+                recordTypeMap.put(rt.SobjectType + rt.DeveloperName, rt.Id);
+            }
+        }
+        return recordTypeMap;
     }
 }
